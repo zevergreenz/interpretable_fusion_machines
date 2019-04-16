@@ -217,7 +217,7 @@ if __name__ == '__main__':
                to_file='vae_mlp.png',
                show_shapes=True)
 
-    args.weights = 'vae_mlp_mnist.h5'
+    # args.weights = 'vae_mlp_mnist.h5'
     if args.weights:
         vae.load_weights(args.weights)
     else:
@@ -227,6 +227,11 @@ if __name__ == '__main__':
                 batch_size=batch_size,
                 validation_data=(x_test, None))
         vae.save_weights('vae_mlp_mnist.h5')
+
+    plot_results(models,
+                 data,
+                 batch_size=batch_size,
+                 model_name="vae_mlp")
 
     fit_gmm(models,
             data,

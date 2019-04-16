@@ -6,6 +6,7 @@ from keras.utils import plot_model
 from keras import backend as K
 
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import argparse
 import os
@@ -91,6 +92,50 @@ def plot_results(models,
     plt.ylabel("z[1]")
     plt.imshow(figure, cmap='Greys_r')
     plt.savefig(filename)
+    plt.show()
+
+def make_ellipses(gmm, ax):
+    for n in range(len(gmm.means_)):
+        if gmm.covariance_type == 'full':
+            covariances = gmm.covariances_[n][:2, :2]
+        elif gmm.covariance_type == 'tied':
+            covariances = gmm.covariances_[:2, :2]
+        elif gmm.covariance_type == 'diag':
+            covariances = np.diag(gmm.covariances_[n][:2])
+        elif gmm.covariance_type == 'spherical':
+            covariances = np.eye(gmm.means_.shape[1]) * gmm.covariances_[n]
+        v, w = np.linalg.eigh(covariances)
+        u = w[0] / np.linalg.norm(w[0])
+        angle = np.arctan2(u[1], u[0])
+        angle = 180 * angle / np.pi  # convert to degrees
+        v = 2. * np.sqrt(2.) * np.sqrt(v)
+        ell = mpl.patches.Ellipse(gmm.means_[n, :2], v[0], v[1],
+                                  180 + angle, color='b', alpha=0.7)
+        ell.set_clip_box(ax.bbox)
+        ell.set_alpha(0.5)
+        ax.add_artist(ell)
+        ell.set_alpha(0.3)
+        ax.set_aspect('equal', 'datalim')
+
+def fit_gmm(models,
+            data,
+            batch_size=128,
+            model_name="vae_mnist"):
+    encoder, decoder = models
+    x_test, y_test = data
+    # x_test = x_test[y_test == 1]
+    # y_test = y_test[y_test == 1]
+    z_mean, _, _ = encoder.predict(x_test,
+                                   batch_size=batch_size)
+    from sklearn.mixture.gaussian_mixture import GaussianMixture
+    gmm = GaussianMixture(n_components=10, covariance_type='full').fit(z_mean)
+
+    figure, (ax) = plt.subplots(1, 1, figsize=(10, 10))
+    ax.scatter(z_mean[:, 0], z_mean[:, 1], c=y_test)
+    # plt.colorbar()
+    # ax.xlabel("z[0]")
+    # ax.ylabel("z[1]")
+    make_ellipses(gmm, ax)
     plt.show()
 
 
@@ -183,7 +228,7 @@ if __name__ == '__main__':
                 validation_data=(x_test, None))
         vae.save_weights('vae_mlp_mnist.h5')
 
-    plot_results(models,
-                 data,
-                 batch_size=batch_size,
-                 model_name="vae_mlp")
+    fit_gmm(models,
+            data,
+            batch_size=batch_size,
+            model_name="vae_mlp")

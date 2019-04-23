@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="Add plots">
+    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="Renaming stuff">
+      <change afterPath="$PROJECT_DIR$/mnist/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mnist/latent_classifier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mnist/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/mixture_gaussian_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_results/mixture_gaussian_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/mnist_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_results/mnist_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mnist.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/vae.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,11 +36,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/mnist.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mnist/vae.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="635">
-              <caret line="227" column="11" selection-start-line="227" selection-start-column="11" selection-end-line="231" selection-end-column="44" />
+            <state relative-caret-position="2448">
+              <caret line="144" column="47" selection-start-line="144" selection-start-column="47" selection-end-line="144" selection-end-column="47" />
+              <folding>
+                <element signature="e#0#45#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mnist/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-114">
+              <caret line="14" column="18" lean-forward="true" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mnist/latent_classifier.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -87,6 +118,8 @@
       <find>original</find>
       <find>scatter</find>
       <find>vae</find>
+      <find>plot_model</find>
+      <find>recon</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -103,6 +136,11 @@
         <option value="$PROJECT_DIR$/vae.py" />
         <option value="$PROJECT_DIR$/gmm.py" />
         <option value="$PROJECT_DIR$/mnist.py" />
+        <option value="$PROJECT_DIR$/mnist/mnist.py" />
+        <option value="$PROJECT_DIR$/mnist/latent_classifier.py" />
+        <option value="$PROJECT_DIR$/mnist/__init__.py" />
+        <option value="$PROJECT_DIR$/mnist/main.py" />
+        <option value="$PROJECT_DIR$/mnist/vae.py" />
       </list>
     </option>
   </component>
@@ -130,6 +168,11 @@
               <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
               <item name="experiment_results" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
+              <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
+              <item name="mnist" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -145,7 +188,12 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.deploy.options" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\test\Documents\interpretable_fusion_machines\mnist" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -159,7 +207,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.mnist">
+  <component name="RunManager" selected="Python.main">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -204,6 +252,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="interpretable_fusion_machines" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mnist" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mnist/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="mnist" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -217,7 +284,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mnist.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\test\Documents\interpretable_fusion_machines\mnist\vae.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -229,9 +296,11 @@
     <list>
       <item itemvalue="Python.gmm" />
       <item itemvalue="Python.mnist" />
+      <item itemvalue="Python.main" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.mnist" />
         <item itemvalue="Python.gmm" />
       </list>
@@ -259,7 +328,7 @@
       <workItem from="1555429371017" duration="7800000" />
       <workItem from="1555441520350" duration="8614000" />
       <workItem from="1555516423841" duration="312000" />
-      <workItem from="1556030559495" duration="2693000" />
+      <workItem from="1556030559495" duration="8661000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -268,11 +337,18 @@
       <option name="project" value="LOCAL" />
       <updated>1555456199654</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Renaming stuff">
+      <created>1556045221174</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1556045221174</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35538000" />
+    <option name="totallyTimeSpent" value="41506000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -287,25 +363,25 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.16823056" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.16823056" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32956153" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50402147" side_tool="true" weight="0.28854313" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32956153" />
-      <window_info anchor="bottom" id="File Transfer" order="4" sideWeight="0.49932975" weight="0.32673267" />
-      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.4953083" weight="0.30551627" />
+      <window_info anchor="bottom" id="File Transfer" order="4" sideWeight="0.49932975" weight="0.3069307" />
+      <window_info anchor="bottom" id="Python Console" order="5" sideWeight="0.4953083" visible="true" weight="0.32390383" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="7" />
       <window_info anchor="bottom" id="Find" order="8" />
-      <window_info anchor="bottom" id="Run" order="9" sideWeight="0.49597856" visible="true" weight="0.14427157" />
+      <window_info anchor="bottom" id="Run" order="9" sideWeight="0.49597856" weight="0.28005657" />
       <window_info anchor="bottom" id="Debug" order="10" weight="0.39886847" />
       <window_info anchor="bottom" id="Cvs" order="11" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="12" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
-      <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.8892562" visible="true" weight="0.37533513" />
+      <window_info active="true" anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.8870293" visible="true" weight="0.37533513" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49820143" weight="0.32908848" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.1107438" side_tool="true" visible="true" weight="0.37533513" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.11297071" side_tool="true" visible="true" weight="0.37533513" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
@@ -318,10 +394,11 @@
     <MESSAGE value="Add keras vae" />
     <MESSAGE value="Add keras vae + gmm model" />
     <MESSAGE value="Add plots" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add plots" />
+    <MESSAGE value="Renaming stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Renaming stuff" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1556044889392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1556045498718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$gmm.coverage" NAME="gmm Coverage Results" MODIFIED="1555452593384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$vae.coverage" NAME="vae Coverage Results" MODIFIED="1555454690311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
@@ -376,10 +453,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist.py">
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/utils/vis_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="635">
-          <caret line="227" column="11" selection-start-line="227" selection-start-column="11" selection-end-line="231" selection-end-column="44" />
+        <state relative-caret-position="155">
+          <caret line="114" column="4" selection-start-line="114" selection-start-column="4" selection-end-line="114" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/backend/tensorflow_backend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22967">
+          <caret line="1379" column="4" selection-start-line="1379" selection-start-column="4" selection-end-line="1379" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/engine/training.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="832" column="20" selection-start-line="832" selection-start-column="20" selection-end-line="832" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2448">
+          <caret line="144" column="47" selection-start-line="144" selection-start-column="47" selection-end-line="144" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-114">
+          <caret line="14" column="18" lean-forward="true" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/latent_classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>

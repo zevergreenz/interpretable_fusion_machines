@@ -12,7 +12,7 @@ import argparse
 import os
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="3,4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
 
 
 # reparameterization trick
@@ -142,101 +142,68 @@ def fit_gmm(models,
     plt.show()
 
 
-# MNIST dataset
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+def train_vae(x_train, y_train, weights='mnist_vae.h5'):
+    # network parameters
+    original_dim = x_train.shape[1]
+    input_shape = (original_dim, )
+    intermediate_dim = 512
+    batch_size = 128
+    latent_dim = 2
+    epochs = 50
 
-image_size = x_train.shape[1]
-original_dim = image_size * image_size
-x_train = np.reshape(x_train, [-1, original_dim])
-x_test = np.reshape(x_test, [-1, original_dim])
-x_train = x_train.astype('float32') / 255
-x_test = x_test.astype('float32') / 255
+    # VAE model = encoder + decoder
+    # build encoder model
+    inputs = Input(shape=input_shape, name='encoder_input')
+    x = Dense(intermediate_dim, activation='relu')(inputs)
+    z_mean = Dense(latent_dim, name='z_mean')(x)
+    z_log_var = Dense(latent_dim, name='z_log_var')(x)
 
-# network parameters
-input_shape = (original_dim, )
-intermediate_dim = 512
-batch_size = 128
-latent_dim = 2
-epochs = 50
+    # use reparameterization trick to push the sampling out as input
+    # note that "output_shape" isn't necessary with the TensorFlow backend
+    z = Lambda(sampling, output_shape=(latent_dim,), name='z')([z_mean, z_log_var])
 
-# VAE model = encoder + decoder
-# build encoder model
-inputs = Input(shape=input_shape, name='encoder_input')
-x = Dense(intermediate_dim, activation='relu')(inputs)
-z_mean = Dense(latent_dim, name='z_mean')(x)
-z_log_var = Dense(latent_dim, name='z_log_var')(x)
+    # instantiate encoder model
+    encoder = Model(inputs, [z_mean, z_log_var, z], name='encoder')
+    encoder.summary()
+    plot_model(encoder, to_file='vae_mlp_encoder.png', show_shapes=True)
 
-# use reparameterization trick to push the sampling out as input
-# note that "output_shape" isn't necessary with the TensorFlow backend
-z = Lambda(sampling, output_shape=(latent_dim,), name='z')([z_mean, z_log_var])
+    # build decoder model
+    latent_inputs = Input(shape=(latent_dim,), name='z_sampling')
+    x = Dense(intermediate_dim, activation='relu')(latent_inputs)
+    outputs = Dense(original_dim, activation='sigmoid')(x)
 
-# instantiate encoder model
-encoder = Model(inputs, [z_mean, z_log_var, z], name='encoder')
-encoder.summary()
-plot_model(encoder, to_file='vae_mlp_encoder.png', show_shapes=True)
+    # instantiate decoder model
+    decoder = Model(latent_inputs, outputs, name='decoder')
+    decoder.summary()
+    plot_model(decoder, to_file='vae_mlp_decoder.png', show_shapes=True)
 
-# build decoder model
-latent_inputs = Input(shape=(latent_dim,), name='z_sampling')
-x = Dense(intermediate_dim, activation='relu')(latent_inputs)
-outputs = Dense(original_dim, activation='sigmoid')(x)
-
-# instantiate decoder model
-decoder = Model(latent_inputs, outputs, name='decoder')
-decoder.summary()
-plot_model(decoder, to_file='vae_mlp_decoder.png', show_shapes=True)
-
-# instantiate VAE model
-outputs = decoder(encoder(inputs)[2])
-vae = Model(inputs, outputs, name='vae_mlp')
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    help_ = "Load h5 model trained weights"
-    parser.add_argument("-w", "--weights", help=help_)
-    help_ = "Use mse loss instead of binary cross entropy (default)"
-    parser.add_argument("-m",
-                        "--mse",
-                        help=help_, action='store_true')
-    args = parser.parse_args()
-    models = (encoder, decoder)
-    data = (x_test, y_test)
+    # instantiate VAE model
+    outputs = decoder(encoder(inputs)[2])
+    vae = Model(inputs, outputs, name='vae_mlp')
 
     # VAE loss = mse_loss or xent_loss + kl_loss
-    if args.mse:
-        reconstruction_loss = mse(inputs, outputs)
-    else:
-        reconstruction_loss = binary_crossentropy(inputs,
-                                                  outputs)
-
+    reconstruction_loss = mse(inputs, outputs)
+    # reconstruction_loss = binary_crossentropy(inputs, outputs)
     reconstruction_loss *= original_dim
+
     kl_loss = 1 + z_log_var - K.square(z_mean) - K.exp(z_log_var)
     kl_loss = K.sum(kl_loss, axis=-1)
     kl_loss *= -0.5
+
     vae_loss = K.mean(reconstruction_loss + kl_loss)
     vae.add_loss(vae_loss)
     vae.compile(optimizer='adam')
-    vae.summary()
-    plot_model(vae,
-               to_file='vae_mlp.png',
-               show_shapes=True)
 
-    # args.weights = 'vae_mlp_mnist.h5'
-    if args.weights:
-        vae.load_weights(args.weights)
+    if os.path.isfile(weights):
+        print("Found saved weights, loading from file ...")
+        vae.load_weights(weights)
     else:
         # train the autoencoder
+        print("Saving weights to %s" % weights)
         vae.fit(x_train,
                 epochs=epochs,
-                batch_size=batch_size,
-                validation_data=(x_test, None))
-        vae.save_weights('vae_mlp_mnist.h5')
+                batch_size=batch_size)
+                # validation_data=(x_test, None))
+        vae.save_weights(weights)
 
-    plot_results(models,
-                 data,
-                 batch_size=batch_size,
-                 model_name="vae_mlp")
-
-    fit_gmm(models,
-            data,
-            batch_size=batch_size,
-            model_name="vae_mlp")
+    return encoder, decoder, vae

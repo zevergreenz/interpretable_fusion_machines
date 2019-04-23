@@ -1,11 +1,13 @@
 from keras.layers import Lambda, Input, Dense
-from keras.models import Model
+from keras.models import Model, Sequential
 from keras.datasets import mnist
 from keras.losses import mse, binary_crossentropy
 from keras.utils import plot_model
 from keras import backend as K
 
 import numpy as np
+import keras
+import tensorflow as tf
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import argparse
@@ -15,7 +17,7 @@ from mnist.vae import *
 from mnist.latent_classifier import *
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
 
 
 # MNIST dataset
@@ -27,15 +29,32 @@ x_test = np.reshape(x_test, [-1, original_dim])
 x_train = x_train.astype('float32') / 255
 x_test = x_test.astype('float32') / 255
 
-encoder, decoder, vae = train_vae(x_train, y_train)
-batch_size = 128
+# latent_dims = [2, 5, 10]
+latent_dims = [15, 20, 30]
+test_accs = []
+for latent_dim in latent_dims:
+    print('training nn ', latent_dim)
+    encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=30, weights='mnist_vae_%d.h5' % latent_dim)
+    batch_size = 128
 
-plot_results((encoder, decoder),
-             (x_test, y_test),
-             batch_size=batch_size,
-             model_name="vae_mlp")
+    generate_latent_dataset(encoder, x_train, y_train, x_test, y_test, 'mnist_latent.npy')
+    z_train, _, z_test, _ = np.load('mnist_latent.npy')
 
-fit_gmm((encoder, decoder),
-        (x_test, y_test),
-        batch_size=batch_size,
-        model_name="vae_mlp")
+    from sklearn.gaussian_process import GaussianProcessClassifier
+    # clf = GaussianProcessClassifier(n_restarts_optimizer=5, multi_class='one_vs_rest')
+    # clf.fit(z_train, y_train)
+    # print('latent dim: ', latent_dim, 'score: ', clf.score(z_test, y_test))
+
+    import keras
+    model = keras.Sequential([
+        keras.layers.Dense(latent_dim, activation=tf.nn.relu),
+        keras.layers.Dense(128, activation=tf.nn.relu),
+        keras.layers.Dense(10, activation=tf.nn.softmax)
+    ])
+    model.compile(optimizer='adam',
+                  loss='sparse_categorical_crossentropy',
+                  metrics=['accuracy'])
+    model.fit(z_train, y_train, epochs=10)
+    test_loss, test_acc = model.evaluate(z_test, y_test)
+    test_accs.append(test_acc)
+    print('latent dim: ', latent_dim, 'score: ', test_acc)

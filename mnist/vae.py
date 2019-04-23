@@ -142,13 +142,12 @@ def fit_gmm(models,
     plt.show()
 
 
-def train_vae(x_train, y_train, weights='mnist_vae.h5'):
+def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
     # network parameters
     original_dim = x_train.shape[1]
     input_shape = (original_dim, )
     intermediate_dim = 512
     batch_size = 128
-    latent_dim = 2
     epochs = 50
 
     # VAE model = encoder + decoder

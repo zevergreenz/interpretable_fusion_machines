@@ -5,7 +5,7 @@
       <paths name="maplecg-bayes">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/interpretable_fusion_machines" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/chithanh/tmp/interpretable_fusion_machines" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

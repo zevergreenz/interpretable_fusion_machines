@@ -11,6 +11,9 @@ import matplotlib.pyplot as plt
 import argparse
 import os
 
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]="3,4"  # specify which GPU(s) to be used
+
 
 # reparameterization trick
 # instead of sampling from Q(z|X), sample eps = N(0,I)

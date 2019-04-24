@@ -11,6 +11,9 @@ import matplotlib.pyplot as plt
 import argparse
 import os
 
+from numpy import matmul, transpose, log, sqrt
+from numpy.linalg import det, inv
+
 
 def make_ellipses(gmm, ax):
     for n in range(len(gmm.means_)):
@@ -34,3 +37,14 @@ def make_ellipses(gmm, ax):
         ax.add_artist(ell)
         ell.set_alpha(0.3)
         ax.set_aspect('equal', 'datalim')
+
+def kl_dist(mu1, sigma1, mu2, sigma2):
+    kl_dist = np.linalg.slogdet(sigma2) - np.linalg.slogdet(sigma1)
+    kl_dist += - mu1.shape[-1]
+    kl_dist += np.trace(np.linalg.inv(sigma2))
+
+
+def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
+    DB = 0.5 * np.log(det(sigma1+sigma2) / sqrt(det(sigma1)*det(sigma2)))
+    DB += 1/8 * matmul(transpose(mu1-mu2), matmul(inv(sigma1+sigma2), mu1-mu2))
+    return np.exp(-DB)

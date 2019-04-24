@@ -8,11 +8,9 @@ from keras import backend as K
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from sklearn.mixture.gaussian_mixture import GaussianMixture
 import argparse
 import os
-
-os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
 
 
 # reparameterization trick
@@ -122,6 +120,7 @@ def make_ellipses(gmm, ax):
 
 def fit_gmm(models,
             data,
+            n_components=10,
             batch_size=128,
             model_name="vae_mnist"):
     encoder, decoder = models
@@ -130,8 +129,7 @@ def fit_gmm(models,
     # y_test = y_test[y_test == 1]
     z_mean, _, _ = encoder.predict(x_test,
                                    batch_size=batch_size)
-    from sklearn.mixture.gaussian_mixture import GaussianMixture
-    gmm = GaussianMixture(n_components=10, covariance_type='full').fit(z_mean)
+    gmm = GaussianMixture(n_components=n_components, covariance_type='full').fit(z_mean)
 
     figure, (ax) = plt.subplots(1, 1, figsize=(10, 10))
     ax.scatter(z_mean[:, 0], z_mean[:, 1], c=y_test)
@@ -140,7 +138,7 @@ def fit_gmm(models,
     # ax.ylabel("z[1]")
     make_ellipses(gmm, ax)
     plt.show()
-
+    return gmm
 
 def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
     # network parameters

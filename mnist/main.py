@@ -31,24 +31,16 @@ x_test = np.reshape(x_test, [-1, original_dim])
 x_train = x_train.astype('float32') / 255
 x_test = x_test.astype('float32') / 255
 
-# latent_dims = [2, 5, 10]
-# latent_dims = [15, 20, 30]
-latent_dims = [3]
-test_accs = []
-for latent_dim in latent_dims:
-    print('training nn ', latent_dim)
-    encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=latent_dim, weights='mnist_vae_%d.h5' % latent_dim)
-    batch_size = 128
 
+results = []
+def run_experiment(latent_dim, num_pattern):
+    print('Running experiment with latent dim: %d; num patterns: %d', (latent_dim, num_pattern))
+    encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=latent_dim, weights='mnist_vae_%d.h5' % latent_dim)
+
+    # Train the latent classifier.
     generate_latent_dataset(encoder, x_train, y_train, x_test, y_test, 'mnist_latent.npy')
     z_train, z_log_var_train, _, z_test, z_log_var_test, _ = np.load('mnist_latent.npy')
 
-    from sklearn.gaussian_process import GaussianProcessClassifier
-    # clf = GaussianProcessClassifier(n_restarts_optimizer=5, multi_class='one_vs_rest')
-    # clf.fit(z_train, y_train)
-    # print('latent dim: ', latent_dim, 'score: ', clf.score(z_test, y_test))
-
-    import keras
     latent_clf = keras.Sequential([
         keras.layers.Dense(latent_dim, activation=tf.nn.relu),
         keras.layers.Dense(128, activation=tf.nn.relu),
@@ -57,16 +49,15 @@ for latent_dim in latent_dims:
     latent_clf.compile(optimizer='adam',
                        loss='sparse_categorical_crossentropy',
                        metrics=['accuracy'])
-    latent_clf.fit(z_train, y_train, epochs=10)
-    test_loss, test_acc = latent_clf.evaluate(z_test, y_test)
-    test_accs.append(test_acc)
-    print('latent dim: ', latent_dim, 'score: ', test_acc)
+    latent_clf.fit(z_train, y_train, epochs=10, verbose=0)
+    _, latent_clf_acc = latent_clf.evaluate(z_test, y_test)
 
-    num_patern = 20
-    gmm = fit_gmm((encoder, decoder), (x_train, y_train), num_patern)
+
+    # Train the specialized classifier.
+    gmm = fit_gmm((encoder, decoder), (x_train, y_train), num_pattern)
 
     specialized_clfs = []
-    for i in range(num_patern):
+    for i in range(num_pattern):
         clf = SpecializedClassifier(latent_clf,
                                     (gmm.means_[i], gmm.covariances_[i]),
                                     z_train,
@@ -82,3 +73,17 @@ for latent_dim in latent_dims:
         pred.append(label)
     pred = np.array(pred)
     print(np.count_nonzero(pred == y_test))
+    recomposed_clf_acc = float(np.count_nonzero(pred == y_test)) / y_test.shape[0]
+
+    results.append((latent_dim, num_pattern, latent_clf_acc, recomposed_clf_acc))
+
+
+# latent_dims = range(1, 21)
+num_paterns = range(10, 201, 10)
+latent_dims = [30]
+# num_paterns = [10]
+for latent_dim in latent_dims:
+    for num_patern in num_paterns:
+        print('Latent dim %d num_pattern %d' % (latent_dim, num_patern))
+        run_experiment(latent_dim, num_patern)
+        np.save('results_%d.npy' % latent_dim, np.array(results))

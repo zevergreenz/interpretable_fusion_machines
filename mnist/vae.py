@@ -131,13 +131,13 @@ def fit_gmm(models,
                                    batch_size=batch_size)
     gmm = GaussianMixture(n_components=n_components, covariance_type='full').fit(z_mean)
 
-    figure, (ax) = plt.subplots(1, 1, figsize=(10, 10))
-    ax.scatter(z_mean[:, 0], z_mean[:, 1], c=y_test)
+    # figure, (ax) = plt.subplots(1, 1, figsize=(10, 10))
+    # ax.scatter(z_mean[:, 0], z_mean[:, 1], c=y_test)
     # plt.colorbar()
     # ax.xlabel("z[0]")
     # ax.ylabel("z[1]")
-    make_ellipses(gmm, ax)
-    plt.show()
+    # make_ellipses(gmm, ax)
+    # plt.show()
     return gmm
 
 def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
@@ -161,7 +161,7 @@ def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
 
     # instantiate encoder model
     encoder = Model(inputs, [z_mean, z_log_var, z], name='encoder')
-    encoder.summary()
+    # encoder.summary()
     plot_model(encoder, to_file='vae_mlp_encoder.png', show_shapes=True)
 
     # build decoder model
@@ -171,7 +171,7 @@ def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
 
     # instantiate decoder model
     decoder = Model(latent_inputs, outputs, name='decoder')
-    decoder.summary()
+    # decoder.summary()
     plot_model(decoder, to_file='vae_mlp_decoder.png', show_shapes=True)
 
     # instantiate VAE model
@@ -199,7 +199,8 @@ def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
         print("Saving weights to %s" % weights)
         vae.fit(x_train,
                 epochs=epochs,
-                batch_size=batch_size)
+                batch_size=batch_size,
+                verbose=0)
                 # validation_data=(x_test, None))
         vae.save_weights(weights)
 

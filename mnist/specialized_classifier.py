@@ -25,16 +25,26 @@ def activation_score(z_mean, z_log_var, pattern):
 
 class SpecializedClassifier(object):
     def __init__(self, latent_clf, pattern, z_train, z_log_var_train, y_train):
+        self.latent_clf = latent_clf
         self.pattern = pattern
-        self.labels = np.unique(y_train)
-        self.p_label = np.array([0.0] * len(self.labels))
+        self.num_labels = np.unique(y_train).shape[0]
 
-        y_pred = latent_clf.predict(z_train)
+        # y_pred = latent_clf.predict(z_train)
+        #
+        # for i in range(z_train.shape[0]):
+        #     self.p_label += y_pred[i, :] * activation_score(z_train[i:i+1], z_log_var_train[i:i+1], self.pattern)
+        #
+        # self.p_label /= z_train.shape[0]
 
-        for i in range(z_train.shape[0]):
-            self.p_label += y_pred[i, :] * activation_score(z_train[i:i+1], z_log_var_train[i:i+1], self.pattern)
+        latent_samples = np.random.multivariate_normal(self.pattern[0],
+                                                       self.pattern[1],
+                                                       size=10000,
+                                                       check_valid='warn')
+        self.p_label = np.average(self.latent_clf.predict(latent_samples), axis=0)
+        self.uniform_label = np.array([1.0 / self.num_labels] * self.num_labels)
 
-        self.p_label /= z_train.shape[0]
 
-    def p_label(self, label):
-        return self.p_label[label]
+    def p_label_given_x(self, z_mean, z_log_var):
+        # S(label | x) = p(x, pattern) * P(label | pattern) + (1 - p(x, pattern)) * uniform(label)
+        activation = activation_score(z_mean, z_log_var, self.pattern)
+        return activation * self.p_label + (1 - activation) * self.uniform_label

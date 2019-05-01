@@ -23,6 +23,9 @@ def activation_score(z_mean, z_log_var, pattern):
     return Bhattacharyya_coeff(np.ravel(z_mean), z_var, p_mean, p_var)
 
 
+
+
+
 class RecomposedClassifier(object):
     def __init__(self, specilized_clfs, num_labels):
         self.specialized_clfs = specilized_clfs
@@ -38,4 +41,4 @@ class RecomposedClassifier(object):
             p_label += clf.p_label * activation
             sum_scores += activation
 
-        return p_label / activation
+        return p_label / sum_scores

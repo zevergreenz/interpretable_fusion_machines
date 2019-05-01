@@ -90,7 +90,7 @@ z = Lambda(sampling, output_shape=(latent_dim,), name='z')([z_mean, z_log_var])
 
 # instantiate encoder model
 encoder = Model(inputs, [z_mean, z_log_var, z], name='encoder')
-encoder.summary()
+# encoder.summary()
 plot_model(encoder, to_file='vae_mlp_encoder.png', show_shapes=True)
 
 # build decoder model
@@ -100,7 +100,7 @@ outputs = Dense(original_dim, activation='sigmoid')(x)
 
 # instantiate decoder model
 decoder = Model(latent_inputs, outputs, name='decoder')
-decoder.summary()
+# decoder.summary()
 plot_model(decoder, to_file='vae_mlp_decoder.png', show_shapes=True)
 
 # instantiate VAE model
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     vae_loss = K.mean(reconstruction_loss + kl_loss)
     vae.add_loss(vae_loss)
     vae.compile(optimizer='adam')
-    vae.summary()
+    # vae.summary()
     plot_model(vae,
                to_file='vae_mlp.png',
                show_shapes=True)

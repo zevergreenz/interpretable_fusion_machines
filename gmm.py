@@ -7,6 +7,8 @@ from keras import backend as K
 from sklearn.mixture.gaussian_mixture import GaussianMixture
 from sklearn.datasets.samples_generator import make_blobs
 
+from tensorflow.contrib.factorization import GMM
+
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt

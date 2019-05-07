@@ -6,7 +6,7 @@
         <remote-mappings server-id="python@sftp://chithanh@maplecg-bayes.d2.comp.nus.edu.sg:22/home/chithanh/anaconda3/envs/tf-gpu/bin/python">
           <settings>
             <list>
-              <mapping local-root="$PROJECT_DIR$" remote-root="/home/chithanh/tmp/interpretable_fusion_machines" />
+              <mapping local-root="$PROJECT_DIR$" remote-root="/home/chithanh/tmp/pycharm_interpretable_fusion_machines" />
             </list>
           </settings>
         </remote-mappings>

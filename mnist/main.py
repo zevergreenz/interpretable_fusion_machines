@@ -1,13 +1,14 @@
 from keras.layers import Lambda, Input, Dense
 from keras.models import Model, Sequential
 from keras.datasets import mnist
-from keras.losses import mse, binary_crossentropy
+from keras.losses import mse, binary_crossentropy, sparse_categorical_crossentropy
 from keras.utils import plot_model
 from keras import backend as K
 
 import numpy as np
 import keras
 import tensorflow as tf
+import tensorflow_probability as tfp
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import argparse
@@ -22,6 +23,8 @@ os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
+sess = tf.Session()
+K.set_session(sess)
 
 # MNIST dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -32,22 +35,70 @@ x_test = np.reshape(x_test, [-1, original_dim])
 x_train = x_train.astype('float32') / 255
 x_test = x_test.astype('float32') / 255
 
+# x_train = x_train[:1000, :]
+# y_train = y_train[:1000]
+
+# Build a black-box model and get its predictions
+black_box_model_weights_filename = 'black_box.h5'
+black_box_model = keras.Sequential([
+    keras.layers.Dense(784, input_shape=(28*28,), activation=tf.nn.relu),
+    keras.layers.Dense(500, activation=tf.nn.relu),
+    keras.layers.Dense(10)
+])
+black_box_model.compile(optimizer='adam',
+                   loss='sparse_categorical_crossentropy',
+                   metrics=['accuracy'])
+if os.path.isfile(black_box_model_weights_filename):
+    print("Loading black-box model weights...")
+    black_box_model.load_weights(black_box_model_weights_filename)
+else:
+    print("Training black-box model...")
+    black_box_model.fit(x_train, y_train, epochs=10, verbose=0)
+    print("Saving weights...")
+    black_box_model.save_weights(black_box_model_weights_filename)
+print("Black-box model accuracy: %.4f" % black_box_model.evaluate(x_test, y_test)[1])
+true_pred = black_box_model.predict(x_train)
+
+x_ph = tf.placeholder(tf.float32, shape=[x_train.shape[0], x_train.shape[1]])
 
 results = []
 specialized_clfs = []
+
+
+def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
+    N = mu1.shape[0]
+    M = mu2.shape[0]
+    Z = mu1.shape[1]
+    mu1 = tf.reshape(mu1, [N, 1, Z])
+    sigma1 = tf.reshape(sigma1, [N, 1, Z, Z])
+    mu1 = tf.tile(mu1, [1, M, 1])
+    sigma1 = tf.tile(sigma1, [1, M, 1, 1])
+    mu2 = tf.broadcast_to(mu2, [N, M, Z])
+    sigma2 = tf.broadcast_to(sigma2, [N, M, Z, Z])
+    mu1 = tf.reshape(mu1, [N, M, Z, 1])
+    mu2 = tf.reshape(mu2, [N, M, Z, 1])
+    sigma = sigma1 + sigma2
+    DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
+    DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma1), mu1-mu2)), [N, M])
+    return tf.exp(-DB)
+
+
 def run_experiment(latent_dim, num_pattern):
-    digit_size = 28
+    N = x_ph.shape[0]
+    M = num_pattern
+    L = 10
+    D = 784
+    Z = latent_dim
 
-    print('Running experiment with latent dim: %d; num patterns: %d', (latent_dim, num_pattern))
-    encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=latent_dim, weights='mnist_vae_%d.h5' % latent_dim)
+    print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
+    encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
 
-    # Train the latent classifier.
+    # Train the latent classifier ======================================================================================
     print('Training latent classifier...')
     generate_latent_dataset(encoder, x_train, y_train, x_test, y_test, 'mnist_latent.npy')
     z_train, z_log_var_train, _, z_test, z_log_var_test, _ = np.load('mnist_latent.npy')
-
     latent_clf = keras.Sequential([
-        keras.layers.Dense(latent_dim, activation=tf.nn.relu),
+        keras.layers.Dense(Z, input_shape=(Z,), activation=tf.nn.relu),
         keras.layers.Dense(128, activation=tf.nn.relu),
         keras.layers.Dense(10, activation=tf.nn.softmax)
     ])
@@ -55,36 +106,85 @@ def run_experiment(latent_dim, num_pattern):
                        loss='sparse_categorical_crossentropy',
                        metrics=['accuracy'])
     latent_clf.fit(z_train, y_train, epochs=10, verbose=0)
-    _, latent_clf_acc = latent_clf.evaluate(z_test, y_test)
+    # _, latent_clf_acc = latent_clf.evaluate(z_test, y_test)
 
 
-    # Train the specialized classifier.
+    # Train the specialized classifiers ================================================================================
     print('Training specialized classifiers...')
-    gmm = fit_gmm((encoder, decoder), (x_train, y_train), num_pattern)
+    gmm = fit_gmm((encoder, decoder), (x_train, y_train), M)
+    means = tf.Variable(initial_value=gmm.means_, trainable=True, dtype=tf.float32)
+    scales = tf.Variable(initial_value=np.linalg.cholesky(gmm.covariances_), trainable=True, dtype=tf.float32)
+    p = tfp.distributions.MultivariateNormalTriL(
+        loc=means,
+        scale_tril=scales,
+        validate_args=True
+    )
+    S_label_pattern = tfp.monte_carlo.expectation(
+        f=lambda x: latent_clf(x),
+        samples=p.sample(10000),
+        log_prob=p.log_prob,
+        use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
+    )
 
-    for i in range(num_pattern):
-        print('Training pattern %d...' % i)
-        clf = SpecializedClassifier(latent_clf,
-                                    (gmm.means_[i], gmm.covariances_[i]),
-                                    z_train,
-                                    z_log_var_train,
-                                    y_train)
-        specialized_clfs.append(clf)
+    z_mean_ph, z_cov_ph, z_ph = encoder(x_ph)
+    z_cov_ph = tf.matrix_diag(tf.exp(z_cov_ph))
+    coeffs = Bhattacharyya_coeff(z_mean_ph, z_cov_ph, means, covariances)
 
-    recomposed_clf = RecomposedClassifier(specialized_clfs, 10)
+    coeffs = tf.reshape(coeffs, [N, M, 1])
+    coeffs = tf.tile(coeffs, [1, 1, L])
+    S_label_pattern = tf.reshape(S_label_pattern, [1, M, L])
+    S_label_pattern = tf.tile(S_label_pattern, [N, 1, 1])
+
+    S_label_x = coeffs * S_label_pattern + (1 - coeffs) * (1 / L)
+
+    # Combine specialized classifiers to obtained recomposed model =====================================================
+    coeffs_sum = tf.reduce_sum(coeffs, axis=[1, 2])
+    coeffs_sum = tf.reshape(coeffs_sum, [N, 1, 1])
+    L_label_x = (coeffs / coeffs_sum) * S_label_x
+    L_label_x = tf.reduce_sum(L_label_x, axis=1)
+
+    # Construct loss function and optimizer ============================================================================
+    true_pred_ph = tf.placeholder(tf.float32, shape=true_pred.shape)
+    loss = tf.reduce_mean(tf.reduce_sum(tf.square(tf.log(L_label_x) - tf.log(true_pred_ph)), axis=1))
+
+    optimizer = tf.train.AdamOptimizer()
+    opt = optimizer.minimize(loss, var_list=[means, scales])
+
+    # Tensorflow session ========================================================================================
+    feed_dict = {
+        x_ph: x_train,
+        true_pred_ph: true_pred
+    }
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        print("Loss: ", sess.run(loss, feed_dict=feed_dict))
+        sess.run(opt, feed_dict=feed_dict)
+        print("Loss: ", sess.run(loss, feed_dict=feed_dict))
+
+    # Old code starts ==================================================================================================
+    # for i in range(num_pattern):
+    #     print('Training pattern %d...' % i)
+    #     clf = SpecializedClassifier(latent_clf,
+    #                                 (gmm.means_[i], gmm.covariances_[i]),
+    #                                 z_train,
+    #                                 z_log_var_train,
+    #                                 y_train)
+    #     specialized_clfs.append(clf)
+    # recomposed_clf = RecomposedClassifier(specialized_clfs, 10)
+    # Old code ends ====================================================================================================
 
 
     # Visualize cluster centroid =======================================================================================
-    print("Visualize cluster centre...")
-    for count, clf in enumerate(specialized_clfs):
-        clf = specialized_clfs[count]
-        mean, var = clf.pattern
-        mean = np.reshape(mean, (1, latent_dim))
-        decoded_mean = decoder.predict(mean)
-        decoded_mean = np.reshape(decoded_mean, (digit_size, digit_size))
-        plt.clf()
-        plt.imshow(decoded_mean)
-        plt.savefig("pattern_%d.png" % count, dpi=300)
+    # print("Visualize cluster centre...")
+    # for count, clf in enumerate(specialized_clfs):
+    #     clf = specialized_clfs[count]
+    #     mean, var = clf.pattern
+    #     mean = np.reshape(mean, (1, latent_dim))
+    #     decoded_mean = decoder.predict(mean)
+    #     decoded_mean = np.reshape(decoded_mean, (digit_size, digit_size))
+    #     plt.clf()
+    #     plt.imshow(decoded_mean)
+    #     plt.savefig("pattern_%d.png" % count, dpi=300)
 
 
     # Visualize top training examples from each specialized classifier =================================================
@@ -140,10 +240,137 @@ def run_experiment(latent_dim, num_pattern):
 
 # latent_dims = range(1, 21)
 # num_paterns = range(1000, 5001, 1000)
-latent_dims = [10]
-num_paterns = [200]
-for latent_dim in latent_dims:
-    for num_patern in num_paterns:
-        print('Latent dim %d num_pattern %d' % (latent_dim, num_patern))
-        run_experiment(latent_dim, num_patern)
-        np.save('results_%d.npy' % latent_dim, np.array(results))
+# latent_dims = [5]
+# num_paterns = [20]
+# for latent_dim in latent_dims:
+#     for num_patern in num_paterns:
+#         print('Latent dim %d num_pattern %d' % (latent_dim, num_patern))
+#         run_experiment(latent_dim, num_patern)
+#         # np.save('results_%d.npy' % latent_dim, np.array(results))
+
+
+latent_dim = 5
+num_pattern = 20
+N = x_ph.shape[0]
+M = num_pattern
+L = 10
+D = 784
+Z = latent_dim
+
+print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
+encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
+
+generate_latent_dataset(encoder, x_train, y_train, x_test, y_test, 'mnist_latent.npy')
+z_train, z_log_var_train, _, z_test, z_log_var_test, _ = np.load('mnist_latent.npy')
+
+y_train_ph = tf.placeholder(tf.float32, shape=y_train.shape)
+# z_mean_ph, z_cov, z_ph = encoder(x_ph)
+z_mean_ph = tf.placeholder(tf.float32, shape=z_train.shape)
+z_log_var_ph = tf.placeholder(tf.float32, shape=z_log_var_train.shape)
+z_cov = tf.matrix_diag(tf.exp(z_log_var_ph))
+
+
+# Train the latent classifier ======================================================================================
+print('Training latent classifier...')
+latent_clf = keras.Sequential([
+    keras.layers.InputLayer(input_tensor=z_mean_ph, input_shape=(Z,)),
+    keras.layers.Dense(128, activation=tf.nn.relu),
+    keras.layers.Dense(10)
+])
+latent_loss = K.sparse_categorical_crossentropy(y_train_ph, latent_clf.output, from_logits=True)
+latent_train_step = tf.train.AdamOptimizer().minimize(latent_loss)
+# latent_clf.compile(optimizer='adam',
+#                    loss='sparse_categorical_crossentropy',
+#                    metrics=['accuracy'])
+# latent_clf.fit(z_train, y_train, epochs=10, verbose=0)
+# _, latent_clf_acc = latent_clf.evaluate(z_test, y_test)
+# print('Latent model accuracy: ', latent_clf_acc)
+
+
+# Train the specialized classifiers ================================================================================
+print('Training specialized classifiers...')
+if os.path.isfile('gmm_means_15.npy'):
+    print('Loading GMM model from file...')
+    means_ = np.load('gmm_means.npy')
+    covariances_ = np.load('gmm_covariances.npy')
+else:
+    print('Training GMM model...')
+    gmm = fit_gmm((encoder, decoder), (x_train, y_train), M)
+    means_, covariances_ = gmm.means_, gmm.covariances_
+    np.save('gmm_means.npy', means_)
+    np.save('gmm_covariances.npy', covariances_)
+
+means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
+scales = tf.Variable(initial_value=np.linalg.cholesky(covariances_), trainable=True, dtype=tf.float32)
+covariances = tf.matmul(scales, tf.linalg.transpose(scales))
+p = tfp.distributions.MultivariateNormalTriL(
+    loc=means,
+    scale_tril=scales + tf.eye(Z, Z, batch_shape=(M,)) * 1e-5,
+    validate_args=True
+)
+S_label_pattern = tfp.monte_carlo.expectation(
+    f=lambda x: latent_clf(x),
+    samples=p.sample(10000),
+    log_prob=p.log_prob,
+    use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
+)
+
+
+coeffs = Bhattacharyya_coeff(z_mean_ph, z_cov, means, covariances)
+coeffs = tf.reshape(coeffs, [N, M, 1])
+coeffs_sum = tf.reduce_sum(coeffs, axis=[1, 2])
+coeffs = tf.tile(coeffs, [1, 1, L])
+S_label_pattern = tf.reshape(S_label_pattern, [1, M, L])
+S_label_pattern = tf.tile(S_label_pattern, [N, 1, 1])
+
+S_label_x = coeffs * S_label_pattern + (1 - coeffs) * (1 / L)
+
+# Combine specialized classifiers to obtained recomposed model =====================================================
+coeffs_sum = tf.reshape(coeffs_sum, [N, 1, 1])
+L_label_x = (coeffs / coeffs_sum) * S_label_x
+L_label_x = tf.reduce_sum(L_label_x, axis=1)
+
+
+# Construct loss function and optimizer ============================================================================
+true_pred_ph = tf.placeholder(tf.float32, shape=true_pred.shape)
+loss = tf.reduce_mean(tf.reduce_mean(tf.square(L_label_x - true_pred_ph), axis=1))
+
+optimizer = tf.train.AdamOptimizer()
+opt = optimizer.minimize(loss)
+
+# Tensorflow session ========================================================================================
+feed_dict = {
+    x_ph: x_train,
+    y_train_ph: y_train,
+    z_mean_ph: z_train,
+    z_log_var_ph: z_log_var_train,
+    true_pred_ph: true_pred
+}
+# sess = tf.Session()
+sess.run(tf.global_variables_initializer())
+
+for _ in range(1000):
+    sess.run(latent_train_step, feed_dict=feed_dict)
+
+
+print("Loss 1: ", sess.run(loss, feed_dict=feed_dict))
+# Evaluation ================================================================================================
+pred = sess.run(L_label_x, feed_dict=feed_dict)
+pred = np.argmax(pred, axis=1)
+acc = float(np.count_nonzero(pred == y_train)) / y_train.shape[0]
+print('Recomposed model accuracy: ', acc)
+
+# for _ in range(1000):
+#     sess.run(opt, feed_dict=feed_dict)
+
+print("Loss 2: ", sess.run(loss, feed_dict=feed_dict))
+# Evaluation ================================================================================================
+pred = sess.run(L_label_x, feed_dict=feed_dict)
+pred = np.argmax(pred, axis=1)
+acc = float(np.count_nonzero(pred == y_train)) / y_train.shape[0]
+print('Recomposed model accuracy: ', acc)
+
+pred = sess.run(latent_clf(z_mean_ph), feed_dict=feed_dict)
+pred = np.argmax(pred, axis=1)
+acc = float(np.count_nonzero(pred == y_train)) / y_train.shape[0]
+print('Latent model accuracy: ', acc)

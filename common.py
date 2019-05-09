@@ -44,7 +44,7 @@ def kl_dist(mu1, sigma1, mu2, sigma2):
     kl_dist += np.trace(np.linalg.inv(sigma2))
 
 
-def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
-    DB = 0.5 * np.log(det(sigma1+sigma2) / sqrt(det(sigma1)*det(sigma2)))
-    DB += 1/8 * matmul(transpose(mu1-mu2), matmul(inv(sigma1+sigma2), mu1-mu2))
-    return np.exp(-DB)
+# def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
+#     DB = 0.5 * np.log(det(sigma1+sigma2) / sqrt(det(sigma1)*det(sigma2)))
+#     DB += 1/8 * matmul(transpose(mu1-mu2), matmul(inv(sigma1+sigma2), mu1-mu2))
+#     return np.exp(-DB)

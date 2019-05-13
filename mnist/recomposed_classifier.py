@@ -1,26 +1,10 @@
-from keras.layers import Lambda, Input, Dense
-from keras.models import Model
-from keras.datasets import mnist
-from keras.losses import mse, binary_crossentropy
-from keras.utils import plot_model
-from keras import backend as K
-
-import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import argparse
-import os
-
-from numpy import matmul, transpose, log, sqrt
-from numpy.linalg import det, inv
-
 from common import *
 
 
-def activation_score(z_mean, z_log_var, pattern):
-    z_var = np.diag(np.exp(z_log_var)[0])
-    p_mean, p_var = pattern
-    return Bhattacharyya_coeff(np.ravel(z_mean), z_var, p_mean, p_var)
+# def activation_score(z_mean, z_log_var, pattern):
+#     z_var = np.diag(np.exp(z_log_var)[0])
+#     p_mean, p_var = pattern
+#     return Bhattacharyya_coeff(np.ravel(z_mean), z_var, p_mean, p_var)
 
 
 class RecomposedClassifier(object):

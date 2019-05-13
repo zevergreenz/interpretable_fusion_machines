@@ -1,16 +1,14 @@
-from keras.layers import Lambda, Input, Dense
-from keras.models import Model
-from keras.datasets import mnist
-from keras.losses import mse, binary_crossentropy
-from keras.utils import plot_model
-from keras import backend as K
+import os
 
-import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
+from keras import backend as K
+from keras.layers import Lambda, Input, Dense
+from keras.losses import mse
+from keras.models import Model
+from keras.utils import plot_model
 from sklearn.mixture.gaussian_mixture import GaussianMixture
-import argparse
-import os
 
 
 # reparameterization trick

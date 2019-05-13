@@ -142,12 +142,12 @@ coeffs = tf.reshape(coeffs, [B, M, 1])
 coeffs_sum = tf.reduce_sum(coeffs, axis=[1, 2])
 coeffs = tf.tile(coeffs, [1, 1, L])
 S_label_pattern = tf.reshape(S_label_pattern, [1, M, L])
-S_label_pattern = tf.tile(S_label_pattern, [N, 1, 1])
+S_label_pattern = tf.tile(S_label_pattern, [B, 1, 1])
 
 S_label_x = coeffs * S_label_pattern + (1 - coeffs) * (1 / L)
 
 # Combine specialized classifiers to obtained recomposed model =====================================================
-coeffs_sum = tf.reshape(coeffs_sum, [N, 1, 1])
+coeffs_sum = tf.reshape(coeffs_sum, [B, 1, 1])
 L_label_x = (coeffs / coeffs_sum) * S_label_x
 L_label_x = tf.reduce_sum(L_label_x, axis=1)
 
@@ -180,16 +180,46 @@ for _ in range(1000):
             true_pred_ph: true_pred[i:i+B]
         })
 
+acc = 0
+for i in range(0, N, B):
+    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
+        x_train_ph: x_train[i:i + B],
+        y_train_ph: y_train[i:i + B],
+        z_mean_ph: z_train[i:i + B],
+        z_log_var_ph: z_log_var_train[i:i + B],
+        true_pred_ph: true_pred[i:i + B]
+    })
+    pred = np.argmax(pred, axis=1)
+    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+acc /= y_train.shape[0]
+print('Latent model accuracy: ', acc)
+
 
 print("Loss 1: ", sess.run(loss, feed_dict=feed_dict))
 # Evaluation ================================================================================================
-pred = sess.run(L_label_x, feed_dict=feed_dict)
-pred = np.argmax(pred, axis=1)
-acc = float(np.count_nonzero(pred == y_train)) / y_train.shape[0]
+acc = 0
+for i in range(0, N, B):
+    pred = sess.run(L_label_x, feed_dict={
+        x_train_ph: x_train[i:i + B],
+        y_train_ph: y_train[i:i + B],
+        z_mean_ph: z_train[i:i + B],
+        z_log_var_ph: z_log_var_train[i:i + B],
+        true_pred_ph: true_pred[i:i + B]
+    })
+    pred = np.argmax(pred, axis=1)
+    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+acc /= y_train.shape[0]
 print('Recomposed model accuracy: ', acc)
 
-# for _ in range(1000):
-#     sess.run(opt, feed_dict=feed_dict)
+for _ in range(1000):
+    for i in range(0, N, B):
+        sess.run(opt, feed_dict={
+            x_train_ph: x_train[i:i + B],
+            y_train_ph: y_train[i:i + B],
+            z_mean_ph: z_train[i:i + B],
+            z_log_var_ph: z_log_var_train[i:i + B],
+            true_pred_ph: true_pred[i:i + B]
+        })
 
 print("Loss 2: ", sess.run(loss, feed_dict=feed_dict))
 # Evaluation ================================================================================================
@@ -197,11 +227,6 @@ pred = sess.run(L_label_x, feed_dict=feed_dict)
 pred = np.argmax(pred, axis=1)
 acc = float(np.count_nonzero(pred == y_train)) / y_train.shape[0]
 print('Recomposed model accuracy: ', acc)
-
-pred = sess.run(latent_clf(z_mean_ph), feed_dict=feed_dict)
-pred = np.argmax(pred, axis=1)
-acc = float(np.count_nonzero(pred == y_train)) / y_train.shape[0]
-print('Latent model accuracy: ', acc)
 
 
 # def run_experiment(latent_dim, num_pattern):

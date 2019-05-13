@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="maplecg" createEmptyFolders="true" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" createEmptyFolders="true" autoUploadExternalChanges="true">
     <serverData>
-      <paths name="maplecg">
+      <paths name="chithanh@maplecg-bayes.d2.comp.nus.edu.sg:22">
         <serverdata>
           <mappings>
-            <mapping deploy="tmp/pycharm_interpretable_fusion_machines" local="$PROJECT_DIR$" />
+            <mapping deploy="tmp/pycharm_interpretable_fusion_machines" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

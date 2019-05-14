@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/remote-mappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/remote-mappings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mnist/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/main.py" afterDir="false" />
     </list>
@@ -74,11 +72,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mnist/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1959">
-              <caret line="137" column="1" lean-forward="true" selection-start-line="137" selection-start-column="1" selection-end-line="137" selection-end-column="1" />
+            <state relative-caret-position="164">
+              <caret line="173" column="54" selection-start-line="173" selection-start-column="54" selection-end-line="173" selection-end-column="54" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/training/optimizer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="185">
+              <caret line="395" selection-start-line="395" selection-end-line="409" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -130,17 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>plot_model</find>
-      <find>recon</find>
-      <find>encoder</find>
-      <find>plot_re</find>
-      <find>Model</find>
-      <find>vae</find>
-      <find>mean</find>
-      <find>summary</find>
-      <find>.fit</find>
-      <find>activation_score</find>
-      <find>plot_results</find>
       <find>results</find>
       <find>decoder</find>
       <find>evaluate</find>
@@ -153,13 +149,24 @@
       <find>K.</find>
       <find>latent_loss</find>
       <find>true_pred</find>
-      <find>loss</find>
       <find>latent_clf</find>
       <find>coeffs</find>
       <find>HERE</find>
       <find>coeffs_sum</find>
       <find>_ph</find>
       <find>Multivaria</find>
+      <find>Multi</find>
+      <find>Loss 1</find>
+      <find>B =</find>
+      <find>b =</find>
+      <find>loss</find>
+      <find>fit_gmm</find>
+      <find>print(j,</find>
+      <find>latent</find>
+      <find>reduce_sum</find>
+      <find>clip</find>
+      <find>summary</find>
+      <find>latent dim</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -167,6 +174,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/mnist/main.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/gmm.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -190,9 +198,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="950" />
-    <option name="width" value="979" />
-    <option name="height" value="1040" />
+    <option name="x" value="1280" />
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="1057" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -360,7 +369,7 @@
       <workItem from="1557284711112" duration="17108000" />
       <workItem from="1557383759791" duration="179000" />
       <workItem from="1557387519572" duration="17140000" />
-      <workItem from="1557757957071" duration="4090000" />
+      <workItem from="1557757957071" duration="22872000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -418,11 +427,25 @@
       <option name="project" value="LOCAL" />
       <updated>1557758747331</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Add batch training + evaluation">
+      <created>1557769599808</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1557769599808</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Fix loss function">
+      <created>1557805805053</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1557805805053</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184396000" />
+    <option name="totallyTimeSpent" value="203178000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -434,7 +457,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1280" y="23" width="1920" height="1057" extended-state="6" />
+    <frame x="1280" y="24" width="1920" height="1057" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -443,7 +466,7 @@
       <window_info anchor="bottom" id="Database Changes" order="0" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32956153" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.5013405" side_tool="true" weight="0.39886847" />
-      <window_info anchor="bottom" id="Version Control" order="3" weight="0.3281471" />
+      <window_info anchor="bottom" id="Version Control" order="3" weight="0.32746115" />
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.32956153" />
@@ -452,7 +475,7 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.49865952" weight="0.4310881" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" visible="true" weight="0.4580311" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" visible="true" weight="0.46424872" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5265018" weight="0.5958445" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.327748" />
@@ -476,7 +499,9 @@
     <MESSAGE value="Reimplement specialized model" />
     <MESSAGE value="Add code to visualize centroids" />
     <MESSAGE value="Refactor code, implementing batch training" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor code, implementing batch training" />
+    <MESSAGE value="Add batch training + evaluation" />
+    <MESSAGE value="Fix loss function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix loss function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -620,10 +645,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/training/adam.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/training/optimizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="395" selection-start-line="395" selection-end-line="409" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1959">
-          <caret line="137" column="1" lean-forward="true" selection-start-line="137" selection-start-column="1" selection-end-line="137" selection-end-column="1" />
+        <state relative-caret-position="164">
+          <caret line="173" column="54" selection-start-line="173" selection-start-column="54" selection-end-line="173" selection-end-column="54" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

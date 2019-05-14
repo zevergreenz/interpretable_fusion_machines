@@ -168,7 +168,10 @@ true_pred_ph = tf.placeholder(tf.float32, shape=[B, true_pred.shape[1]])
 loss = tf.reduce_mean(tf.reduce_mean(tf.square(tf.log(L_label_x) - true_pred_ph), axis=1))
 
 optimizer = tf.train.AdamOptimizer()
-opt = optimizer.minimize(loss, var_list=[scales_unconstrained, means])
+# opt = optimizer.minimize(loss, var_list=[scales_unconstrained, means])
+grads_and_vars = optimizer.compute_gradients(loss, var_list=[scales_unconstrained, means])
+clipped_grads_and_vars = [(tf.clip_by_norm(g, 1), v) for g, v in grads_and_vars if g is not None]
+opt = optimizer.apply_gradients(clipped_grads_and_vars)
 
 # Tensorflow session ========================================================================================
 feed_dict = {

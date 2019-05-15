@@ -2,11 +2,15 @@ import os
 
 import keras
 import numpy as np
+import sklearn
 import tensorflow as tf
 import tensorflow_probability as tfp
 from keras import backend as K
 from keras.datasets import mnist
-from mnist.vae import train_vae, fit_gmm
+from sklearn.mixture import GaussianMixture
+import matplotlib.pyplot as plt
+
+from mnist.vae import train_vae
 
 tfb = tfp.bijectors
 
@@ -58,9 +62,13 @@ def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
     sigma2 = tf.broadcast_to(sigma2, [N, M, Z, Z])
     mu1 = tf.reshape(mu1, [N, M, Z, 1])
     mu2 = tf.reshape(mu2, [N, M, Z, 1])
-    sigma = sigma1 + sigma2
+    sigma = (sigma1 + sigma2) / 2.0
     DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
-    DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma1), mu1-mu2)), [N, M])
+    DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma), mu1-mu2)), [N, M])
+    # D_KL = tf.log(tf.linalg.det(sigma2) / tf.linalg.det(sigma1)) - Z.value
+    # D_KL += tf.linalg.trace(tf.matmul(tf.linalg.inv(sigma2), sigma1))
+    # D_KL += tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma2), mu1-mu2)), [N, M])
+    # D_KL *= 1/2
     return tf.exp(-DB)
 
 
@@ -82,7 +90,7 @@ x_train_ph = tf.placeholder(tf.float32, shape=[B, x_train.shape[1]])
 y_train_ph = tf.placeholder(tf.float32, shape=[B,])
 z_mean_ph = tf.placeholder(tf.float32, shape=[B, z_train.shape[1]])
 z_log_var_ph = tf.placeholder(tf.float32, shape=[B, z_log_var_train.shape[1]])
-z_cov = tf.matrix_diag(tf.exp(z_log_var_ph))
+z_cov = tf.matrix_diag(tf.exp(z_log_var_ph + 1e-10))
 
 # if os.path.isfile('gmm_means_15.npy'):
 #     print('Loading GMM model from file...')
@@ -90,10 +98,18 @@ z_cov = tf.matrix_diag(tf.exp(z_log_var_ph))
 #     covariances_ = np.load('gmm_covariances.npy')
 # else:
 print('Training GMM model...')
-gmm = fit_gmm((encoder, decoder), (x_train, y_train), M)
+gmm = GaussianMixture(n_components=M, covariance_type='full').fit(z_train)
 means_, covariances_ = gmm.means_.astype(np.float32), gmm.covariances_.astype(np.float32)
-np.save('gmm_means.npy', means_)
-np.save('gmm_covariances.npy', covariances_)
+
+# gmm2 = GaussianMixture(n_components=L, covariance_type='full').fit(means_)
+# means_, covariances_ = gmm2.means_.astype(np.float32), gmm2.covariances_.astype(np.float32)
+# M = L
+
+# x_means_ = decoder.predict(means_)
+# for i in range(L):
+#     plt.clf()
+#     plt.imshow(np.reshape(x_means_[i], (28, 28)))
+#     plt.savefig('new_mean_%d.png' % i, dpi=300)
 
 
 # Train the latent classifier ======================================================================================
@@ -140,7 +156,7 @@ p = tfp.distributions.MultivariateNormalTriL(
 )
 S_label_pattern = tfp.monte_carlo.expectation(
     f=lambda x: latent_clf(x),
-    samples=p.sample(1000),
+    samples=p.sample(10000),
     log_prob=p.log_prob,
     use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
 )
@@ -163,11 +179,16 @@ L_label_x = tf.reduce_sum(L_label_x, axis=1)
 # Construct loss function and optimizer ============================================================================
 true_pred_ph = tf.placeholder(tf.float32, shape=[B, true_pred.shape[1]])
 loss = tf.reduce_mean(tf.reduce_mean(tf.square(tf.log(tf.clip_by_value(L_label_x, 1e-10, 1.0)) - true_pred_ph), axis=1))
+loss = tf.debugging.check_numerics(
+    loss,
+    'loss'
+)
 
 optimizer = tf.train.AdamOptimizer()
 # opt = optimizer.minimize(loss, var_list=[scales_unconstrained, means])
 grads_and_vars = optimizer.compute_gradients(loss, var_list=[scales_unconstrained, means])
 # clipped_grads_and_vars = [(tf.clip_by_norm(g, 1), v) for g, v in grads_and_vars if g is not None]
+grads_and_vars = [(tf.debugging.check_numerics(g, 'gradient'), v) for g, v in grads_and_vars]
 opt = optimizer.apply_gradients(grads_and_vars)
 
 # Tensorflow session ========================================================================================
@@ -181,7 +202,7 @@ feed_dict = {
 # sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
-for _ in range(100):
+for _ in range(1000):
     for i in range(0, N, B):
         sess.run(latent_train_step, feed_dict={
             x_train_ph: x_train[i:i+B],
@@ -248,20 +269,20 @@ print('Recomposed model accuracy: ', acc)
 
 scales_grads = []
 means_grads = []
-for j in range(10):
-    loss_ = 0
-    for i in range(0, N, B):
-        _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
-            x_train_ph: x_train[i:i + B],
-            y_train_ph: y_train[i:i + B],
-            z_mean_ph: z_train[i:i + B],
-            z_log_var_ph: z_log_var_train[i:i + B],
-            true_pred_ph: true_pred[i:i + B]
-        })
-        loss_ += loss_i
-        scales_grads.append(grads_and_vars_[0])
-        means_grads.append(grads_and_vars_[1])
-    print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
+# for j in range(10):
+#     loss_ = 0
+#     for i in range(0, N, B):
+#         _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
+#             x_train_ph: x_train[i:i + B],
+#             y_train_ph: y_train[i:i + B],
+#             z_mean_ph: z_train[i:i + B],
+#             z_log_var_ph: z_log_var_train[i:i + B],
+#             true_pred_ph: true_pred[i:i + B]
+#         })
+#         loss_ += loss_i
+#         scales_grads.append(grads_and_vars_[0])
+#         means_grads.append(grads_and_vars_[1])
+#     print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
 
 
 # print("Loss 2: ", sess.run(loss, feed_dict=feed_dict))
@@ -292,6 +313,121 @@ for i in range(0, x_test.shape[0], B):
 acc /= y_test.shape[0]
 print('Recomposed model accuracy: ', acc)
 
+
+# Interprete the results
+encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
+# First, let us reduce to L centroids and visualize them
+gmm2 = GaussianMixture(n_components=L)
+clustering = gmm2.fit_predict(means_)
+
+# display a 10x10 2D manifold of digits
+n = 10
+digit_size = 28
+figure = np.zeros((digit_size * n, digit_size * n))
+# linearly spaced coordinates corresponding to the 2D plot
+# of digit classes in the latent space
+grid_x = np.linspace(-4, 4, n)
+grid_y = np.linspace(-4, 4, n)[::-1]
+
+idx = 0
+for i, yi in enumerate(grid_y):
+    indices = np.where(clustering == i)[0]
+    for j, xi in enumerate(grid_x):
+        if j >= len(indices):
+            break
+        elif j == 0:
+            digit = decoder.predict(gmm2.means_[i:i+1]).reshape(digit_size, digit_size)
+        else:
+            digit = decoder.predict(means_[indices[j]:indices[j]+1]).reshape(digit_size, digit_size)
+        idx += 1
+        figure[i * digit_size: (i + 1) * digit_size,
+        j * digit_size: (j + 1) * digit_size] = digit
+
+plt.figure(figsize=(10, 10))
+start_range = digit_size // 2
+end_range = n * digit_size + start_range + 1
+pixel_range = np.arange(start_range, end_range, digit_size)
+sample_range_x = np.round(grid_x, 1)
+sample_range_y = np.round(grid_y, 1)
+plt.xticks(pixel_range, sample_range_x)
+plt.yticks(pixel_range, sample_range_y)
+# plt.xlabel("z[0]")
+# plt.ylabel("z[1]")
+plt.imshow(figure)
+plt.savefig('temp.png', dpi=300)
+
+
+indices = np.random.choice(x_test.shape[0], B, replace=False)
+x_test_sample = x_test[indices, :]
+y_test_sample = y_test[indices]
+z_test_sample, z_log_var_test_sample, _ = encoder.predict(x_test_sample)
+# z_log_var_test_sample = z_log_var_test[indices, :]
+coeffs_test_sample = sess.run(coeffs, feed_dict={
+    x_train_ph: x_test_sample,
+    y_train_ph: y_test_sample,
+    z_mean_ph: z_test_sample,
+    z_log_var_ph: z_log_var_test_sample
+})
+i = 0
+coeffs_train = sess.run(coeffs, feed_dict={
+    x_train_ph: x_train[i:i + B],
+    y_train_ph: y_train[i:i + B],
+    z_mean_ph: z_train[i:i + B],
+    z_log_var_ph: z_log_var_train[i:i + B],
+    true_pred_ph: true_pred[i:i + B]
+})
+for i in range(B, N, B):
+    coeffs_train = np.concatenate([
+        coeffs_train,
+        sess.run(coeffs, feed_dict={
+            x_train_ph: x_train[i:i + B],
+            y_train_ph: y_train[i:i + B],
+            z_mean_ph: z_train[i:i + B],
+            z_log_var_ph: z_log_var_train[i:i + B],
+            true_pred_ph: true_pred[i:i + B]
+        })
+    ], axis=0)
+
+
+# display a 10x10 2D manifold of digits
+n = 10
+digit_size = 28
+figure = np.zeros((digit_size * n, digit_size * n))
+# linearly spaced coordinates corresponding to the 2D plot
+# of digit classes in the latent space
+grid_x = np.linspace(-4, 4, n)
+grid_y = np.linspace(-4, 4, n)[::-1]
+
+idx = 0
+for i, yi in enumerate(grid_y):
+    pattern_idx = np.argmax(coeffs_test_sample[i, :, 0])
+    new_pattern_idx = clustering[pattern_idx]
+    similar_idx = ((coeffs_train[:, new_pattern_idx, 0]).argsort())[::-1]
+    for j, xi in enumerate(grid_x):
+        if j >= len(indices):
+            break
+        elif j == 0:
+            digit = x_test_sample[i:i+1].reshape(digit_size, digit_size)
+        elif j == 1:
+            digit = decoder.predict(gmm2.means_[new_pattern_idx:new_pattern_idx+1]).reshape(digit_size, digit_size)
+        else:
+            digit = x_train[similar_idx[j-2]].reshape(digit_size, digit_size)
+        idx += 1
+        figure[i * digit_size: (i + 1) * digit_size,
+        j * digit_size: (j + 1) * digit_size] = digit
+
+plt.figure(figsize=(10, 10))
+start_range = digit_size // 2
+end_range = n * digit_size + start_range + 1
+pixel_range = np.arange(start_range, end_range, digit_size)
+sample_range_x = np.round(grid_x, 1)
+sample_range_y = np.round(grid_y, 1)
+plt.xticks(pixel_range, sample_range_x)
+plt.yticks(pixel_range, sample_range_y)
+# plt.xlabel("z[0]")
+# plt.ylabel("z[1]")
+plt.imshow(figure)
+plt.savefig('temp2.png', dpi=300)
 
 
 # def run_experiment(latent_dim, num_pattern):

@@ -12,7 +12,7 @@ tfb = tfp.bijectors
 
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="2"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 # MNIST dataset
@@ -23,9 +23,6 @@ x_train = np.reshape(x_train, [-1, original_dim])
 x_test = np.reshape(x_test, [-1, original_dim])
 x_train = x_train.astype('float32') / 255
 x_test = x_test.astype('float32') / 255
-
-# x_train = x_train[:1000, :]
-# y_train = y_train[:1000]
 
 # Build a black-box model and get its predictions
 black_box_model_weights_filename = 'black_box.h5'
@@ -165,13 +162,13 @@ L_label_x = tf.reduce_sum(L_label_x, axis=1)
 
 # Construct loss function and optimizer ============================================================================
 true_pred_ph = tf.placeholder(tf.float32, shape=[B, true_pred.shape[1]])
-loss = tf.reduce_mean(tf.reduce_mean(tf.square(tf.log(L_label_x) - true_pred_ph), axis=1))
+loss = tf.reduce_mean(tf.reduce_mean(tf.square(tf.log(tf.clip_by_value(L_label_x, 1e-10, 1.0)) - true_pred_ph), axis=1))
 
 optimizer = tf.train.AdamOptimizer()
 # opt = optimizer.minimize(loss, var_list=[scales_unconstrained, means])
 grads_and_vars = optimizer.compute_gradients(loss, var_list=[scales_unconstrained, means])
-clipped_grads_and_vars = [(tf.clip_by_norm(g, 1), v) for g, v in grads_and_vars if g is not None]
-opt = optimizer.apply_gradients(clipped_grads_and_vars)
+# clipped_grads_and_vars = [(tf.clip_by_norm(g, 1), v) for g, v in grads_and_vars if g is not None]
+opt = optimizer.apply_gradients(grads_and_vars)
 
 # Tensorflow session ========================================================================================
 feed_dict = {
@@ -184,7 +181,7 @@ feed_dict = {
 # sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
-for _ in range(500):
+for _ in range(100):
     for i in range(0, N, B):
         sess.run(latent_train_step, feed_dict={
             x_train_ph: x_train[i:i+B],
@@ -249,10 +246,12 @@ for i in range(0, x_test.shape[0], B):
 acc /= y_test.shape[0]
 print('Recomposed model accuracy: ', acc)
 
-for j in range(1000):
+scales_grads = []
+means_grads = []
+for j in range(10):
     loss_ = 0
     for i in range(0, N, B):
-        _, loss_i = sess.run([opt, loss], feed_dict={
+        _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
             x_train_ph: x_train[i:i + B],
             y_train_ph: y_train[i:i + B],
             z_mean_ph: z_train[i:i + B],
@@ -260,7 +259,9 @@ for j in range(1000):
             true_pred_ph: true_pred[i:i + B]
         })
         loss_ += loss_i
-    print(j, loss_)
+        scales_grads.append(grads_and_vars_[0])
+        means_grads.append(grads_and_vars_[1])
+    print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
 
 
 # print("Loss 2: ", sess.run(loss, feed_dict=feed_dict))

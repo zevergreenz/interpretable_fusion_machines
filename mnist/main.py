@@ -51,7 +51,7 @@ true_pred = black_box_model.predict(x_train)
 
 
 def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
-    N = mu1.shape[0]
+    N = tf.shape(mu1)[0]
     M = mu2.shape[0]
     Z = mu1.shape[1]
     mu1 = tf.reshape(mu1, [N, 1, Z])
@@ -86,10 +86,10 @@ encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist
 z_train, z_log_var_train, _ = encoder.predict(x_train)
 z_test, z_log_var_test, _ = encoder.predict(x_test)
 
-x_train_ph = tf.placeholder(tf.float32, shape=[B, x_train.shape[1]])
-y_train_ph = tf.placeholder(tf.float32, shape=[B,])
-z_mean_ph = tf.placeholder(tf.float32, shape=[B, z_train.shape[1]])
-z_log_var_ph = tf.placeholder(tf.float32, shape=[B, z_log_var_train.shape[1]])
+x_train_ph = tf.placeholder(tf.float32, shape=[None, x_train.shape[1]])
+y_train_ph = tf.placeholder(tf.float32, shape=[None,])
+z_mean_ph = tf.placeholder(tf.float32, shape=[None, z_train.shape[1]])
+z_log_var_ph = tf.placeholder(tf.float32, shape=[None, z_log_var_train.shape[1]])
 z_cov = tf.matrix_diag(tf.exp(z_log_var_ph + 1e-10))
 
 # if os.path.isfile('gmm_means_15.npy'):
@@ -162,22 +162,22 @@ S_label_pattern = tfp.monte_carlo.expectation(
 )
 
 coeffs = Bhattacharyya_coeff(z_mean_ph, z_cov, means, covariances)
-coeffs = tf.reshape(coeffs, [B, M, 1])
+coeffs = tf.reshape(coeffs, [tf.shape(x_train_ph)[0], M, 1])
 coeffs_sum = tf.reduce_sum(coeffs, axis=[1, 2])
 coeffs = tf.tile(coeffs, [1, 1, L])
 S_label_pattern = tf.reshape(S_label_pattern, [1, M, L])
-S_label_pattern = tf.tile(S_label_pattern, [B, 1, 1])
+S_label_pattern = tf.tile(S_label_pattern, [tf.shape(x_train_ph)[0], 1, 1])
 
 S_label_x = coeffs * S_label_pattern + (1 - coeffs) * (1 / L)
 
 # Combine specialized classifiers to obtained recomposed model =====================================================
-coeffs_sum = tf.reshape(coeffs_sum, [B, 1, 1])
+coeffs_sum = tf.reshape(coeffs_sum, [tf.shape(x_train_ph)[0], 1, 1])
 L_label_x = (coeffs / coeffs_sum) * S_label_x
 L_label_x = tf.reduce_sum(L_label_x, axis=1)
 
 
 # Construct loss function and optimizer ============================================================================
-true_pred_ph = tf.placeholder(tf.float32, shape=[B, true_pred.shape[1]])
+true_pred_ph = tf.placeholder(tf.float32, shape=[None, true_pred.shape[1]])
 loss = tf.reduce_mean(tf.reduce_mean(tf.square(tf.log(tf.clip_by_value(L_label_x, 1e-10, 1.0)) - true_pred_ph), axis=1))
 loss = tf.debugging.check_numerics(
     loss,

@@ -14,7 +14,7 @@ from mnist.vae import train_vae
 tfb = tfp.bijectors
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="2"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 
@@ -62,7 +62,8 @@ def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
     mu1 = tf.reshape(mu1, [N, M, Z, 1])
     mu2 = tf.reshape(mu2, [N, M, Z, 1])
     sigma = (sigma1 + sigma2) / 2.0
-    DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
+    # DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
+    DB = 1/2 * tf.log(tf.linalg.det(sigma)) - 1/4 * tf.log(tf.linalg.det(sigma1)) - 1/4 * tf.log(tf.linalg.det(simga2))
     DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma), mu1-mu2)), [N, M])
     # D_KL = tf.log(tf.linalg.det(sigma2) / tf.linalg.det(sigma1)) - Z.value
     # D_KL += tf.linalg.trace(tf.matmul(tf.linalg.inv(sigma2), sigma1))
@@ -78,7 +79,7 @@ M = num_pattern
 L = 10
 D = 784
 Z = latent_dim
-B = 2000
+B = 1000
 
 print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
 encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
@@ -155,7 +156,7 @@ p = tfp.distributions.MultivariateNormalTriL(
 )
 S_label_pattern = tfp.monte_carlo.expectation(
     f=lambda x: latent_clf(x),
-    samples=p.sample(10000),
+    samples=p.sample(2000),
     log_prob=p.log_prob,
     use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
 )
@@ -266,22 +267,22 @@ for i in range(0, x_test.shape[0], B):
 acc /= y_test.shape[0]
 print('Recomposed model accuracy: ', acc)
 
-scales_grads = []
-means_grads = []
-for j in range(100):
-    loss_ = 0
-    for i in range(0, N, B):
-        _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
-            x_train_ph: x_train[i:i + B],
-            y_train_ph: y_train[i:i + B],
-            z_mean_ph: z_train[i:i + B],
-            z_log_var_ph: z_log_var_train[i:i + B],
-            true_pred_ph: true_pred[i:i + B]
-        })
-        loss_ += loss_i
-        scales_grads.append(grads_and_vars_[0])
-        means_grads.append(grads_and_vars_[1])
-    print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
+# scales_grads = []
+# means_grads = []
+# for j in range(100):
+#     loss_ = 0
+#     for i in range(0, N, B):
+#         _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
+#             x_train_ph: x_train[i:i + B],
+#             y_train_ph: y_train[i:i + B],
+#             z_mean_ph: z_train[i:i + B],
+#             z_log_var_ph: z_log_var_train[i:i + B],
+#             true_pred_ph: true_pred[i:i + B]
+#         })
+#         loss_ += loss_i
+#         scales_grads.append(grads_and_vars_[0])
+#         means_grads.append(grads_and_vars_[1])
+#     print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
 
 
 # print("Loss 2: ", sess.run(loss, feed_dict=feed_dict))

@@ -5,7 +5,7 @@
       <paths name="chithanh@maplecg-bayes.d2.comp.nus.edu.sg:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/chithanh/tmp/pycharm_interpretable_fusion_machines" local="$PROJECT_DIR$" />
+            <mapping deploy="tmp/pycharm_interpretable_fusion_machines" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

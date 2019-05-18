@@ -1,22 +1,22 @@
 import os
 
 import keras
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import tensorflow_probability as tfp
 from keras import backend as K
 from keras.datasets import mnist
-from sklearn.mixture import GaussianMixture
-import matplotlib.pyplot as plt
+from sklearn.mixture.gaussian_mixture import GaussianMixture
 
 from mnist.vae import train_vae
 
 tfb = tfp.bijectors
 
-
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
+
 
 # MNIST dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data()

@@ -3,9 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/remote-mappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/remote-mappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/interpretable_fusion_machines.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/interpretable_fusion_machines.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gmm.py" beforeDir="false" afterPath="$PROJECT_DIR$/gmm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mnist/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mnist/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytorch_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_test.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,11 +43,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mnist/vae.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="817">
-              <caret line="53" column="33" selection-start-line="53" selection-start-column="19" selection-end-line="53" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state>
+              <caret selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -50,10 +53,7 @@
         <entry file="file://$PROJECT_DIR$/gmm.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2356">
-              <caret line="141" selection-start-line="141" selection-end-line="141" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
+              <caret line="132" selection-start-line="132" selection-end-line="132" />
             </state>
           </provider>
         </entry>
@@ -62,11 +62,8 @@
         <entry file="file://$PROJECT_DIR$/common.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="665">
-              <caret line="46" column="51" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="51" />
-              <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
+              <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
+              <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -74,11 +71,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mnist/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1156">
-              <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="8" selection-start-column="8" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -349,7 +343,7 @@
       <workItem from="1557929492045" duration="548000" />
       <workItem from="1558062907899" duration="743000" />
       <workItem from="1558082437200" duration="2960000" />
-      <workItem from="1558152715652" duration="1793000" />
+      <workItem from="1558152715652" duration="5471000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -449,11 +443,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558085010778</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Remove run_experiment function">
+      <created>1558154682383</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1558154682383</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="237452000" />
+    <option name="totallyTimeSpent" value="241130000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -479,11 +480,11 @@
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.32956153" />
       <window_info anchor="bottom" id="Run" order="7" sideWeight="0.49597856" weight="0.5049505" />
-      <window_info anchor="bottom" id="Debug" order="8" sideWeight="0.49865952" weight="0.39886847" />
+      <window_info anchor="bottom" id="Debug" order="8" sideWeight="0.49865952" weight="0.39792746" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.49865952" weight="0.4310881" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" visible="true" weight="0.5170984" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" visible="true" weight="0.32435232" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5265018" weight="0.5958445" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.327748" />
@@ -538,7 +539,8 @@
     <MESSAGE value="Comment out gradient clipping" />
     <MESSAGE value="Add code to visualize results" />
     <MESSAGE value="Allow dynamic shape with placeholder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Allow dynamic shape with placeholder" />
+    <MESSAGE value="Remove run_experiment function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove run_experiment function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -552,7 +554,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$main.coverage" NAME="main Coverage Results" MODIFIED="1557225457103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mnist" />
+    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$main.coverage" NAME="main Coverage Results" MODIFIED="1558179725597" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mnist" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$vae.coverage" NAME="vae Coverage Results" MODIFIED="1555454690311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$gmm.coverage" NAME="gmm Coverage Results" MODIFIED="1555452593384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1556045498718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -642,34 +644,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="817">
-          <caret line="53" column="33" selection-start-line="53" selection-start-column="19" selection-end-line="53" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gmm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2356">
-          <caret line="141" selection-start-line="141" selection-end-line="141" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
+          <caret line="132" selection-start-line="132" selection-end-line="132" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/common.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="665">
-          <caret line="46" column="51" selection-start-line="46" selection-start-column="6" selection-end-line="46" selection-end-column="51" />
-          <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
+          <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
+          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -708,13 +694,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-1465004018/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="320" column="33" selection-start-line="320" selection-start-column="33" selection-end-line="320" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1156">
-          <caret line="30" column="13" lean-forward="true" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="8" selection-start-column="8" selection-end-line="3" />
         </state>
       </provider>
     </entry>

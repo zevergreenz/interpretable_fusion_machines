@@ -14,7 +14,7 @@ from mnist.vae import train_vae
 tfb = tfp.bijectors
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="2"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 
@@ -141,11 +141,20 @@ scale_to_unconstrained = tfb.Chain([
     # tfb.Invert(tfb.CholeskyOuterProduct(validate_args=True)),
 ])
 
-# means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
-means = tf.Variable(initial_value=tf.random_uniform(means_.shape), trainable=True, dtype=tf.float32)
-scales_unconstrained = tf.Variable(initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)), trainable=True, dtype=tf.float32)
-scales_unconstrained = tf.Variable(initial_value=tf.random_uniform(scales_unconstrained.shape), trainable=True, dtype=tf.float32)
-scales = scale_to_unconstrained.inverse(scales_unconstrained)
+random_init = False
+if random_init:
+    means = tf.Variable(initial_value=tf.random_uniform(means_.shape), trainable=True, dtype=tf.float32)
+    scales_unconstrained = tf.Variable(initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)),
+                                       trainable=True, dtype=tf.float32)
+    scales_unconstrained = tf.Variable(initial_value=tf.random_uniform(scales_unconstrained.shape), trainable=True,
+                                       dtype=tf.float32)
+    scales = scale_to_unconstrained.inverse(scales_unconstrained)
+else:
+    means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
+    scales_unconstrained = tf.Variable(initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)),
+                                       trainable=True, dtype=tf.float32)
+    scales = scale_to_unconstrained.inverse(scales_unconstrained)
+
 covariances = tf.matmul(scales, tf.linalg.transpose(scales))
 p = tfp.distributions.MultivariateNormalTriL(
     loc=means,
@@ -199,70 +208,70 @@ feed_dict = {
 }
 sess.run(tf.global_variables_initializer())
 
-# for _ in range(1000):
-#     for i in range(0, N, B):
-#         sess.run(latent_train_step, feed_dict={
-#             x_train_ph: x_train[i:i+B],
-#             y_train_ph: y_train[i:i+B],
-#             z_mean_ph: z_train[i:i+B],
-#             z_log_var_ph: z_log_var_train[i:i+B],
-#             true_pred_ph: true_pred[i:i+B]
-#         })
-#
-# acc = 0
-# for i in range(0, N, B):
-#     pred = sess.run(latent_clf(z_mean_ph), feed_dict={
-#         x_train_ph: x_train[i:i + B],
-#         y_train_ph: y_train[i:i + B],
-#         z_mean_ph: z_train[i:i + B],
-#         z_log_var_ph: z_log_var_train[i:i + B],
-#         true_pred_ph: true_pred[i:i + B]
-#     })
-#     pred = np.argmax(pred, axis=1)
-#     acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-# acc /= y_train.shape[0]
-# print('Latent model accuracy: ', acc)
-# acc = 0
-# for i in range(0, x_test.shape[0], B):
-#     pred = sess.run(latent_clf(z_mean_ph), feed_dict={
-#         x_train_ph: x_test[i:i + B],
-#         y_train_ph: y_test[i:i + B],
-#         z_mean_ph: z_test[i:i + B],
-#         z_log_var_ph: z_log_var_test[i:i + B],
-#     })
-#     pred = np.argmax(pred, axis=1)
-#     acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-# acc /= y_test.shape[0]
-# print('Latent model accuracy: ', acc)
+for _ in range(1000):
+    for i in range(0, N, B):
+        sess.run(latent_train_step, feed_dict={
+            x_train_ph: x_train[i:i+B],
+            y_train_ph: y_train[i:i+B],
+            z_mean_ph: z_train[i:i+B],
+            z_log_var_ph: z_log_var_train[i:i+B],
+            true_pred_ph: true_pred[i:i+B]
+        })
+
+acc = 0
+for i in range(0, N, B):
+    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
+        x_train_ph: x_train[i:i + B],
+        y_train_ph: y_train[i:i + B],
+        z_mean_ph: z_train[i:i + B],
+        z_log_var_ph: z_log_var_train[i:i + B],
+        true_pred_ph: true_pred[i:i + B]
+    })
+    pred = np.argmax(pred, axis=1)
+    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+acc /= y_train.shape[0]
+print('Latent model accuracy: ', acc)
+acc = 0
+for i in range(0, x_test.shape[0], B):
+    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
+        x_train_ph: x_test[i:i + B],
+        y_train_ph: y_test[i:i + B],
+        z_mean_ph: z_test[i:i + B],
+        z_log_var_ph: z_log_var_test[i:i + B],
+    })
+    pred = np.argmax(pred, axis=1)
+    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
+acc /= y_test.shape[0]
+print('Latent model accuracy: ', acc)
 
 
-# print("Loss 1: ", sess.run(loss, feed_dict=feed_dict))
+print("Loss 1: ", sess.run(loss, feed_dict=feed_dict))
 # Evaluation ================================================================================================
-# acc = 0
-# for i in range(0, N, B):
-#     pred = sess.run(L_label_x, feed_dict={
-#         x_train_ph: x_train[i:i + B],
-#         y_train_ph: y_train[i:i + B],
-#         z_mean_ph: z_train[i:i + B],
-#         z_log_var_ph: z_log_var_train[i:i + B],
-#         true_pred_ph: true_pred[i:i + B]
-#     })
-#     pred = np.argmax(pred, axis=1)
-#     acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-# acc /= y_train.shape[0]
-# print('Recomposed model accuracy: ', acc)
-# acc = 0
-# for i in range(0, x_test.shape[0], B):
-#     pred = sess.run(L_label_x, feed_dict={
-#         x_train_ph: x_test[i:i + B],
-#         y_train_ph: y_test[i:i + B],
-#         z_mean_ph: z_test[i:i + B],
-#         z_log_var_ph: z_log_var_test[i:i + B],
-#     })
-#     pred = np.argmax(pred, axis=1)
-#     acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-# acc /= y_test.shape[0]
-# print('Recomposed model accuracy: ', acc)
+acc = 0
+for i in range(0, N, B):
+    pred = sess.run(L_label_x, feed_dict={
+        x_train_ph: x_train[i:i + B],
+        y_train_ph: y_train[i:i + B],
+        z_mean_ph: z_train[i:i + B],
+        z_log_var_ph: z_log_var_train[i:i + B],
+        true_pred_ph: true_pred[i:i + B]
+    })
+    pred = np.argmax(pred, axis=1)
+    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+acc /= y_train.shape[0]
+print('Recomposed model accuracy: ', acc)
+acc = 0
+for i in range(0, x_test.shape[0], B):
+    pred = sess.run(L_label_x, feed_dict={
+        x_train_ph: x_test[i:i + B],
+        y_train_ph: y_test[i:i + B],
+        z_mean_ph: z_test[i:i + B],
+        z_log_var_ph: z_log_var_test[i:i + B],
+    })
+    pred = np.argmax(pred, axis=1)
+    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
+acc /= y_test.shape[0]
+print('Recomposed model accuracy: ', acc)
 
 # scales_grads = []
 # means_grads = []

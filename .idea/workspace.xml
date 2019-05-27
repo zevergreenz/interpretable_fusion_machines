@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="Code clean-up">
+    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mnist/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_test.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,8 +57,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mnist/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="75" column="17" selection-start-line="75" selection-start-column="17" selection-end-line="75" selection-end-column="17" />
+            <state relative-caret-position="123">
+              <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -280,9 +279,6 @@
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mnist" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -353,7 +349,7 @@
       <workItem from="1558704400577" duration="4625000" />
       <workItem from="1558722774541" duration="174000" />
       <workItem from="1558765701056" duration="4206000" />
-      <workItem from="1558935099553" duration="412000" />
+      <workItem from="1558935099553" duration="592000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -481,11 +477,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558206753576</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Code clean-up">
+      <created>1558935517807</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1558935517808</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="265921000" />
+    <option name="totallyTimeSpent" value="266101000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -515,7 +518,7 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.4978701" weight="0.43065694" />
-      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49574015" weight="0.24379562" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49574015" visible="true" weight="0.43065694" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5265018" visible="true" weight="0.053311795" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.32747602" />
@@ -574,7 +577,8 @@
     <MESSAGE value="Fix import warnings" />
     <MESSAGE value="Re-write Bhattacharyya distance" />
     <MESSAGE value="Re-write Bhattacharyya distance (change to logdet)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Re-write Bhattacharyya distance (change to logdet)" />
+    <MESSAGE value="Code clean-up" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code clean-up" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -768,8 +772,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mnist/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="75" column="17" selection-start-line="75" selection-start-column="17" selection-end-line="75" selection-end-column="17" />
+        <state relative-caret-position="123">
+          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

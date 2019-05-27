@@ -72,14 +72,14 @@ def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
     return tf.exp(-DB)
 
 
-latent_dim = 15
+latent_dim = 5
 num_pattern = 200
 N = x_train.shape[0]
 M = num_pattern
 L = 10
 D = 784
 Z = latent_dim
-B = 1000
+B = 10000
 
 print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
 encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
@@ -100,10 +100,6 @@ z_cov = tf.matrix_diag(tf.exp(z_log_var_ph + 1e-10))
 print('Training GMM model...')
 gmm = GaussianMixture(n_components=M, covariance_type='full').fit(z_train)
 means_, covariances_ = gmm.means_.astype(np.float32), gmm.covariances_.astype(np.float32)
-
-# gmm2 = GaussianMixture(n_components=L, covariance_type='full').fit(means_)
-# means_, covariances_ = gmm2.means_.astype(np.float32), gmm2.covariances_.astype(np.float32)
-# M = L
 
 # x_means_ = decoder.predict(means_)
 # for i in range(L):
@@ -145,8 +141,10 @@ scale_to_unconstrained = tfb.Chain([
     # tfb.Invert(tfb.CholeskyOuterProduct(validate_args=True)),
 ])
 
-means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
+# means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
+means = tf.Variable(initial_value=tf.random_uniform(means_.shape), trainable=True, dtype=tf.float32)
 scales_unconstrained = tf.Variable(initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)), trainable=True, dtype=tf.float32)
+scales_unconstrained = tf.Variable(initial_value=tf.random_uniform(scales_unconstrained.shape), trainable=True, dtype=tf.float32)
 scales = scale_to_unconstrained.inverse(scales_unconstrained)
 covariances = tf.matmul(scales, tf.linalg.transpose(scales))
 p = tfp.distributions.MultivariateNormalTriL(
@@ -156,7 +154,7 @@ p = tfp.distributions.MultivariateNormalTriL(
 )
 S_label_pattern = tfp.monte_carlo.expectation(
     f=lambda x: latent_clf(x),
-    samples=p.sample(2000),
+    samples=p.sample(1000),
     log_prob=p.log_prob,
     use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
 )
@@ -199,232 +197,229 @@ feed_dict = {
     z_log_var_ph: z_log_var_train,
     true_pred_ph: true_pred
 }
-# sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
-for _ in range(1000):
-    for i in range(0, N, B):
-        sess.run(latent_train_step, feed_dict={
-            x_train_ph: x_train[i:i+B],
-            y_train_ph: y_train[i:i+B],
-            z_mean_ph: z_train[i:i+B],
-            z_log_var_ph: z_log_var_train[i:i+B],
-            true_pred_ph: true_pred[i:i+B]
-        })
-
-acc = 0
-for i in range(0, N, B):
-    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
-        x_train_ph: x_train[i:i + B],
-        y_train_ph: y_train[i:i + B],
-        z_mean_ph: z_train[i:i + B],
-        z_log_var_ph: z_log_var_train[i:i + B],
-        true_pred_ph: true_pred[i:i + B]
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-acc /= y_train.shape[0]
-print('Latent model accuracy: ', acc)
-acc = 0
-for i in range(0, x_test.shape[0], B):
-    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
-        x_train_ph: x_test[i:i + B],
-        y_train_ph: y_test[i:i + B],
-        z_mean_ph: z_test[i:i + B],
-        z_log_var_ph: z_log_var_test[i:i + B],
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-acc /= y_test.shape[0]
-print('Latent model accuracy: ', acc)
+# for _ in range(1000):
+#     for i in range(0, N, B):
+#         sess.run(latent_train_step, feed_dict={
+#             x_train_ph: x_train[i:i+B],
+#             y_train_ph: y_train[i:i+B],
+#             z_mean_ph: z_train[i:i+B],
+#             z_log_var_ph: z_log_var_train[i:i+B],
+#             true_pred_ph: true_pred[i:i+B]
+#         })
+#
+# acc = 0
+# for i in range(0, N, B):
+#     pred = sess.run(latent_clf(z_mean_ph), feed_dict={
+#         x_train_ph: x_train[i:i + B],
+#         y_train_ph: y_train[i:i + B],
+#         z_mean_ph: z_train[i:i + B],
+#         z_log_var_ph: z_log_var_train[i:i + B],
+#         true_pred_ph: true_pred[i:i + B]
+#     })
+#     pred = np.argmax(pred, axis=1)
+#     acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+# acc /= y_train.shape[0]
+# print('Latent model accuracy: ', acc)
+# acc = 0
+# for i in range(0, x_test.shape[0], B):
+#     pred = sess.run(latent_clf(z_mean_ph), feed_dict={
+#         x_train_ph: x_test[i:i + B],
+#         y_train_ph: y_test[i:i + B],
+#         z_mean_ph: z_test[i:i + B],
+#         z_log_var_ph: z_log_var_test[i:i + B],
+#     })
+#     pred = np.argmax(pred, axis=1)
+#     acc += float(np.count_nonzero(pred == y_test[i:i + B]))
+# acc /= y_test.shape[0]
+# print('Latent model accuracy: ', acc)
 
 
 # print("Loss 1: ", sess.run(loss, feed_dict=feed_dict))
 # Evaluation ================================================================================================
-acc = 0
-for i in range(0, N, B):
-    pred = sess.run(L_label_x, feed_dict={
-        x_train_ph: x_train[i:i + B],
-        y_train_ph: y_train[i:i + B],
-        z_mean_ph: z_train[i:i + B],
-        z_log_var_ph: z_log_var_train[i:i + B],
-        true_pred_ph: true_pred[i:i + B]
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-acc /= y_train.shape[0]
-print('Recomposed model accuracy: ', acc)
-acc = 0
-for i in range(0, x_test.shape[0], B):
-    pred = sess.run(L_label_x, feed_dict={
-        x_train_ph: x_test[i:i + B],
-        y_train_ph: y_test[i:i + B],
-        z_mean_ph: z_test[i:i + B],
-        z_log_var_ph: z_log_var_test[i:i + B],
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-acc /= y_test.shape[0]
-print('Recomposed model accuracy: ', acc)
+# acc = 0
+# for i in range(0, N, B):
+#     pred = sess.run(L_label_x, feed_dict={
+#         x_train_ph: x_train[i:i + B],
+#         y_train_ph: y_train[i:i + B],
+#         z_mean_ph: z_train[i:i + B],
+#         z_log_var_ph: z_log_var_train[i:i + B],
+#         true_pred_ph: true_pred[i:i + B]
+#     })
+#     pred = np.argmax(pred, axis=1)
+#     acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+# acc /= y_train.shape[0]
+# print('Recomposed model accuracy: ', acc)
+# acc = 0
+# for i in range(0, x_test.shape[0], B):
+#     pred = sess.run(L_label_x, feed_dict={
+#         x_train_ph: x_test[i:i + B],
+#         y_train_ph: y_test[i:i + B],
+#         z_mean_ph: z_test[i:i + B],
+#         z_log_var_ph: z_log_var_test[i:i + B],
+#     })
+#     pred = np.argmax(pred, axis=1)
+#     acc += float(np.count_nonzero(pred == y_test[i:i + B]))
+# acc /= y_test.shape[0]
+# print('Recomposed model accuracy: ', acc)
 
-scales_grads = []
-means_grads = []
-for j in range(100):
-    loss_ = 0
-    for i in range(0, N, B):
-        _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
-            x_train_ph: x_train[i:i + B],
-            y_train_ph: y_train[i:i + B],
-            z_mean_ph: z_train[i:i + B],
-            z_log_var_ph: z_log_var_train[i:i + B],
-            true_pred_ph: true_pred[i:i + B]
-        })
-        loss_ += loss_i
-        scales_grads.append(grads_and_vars_[0])
-        means_grads.append(grads_and_vars_[1])
-    print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
+# scales_grads = []
+# means_grads = []
+# for j in range(0):
+#     loss_ = 0
+#     for i in range(0, N, B):
+#         _, loss_i, grads_and_vars_ = sess.run([opt, loss, grads_and_vars], feed_dict={
+#             x_train_ph: x_train[i:i + B],
+#             y_train_ph: y_train[i:i + B],
+#             z_mean_ph: z_train[i:i + B],
+#             z_log_var_ph: z_log_var_train[i:i + B],
+#             true_pred_ph: true_pred[i:i + B]
+#         })
+#         loss_ += loss_i
+#         scales_grads.append(grads_and_vars_[0])
+#         means_grads.append(grads_and_vars_[1])
+#     print(j, loss_, np.sum(grads_and_vars_[0][0]), np.sum(grads_and_vars_[1][0]))
 
 
 # print("Loss 2: ", sess.run(loss, feed_dict=feed_dict))
 # Evaluation ================================================================================================
-acc = 0
-for i in range(0, N, B):
-    pred = sess.run(L_label_x, feed_dict={
-        x_train_ph: x_train[i:i + B],
-        y_train_ph: y_train[i:i + B],
-        z_mean_ph: z_train[i:i + B],
-        z_log_var_ph: z_log_var_train[i:i + B],
-        true_pred_ph: true_pred[i:i + B]
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-acc /= y_train.shape[0]
-print('Recomposed model accuracy: ', acc)
-acc = 0
-for i in range(0, x_test.shape[0], B):
-    pred = sess.run(L_label_x, feed_dict={
-        x_train_ph: x_test[i:i + B],
-        y_train_ph: y_test[i:i + B],
-        z_mean_ph: z_test[i:i + B],
-        z_log_var_ph: z_log_var_test[i:i + B],
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-acc /= y_test.shape[0]
-print('Recomposed model accuracy: ', acc)
+# acc = 0
+# for i in range(0, N, B):
+#     pred = sess.run(L_label_x, feed_dict={
+#         x_train_ph: x_train[i:i + B],
+#         y_train_ph: y_train[i:i + B],
+#         z_mean_ph: z_train[i:i + B],
+#         z_log_var_ph: z_log_var_train[i:i + B],
+#         true_pred_ph: true_pred[i:i + B]
+#     })
+#     pred = np.argmax(pred, axis=1)
+#     acc += float(np.count_nonzero(pred == y_train[i:i + B]))
+# acc /= y_train.shape[0]
+# print('Recomposed model accuracy: ', acc)
+# acc = 0
+# for i in range(0, x_test.shape[0], B):
+#     pred = sess.run(L_label_x, feed_dict={
+#         x_train_ph: x_test[i:i + B],
+#         y_train_ph: y_test[i:i + B],
+#         z_mean_ph: z_test[i:i + B],
+#         z_log_var_ph: z_log_var_test[i:i + B],
+#     })
+#     pred = np.argmax(pred, axis=1)
+#     acc += float(np.count_nonzero(pred == y_test[i:i + B]))
+# acc /= y_test.shape[0]
+# print('Recomposed model accuracy: ', acc)
 
 
-# Interprete the results
-encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
-# First, let us reduce to L centroids and visualize them
-gmm2 = GaussianMixture(n_components=L)
-clustering = gmm2.fit_predict(means_)
-
-# display a 10x10 2D manifold of digits
-n = 10
-digit_size = 28
-figure = np.zeros((digit_size * n, digit_size * n))
-# linearly spaced coordinates corresponding to the 2D plot
-# of digit classes in the latent space
-grid_x = np.linspace(-4, 4, n)
-grid_y = np.linspace(-4, 4, n)[::-1]
-
-idx = 0
-for i, yi in enumerate(grid_y):
-    indices = np.where(clustering == i)[0]
-    for j, xi in enumerate(grid_x):
-        if j >= len(indices):
-            break
-        elif j == 0:
-            digit = decoder.predict(gmm2.means_[i:i+1]).reshape(digit_size, digit_size)
-        else:
-            digit = decoder.predict(means_[indices[j]:indices[j]+1]).reshape(digit_size, digit_size)
-        idx += 1
-        figure[i * digit_size: (i + 1) * digit_size,
-        j * digit_size: (j + 1) * digit_size] = digit
-
-plt.figure(figsize=(10, 10))
-start_range = digit_size // 2
-end_range = n * digit_size + start_range + 1
-pixel_range = np.arange(start_range, end_range, digit_size)
-sample_range_x = np.round(grid_x, 1)
-sample_range_y = np.round(grid_y, 1)
-plt.xticks(pixel_range, sample_range_x)
-plt.yticks(pixel_range, sample_range_y)
-# plt.xlabel("z[0]")
-# plt.ylabel("z[1]")
-plt.imshow(figure)
-plt.savefig('temp.png', dpi=300)
-
-
-indices = np.random.choice(x_test.shape[0], B, replace=False)
-x_test_sample = x_test[indices, :]
-y_test_sample = y_test[indices]
-z_test_sample, z_log_var_test_sample, _ = encoder.predict(x_test_sample)
-# z_log_var_test_sample = z_log_var_test[indices, :]
-coeffs_test_sample = sess.run(coeffs, feed_dict={
-    x_train_ph: x_test_sample,
-    y_train_ph: y_test_sample,
-    z_mean_ph: z_test_sample,
-    z_log_var_ph: z_log_var_test_sample
-})
-i = 0
-coeffs_train = sess.run(coeffs, feed_dict={
-    x_train_ph: x_train[i:i + B],
-    y_train_ph: y_train[i:i + B],
-    z_mean_ph: z_train[i:i + B],
-    z_log_var_ph: z_log_var_train[i:i + B],
-    true_pred_ph: true_pred[i:i + B]
-})
-for i in range(B, N, B):
-    coeffs_train = np.concatenate([
-        coeffs_train,
-        sess.run(coeffs, feed_dict={
-            x_train_ph: x_train[i:i + B],
-            y_train_ph: y_train[i:i + B],
-            z_mean_ph: z_train[i:i + B],
-            z_log_var_ph: z_log_var_train[i:i + B],
-            true_pred_ph: true_pred[i:i + B]
-        })
-    ], axis=0)
-
-
-# display a 10x10 2D manifold of digits
-n = 10
-digit_size = 28
-figure = np.zeros((digit_size * n, digit_size * n))
-# linearly spaced coordinates corresponding to the 2D plot
-# of digit classes in the latent space
-grid_x = np.linspace(-4, 4, n)
-grid_y = np.linspace(-4, 4, n)[::-1]
-
-idx = 0
-for i, yi in enumerate(grid_y):
-    pattern_idx = np.argmax(coeffs_test_sample[i, :, 0])
-    new_pattern_idx = clustering[pattern_idx]
-    similar_idx = ((coeffs_train[:, new_pattern_idx, 0]).argsort())[::-1]
-    for j, xi in enumerate(grid_x):
-        if j >= len(indices):
-            break
-        elif j == 0:
-            digit = x_test_sample[i:i+1].reshape(digit_size, digit_size)
-        elif j == 1:
-            digit = decoder.predict(gmm2.means_[new_pattern_idx:new_pattern_idx+1]).reshape(digit_size, digit_size)
-        else:
-            digit = x_train[similar_idx[j-2]].reshape(digit_size, digit_size)
-        idx += 1
-        figure[i * digit_size: (i + 1) * digit_size,
-        j * digit_size: (j + 1) * digit_size] = digit
-
-plt.figure(figsize=(10, 10))
-start_range = digit_size // 2
-end_range = n * digit_size + start_range + 1
-pixel_range = np.arange(start_range, end_range, digit_size)
-sample_range_x = np.round(grid_x, 1)
-sample_range_y = np.round(grid_y, 1)
-plt.xticks(pixel_range, sample_range_x)
-plt.yticks(pixel_range, sample_range_y)
-# plt.xlabel("z[0]")
-# plt.ylabel("z[1]")
-plt.imshow(figure)
-plt.savefig('temp2.png', dpi=300)
+# Interprete the results ==============================================================================================
+# encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
+# # First, let us reduce to L centroids and visualize them
+# gmm2 = GaussianMixture(n_components=L)
+# clustering = gmm2.fit_predict(means_)
+#
+# # display a 10x10 2D manifold of digits
+# n = 10
+# digit_size = 28
+# figure = np.zeros((digit_size * n, digit_size * n))
+# # linearly spaced coordinates corresponding to the 2D plot
+# # of digit classes in the latent space
+# grid_x = np.linspace(-4, 4, n)
+# grid_y = np.linspace(-4, 4, n)[::-1]
+#
+# idx = 0
+# for i, yi in enumerate(grid_y):
+#     indices = np.where(clustering == i)[0]
+#     for j, xi in enumerate(grid_x):
+#         if j >= len(indices):
+#             break
+#         elif j == 0:
+#             digit = decoder.predict(gmm2.means_[i:i+1]).reshape(digit_size, digit_size)
+#         else:
+#             digit = decoder.predict(means_[indices[j]:indices[j]+1]).reshape(digit_size, digit_size)
+#         idx += 1
+#         figure[i * digit_size: (i + 1) * digit_size,
+#         j * digit_size: (j + 1) * digit_size] = digit
+#
+# plt.figure(figsize=(10, 10))
+# start_range = digit_size // 2
+# end_range = n * digit_size + start_range + 1
+# pixel_range = np.arange(start_range, end_range, digit_size)
+# sample_range_x = np.round(grid_x, 1)
+# sample_range_y = np.round(grid_y, 1)
+# plt.xticks(pixel_range, sample_range_x)
+# plt.yticks(pixel_range, sample_range_y)
+# # plt.xlabel("z[0]")
+# # plt.ylabel("z[1]")
+# plt.imshow(figure)
+# plt.savefig('temp.png', dpi=300)
+#
+#
+# indices = np.random.choice(x_test.shape[0], B, replace=False)
+# x_test_sample = x_test[indices, :]
+# y_test_sample = y_test[indices]
+# z_test_sample, z_log_var_test_sample, _ = encoder.predict(x_test_sample)
+# # z_log_var_test_sample = z_log_var_test[indices, :]
+# coeffs_test_sample = sess.run(coeffs, feed_dict={
+#     x_train_ph: x_test_sample,
+#     y_train_ph: y_test_sample,
+#     z_mean_ph: z_test_sample,
+#     z_log_var_ph: z_log_var_test_sample
+# })
+# i = 0
+# coeffs_train = sess.run(coeffs, feed_dict={
+#     x_train_ph: x_train[i:i + B],
+#     y_train_ph: y_train[i:i + B],
+#     z_mean_ph: z_train[i:i + B],
+#     z_log_var_ph: z_log_var_train[i:i + B],
+#     true_pred_ph: true_pred[i:i + B]
+# })
+# for i in range(B, N, B):
+#     coeffs_train = np.concatenate([
+#         coeffs_train,
+#         sess.run(coeffs, feed_dict={
+#             x_train_ph: x_train[i:i + B],
+#             y_train_ph: y_train[i:i + B],
+#             z_mean_ph: z_train[i:i + B],
+#             z_log_var_ph: z_log_var_train[i:i + B],
+#             true_pred_ph: true_pred[i:i + B]
+#         })
+#     ], axis=0)
+#
+#
+# # display a 10x10 2D manifold of digits
+# n = 10
+# digit_size = 28
+# figure = np.zeros((digit_size * n, digit_size * n))
+# # linearly spaced coordinates corresponding to the 2D plot
+# # of digit classes in the latent space
+# grid_x = np.linspace(-4, 4, n)
+# grid_y = np.linspace(-4, 4, n)[::-1]
+#
+# idx = 0
+# for i, yi in enumerate(grid_y):
+#     pattern_idx = np.argmax(coeffs_test_sample[i, :, 0])
+#     new_pattern_idx = clustering[pattern_idx]
+#     similar_idx = ((coeffs_train[:, new_pattern_idx, 0]).argsort())[::-1]
+#     for j, xi in enumerate(grid_x):
+#         if j >= len(indices):
+#             break
+#         elif j == 0:
+#             digit = x_test_sample[i:i+1].reshape(digit_size, digit_size)
+#         elif j == 1:
+#             digit = decoder.predict(gmm2.means_[new_pattern_idx:new_pattern_idx+1]).reshape(digit_size, digit_size)
+#         else:
+#             digit = x_train[similar_idx[j-2]].reshape(digit_size, digit_size)
+#         idx += 1
+#         figure[i * digit_size: (i + 1) * digit_size,
+#         j * digit_size: (j + 1) * digit_size] = digit
+#
+# plt.figure(figsize=(10, 10))
+# start_range = digit_size // 2
+# end_range = n * digit_size + start_range + 1
+# pixel_range = np.arange(start_range, end_range, digit_size)
+# sample_range_x = np.round(grid_x, 1)
+# sample_range_y = np.round(grid_y, 1)
+# plt.xticks(pixel_range, sample_range_x)
+# plt.yticks(pixel_range, sample_range_y)
+# plt.imshow(figure)
+# plt.savefig('temp2.png', dpi=300)

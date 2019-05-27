@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="Code clean-up">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mnist/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pytorch_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch_test.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mnist/vae.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+            <state>
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -48,7 +48,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/common.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
+            <state>
               <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
               <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
             </state>
@@ -58,8 +58,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mnist/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2792">
-              <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+            <state relative-caret-position="421">
+              <caret line="75" column="17" selection-start-line="75" selection-start-column="17" selection-end-line="75" selection-end-column="17" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -70,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pytorch_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+            <state>
+              <caret line="13" column="14" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -135,16 +135,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>M = 200</find>
-      <find>late</find>
-      <find>latent_clf</find>
-      <find>num_pattern</find>
-      <find>digit_size</find>
-      <find>latent</find>
-      <find>found saved</find>
-      <find>decoder</find>
-      <find>4, 4</find>
-      <find>coeffs_sample</find>
       <find>argsort</find>
       <find>z_</find>
       <find>encoder</find>
@@ -159,12 +149,22 @@
       <find>reshape</find>
       <find>loss =</find>
       <find>latent_dim</find>
-      <find>p.sample</find>
       <find>CUDA_VISIBLE_DEVICES</find>
       <find>grad</find>
       <find>Bhata</find>
       <find>grads</find>
       <find>logdet</find>
+      <find>Latent_</find>
+      <find>p.sample</find>
+      <find>late</find>
+      <find>num_p</find>
+      <find>recomposed model accu</find>
+      <find>GaussianMix</find>
+      <find>gmm</find>
+      <find>scale</find>
+      <find>acc</find>
+      <find>loss</find>
+      <find>loss =</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -183,7 +183,6 @@
         <option value="$PROJECT_DIR$/mnist/mnist.py" />
         <option value="$PROJECT_DIR$/mnist/__init__.py" />
         <option value="$PROJECT_DIR$/gmm.py" />
-        <option value="$PROJECT_DIR$/pytorch_test.py" />
         <option value="$PROJECT_DIR$/mnist/black_box_model.py" />
         <option value="$PROJECT_DIR$/common.py" />
         <option value="$PROJECT_DIR$/mnist/latent_classifier.py" />
@@ -191,15 +190,16 @@
         <option value="$PROJECT_DIR$/mnist/recomposed_classifier.py" />
         <option value="$PROJECT_DIR$/mnist/specialized_classifier.py" />
         <option value="$PROJECT_DIR$/mnist/vae.py" />
+        <option value="$PROJECT_DIR$/pytorch_test.py" />
         <option value="$PROJECT_DIR$/mnist/main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1522" />
-    <option name="y" value="127" />
-    <option name="width" value="1920" />
-    <option name="height" value="777" />
+    <option name="x" value="160" />
+    <option name="y" value="120" />
+    <option name="width" value="960" />
+    <option name="height" value="583" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -234,7 +234,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="web.server" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -280,6 +280,9 @@
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mnist" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -345,7 +348,12 @@
       <workItem from="1557929492045" duration="548000" />
       <workItem from="1558062907899" duration="743000" />
       <workItem from="1558082437200" duration="2960000" />
-      <workItem from="1558152715652" duration="14856000" />
+      <workItem from="1558152715652" duration="18778000" />
+      <workItem from="1558254500453" duration="2067000" />
+      <workItem from="1558704400577" duration="4625000" />
+      <workItem from="1558722774541" duration="174000" />
+      <workItem from="1558765701056" duration="4206000" />
+      <workItem from="1558935099553" duration="412000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -466,11 +474,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558204102854</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Re-write Bhattacharyya distance (change to logdet)">
+      <created>1558206753576</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1558206753576</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250515000" />
+    <option name="totallyTimeSpent" value="265921000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -482,13 +497,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1280" y="23" width="1920" height="1057" extended-state="6" />
+    <frame x="0" y="23" width="1280" height="777" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.13099042" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.1276252" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
-      <window_info anchor="bottom" id="Terminal" order="1" weight="0.32956153" />
+      <window_info anchor="bottom" id="Terminal" order="1" weight="0.32953367" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.5021299" side_tool="true" weight="0.4310881" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32746115" />
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
@@ -498,11 +514,11 @@
       <window_info anchor="bottom" id="Debug" order="8" sideWeight="0.49865952" weight="0.39792746" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
-      <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.4978701" weight="0.4310881" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49574015" visible="true" weight="0.4310881" />
+      <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.4978701" weight="0.43065694" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49574015" weight="0.24379562" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
-      <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5265018" weight="0.5958445" />
-      <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.327748" />
+      <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5265018" visible="true" weight="0.053311795" />
+      <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.32747602" />
       <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.47349823" side_tool="true" visible="true" weight="0.19235925" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
@@ -557,7 +573,8 @@
     <MESSAGE value="Remove run_experiment function" />
     <MESSAGE value="Fix import warnings" />
     <MESSAGE value="Re-write Bhattacharyya distance" />
-    <option name="LAST_COMMIT_MESSAGE" value="Re-write Bhattacharyya distance" />
+    <MESSAGE value="Re-write Bhattacharyya distance (change to logdet)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Re-write Bhattacharyya distance (change to logdet)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -571,7 +588,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$main.coverage" NAME="main Coverage Results" MODIFIED="1558179725597" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mnist" />
+    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$main.coverage" NAME="main Coverage Results" MODIFIED="1558208386951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mnist" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$vae.coverage" NAME="vae Coverage Results" MODIFIED="1555454690311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$gmm.coverage" NAME="gmm Coverage Results" MODIFIED="1555452593384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1556045498718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -658,6 +675,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-1465004018/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="320" column="33" selection-start-line="320" selection-start-column="33" selection-end-line="320" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/linalg/linalg_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/contrib/learn/python/learn/estimators/estimator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-391">
+          <caret line="489" column="6" selection-start-line="489" selection-start-column="6" selection-end-line="489" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/variables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10">
+          <caret line="1176" column="5" selection-start-line="1176" selection-start-column="5" selection-end-line="1177" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
+          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pytorch_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="13" column="14" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow_probability/python/monte_carlo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -693,52 +766,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-1465004018/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="320" column="33" selection-start-line="320" selection-start-column="33" selection-end-line="320" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
-          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pytorch_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/linalg/linalg_impl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2792">
-          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+        <state relative-caret-position="421">
+          <caret line="75" column="17" selection-start-line="75" selection-start-column="17" selection-end-line="75" selection-end-column="17" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

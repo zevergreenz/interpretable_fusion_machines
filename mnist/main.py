@@ -79,7 +79,7 @@ M = num_pattern
 L = 10
 D = 784
 Z = latent_dim
-B = 10000
+B = 2000
 
 print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
 encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)

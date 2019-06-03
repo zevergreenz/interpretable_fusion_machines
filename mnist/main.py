@@ -14,7 +14,7 @@ from mnist.vae import train_vae
 tfb = tfp.bijectors
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 
@@ -80,7 +80,7 @@ L = 10
 D = 784
 Z = latent_dim
 B = 8192
-E = 100
+E = 1000
 
 print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
 encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
@@ -88,15 +88,20 @@ z_train, z_log_var_train, _ = encoder.predict(x_train)
 z_test, z_log_var_test, _ = encoder.predict(x_test)
 
 # Creating one full datasets and two sub-datasets
-full_dataset = tf.data.Dataset.from_tensor_slices((x_train, z_train, z_log_var_train, y_train)).repeat(E).batch(B)
-indices = np.argwhere(np.logical_or.reduce((y_train == 0, y_train == 1, y_train == 2, y_train == 3, y_train == 4)))[:, 0]
-dataset1 = tf.data.Dataset.from_tensor_slices((x_train[indices], z_train[indices], z_log_var_train[indices], y_train[indices])).repeat(E).batch(B)
-indices = np.argwhere(np.logical_or.reduce((y_train == 5, y_train == 6, y_train == 7, y_train == 8, y_train == 9)))[:, 0]
-dataset2 = tf.data.Dataset.from_tensor_slices((x_train[indices], z_train[indices], z_log_var_train[indices], y_train[indices])).repeat(E).batch(B)
-test_dataset = tf.data.Dataset.from_tensor_slices((x_test, z_test, z_log_var_test, y_test)).batch(B)
+full_dataset = tf.data.Dataset.from_tensor_slices((x_train, z_train, z_log_var_train, y_train))
+indices1 = np.argwhere(np.logical_or.reduce((y_train == 0, y_train == 1, y_train == 2, y_train == 3, y_train == 4)))[:, 0]
+dataset1 = tf.data.Dataset.from_tensor_slices((x_train[indices1], z_train[indices1], z_log_var_train[indices1], y_train[indices1]))
+indices2 = np.argwhere(np.logical_or.reduce((y_train == 5, y_train == 6, y_train == 7, y_train == 8, y_train == 9)))[:, 0]
+dataset2 = tf.data.Dataset.from_tensor_slices((x_train[indices2], z_train[indices2], z_log_var_train[indices2], y_train[indices2]))
+
+test_dataset = tf.data.Dataset.from_tensor_slices((x_test, z_test, z_log_var_test, y_test))
+test_indices1 = np.argwhere(np.logical_or.reduce((y_test == 0, y_test == 1, y_test == 2, y_test == 3, y_test == 4)))[:, 0]
+test_dataset1 = tf.data.Dataset.from_tensor_slices((x_test[test_indices1], z_test[test_indices1], z_log_var_test[test_indices1], y_test[test_indices1]))
+test_indices2 = np.argwhere(np.logical_or.reduce((y_test == 5, y_test == 6, y_test == 7, y_test == 8, y_test == 9)))[:, 0]
+test_dataset2 = tf.data.Dataset.from_tensor_slices((x_test[test_indices2], z_test[test_indices2], z_log_var_test[test_indices2], y_test[test_indices2]))
 
 handle = tf.placeholder(tf.string, shape=[])
-iterator = tf.data.Iterator.from_string_handle(handle, full_dataset.output_types, full_dataset.output_shapes)
+iterator = tf.data.Iterator.from_string_handle(handle, full_dataset.batch(B).output_types, full_dataset.batch(B).output_shapes)
 x_train_ph, z_mean_ph, z_log_var_ph, y_train_ph = iterator.get_next()
 
 # x_train_ph = tf.placeholder(tf.float32, shape=[None, x_train.shape[1]])
@@ -111,8 +116,10 @@ z_cov = tf.matrix_diag(tf.exp(z_log_var_ph + 1e-10))
 #     covariances_ = np.load('gmm_covariances.npy')
 # else:
 print('Training GMM model...')
-gmm = GaussianMixture(n_components=M, covariance_type='full').fit(z_train)
-means_, covariances_ = gmm.means_.astype(np.float32), gmm.covariances_.astype(np.float32)
+gmm1 = GaussianMixture(n_components=M, covariance_type='full').fit(z_train[indices1])
+gmm2 = GaussianMixture(n_components=M, covariance_type='full').fit(z_train[indices2])
+gmm_combine = GaussianMixture(n_components=M, covariance_type='full').fit(np.concatenate((gmm1.means_, gmm2.means_)))
+# means_, covariances_ = gmm_combine.means_.astype(np.float32), gmm.covariances_.astype(np.float32)
 
 # x_means_ = decoder.predict(means_)
 # for i in range(L):
@@ -212,104 +219,127 @@ grads_and_vars = [(tf.debugging.check_numerics(g, 'gradient'), v) for g, v in gr
 opt = optimizer.apply_gradients(grads_and_vars)
 
 # Tensorflow session ========================================================================================
-# feed_dict = {
-#     x_train_ph: x_train,
-#     y_train_ph: y_train,
-#     z_mean_ph: z_train,
-#     z_log_var_ph: z_log_var_train,
-#     true_pred_ph: true_pred
-# }
 sess.run(tf.global_variables_initializer())
 
-# for _ in range(1000):
-#     for i in range(0, N, B):
-#         sess.run(latent_train_step, feed_dict={
-#             x_train_ph: x_train[i:i+B],
-#             y_train_ph: y_train[i:i+B],
-#             z_mean_ph: z_train[i:i+B],
-#             z_log_var_ph: z_log_var_train[i:i+B],
-#             true_pred_ph: true_pred[i:i+B]
-#         })
 
-full_dataset_string = sess.run(full_dataset.make_one_shot_iterator().string_handle())
+full_dataset_string = sess.run(dataset1.repeat(E).batch(B).make_one_shot_iterator().string_handle())
+try:
+    while True:
+        sess.run(latent_train_step, feed_dict={handle: full_dataset_string})
+except tf.errors.OutOfRangeError:
+    pass
+sess.run([means.assign(gmm1.means_.astype(np.float32)), scales_unconstrained.assign(scale_to_unconstrained.forward(np.linalg.cholesky(gmm1.covariances_.astype(np.float32))))])
+dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
+s1 = sess.run(S_label_pattern, feed_dict={handle: dataset_string})
+
+full_dataset_string = sess.run(dataset2.repeat(E).batch(B).make_one_shot_iterator().string_handle())
+try:
+    while True:
+        sess.run(latent_train_step, feed_dict={handle: full_dataset_string})
+except tf.errors.OutOfRangeError:
+    pass
+sess.run([means.assign(gmm2.means_.astype(np.float32)), scales_unconstrained.assign(scale_to_unconstrained.forward(np.linalg.cholesky(gmm2.covariances_.astype(np.float32))))])
+dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
+s2 = sess.run(S_label_pattern, feed_dict={handle: dataset_string})
+
+idx1 = gmm_combine.predict(gmm1.means_)
+idx2 = gmm_combine.predict(gmm2.means_)
+s = np.ones((s1.shape[0], M, 10))
+for j in range(M):
+    i1 = np.argwhere(idx1 == j)[:, 0]
+    for i in i1:
+        s[:, j, :] *= s1[:, i, :]
+    i2 = np.argwhere(idx2 == j)[:, 0]
+    for i in i2:
+        s[:, j, :] *= s2[:, i, :]
+normalization_const = np.sum(s, axis=1)
+normalization_const = np.reshape(normalization_const, (B, 1, 10))
+normalization_const = np.tile(normalization_const, (1, M, 1))
+s /= normalization_const
+
+sess.run([means.assign(gmm_combine.means_.astype(np.float32)), scales_unconstrained.assign(scale_to_unconstrained.forward(np.linalg.cholesky(gmm_combine.covariances_.astype(np.float32))))])
+dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
+coeffs_, coeffs_sum_ = sess.run([coeffs, coeffs_sum], feed_dict={handle: dataset_string})
+S_label_x_ = coeffs_ * s + (1 - coeffs_) * (1 / L)
+L_label_x_ = (coeffs_ / coeffs_sum_) * S_label_x_
+L_label_x_ = np.sum(L_label_x_, axis=1)
+
+full_dataset_string = sess.run(dataset1.repeat(E).batch(B).make_one_shot_iterator().string_handle())
 try:
     while True:
         sess.run(latent_train_step, feed_dict={handle: full_dataset_string})
 except tf.errors.OutOfRangeError:
     pass
 
-full_dataset_string = sess.run(full_dataset.make_one_shot_iterator().string_handle())
+full_dataset_string = sess.run(dataset1.batch(B).make_one_shot_iterator().string_handle())
 acc = 0
+count = 0
 try:
     while True:
         pred, ground_truth = sess.run([latent_clf(z_mean_ph), y_train_ph], feed_dict={handle: full_dataset_string})
         pred = np.argmax(pred, axis=1)
         acc += float(np.count_nonzero(pred == ground_truth))
+        count += ground_truth.shape[0]
 except tf.errors.OutOfRangeError:
-    acc /= y_train.shape[0] * E
-    print('Latent model accuracy new: ', acc)
-test_dataset_string = sess.run(test_dataset.make_one_shot_iterator().string_handle())
+    acc /= count
+    print('Latent model train accuracy: ', acc)
+test_dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
 acc = 0
+count = 0
 try:
     while True:
         pred, ground_truth = sess.run([latent_clf(z_mean_ph), y_train_ph], feed_dict={handle: test_dataset_string})
         pred = np.argmax(pred, axis=1)
         acc += float(np.count_nonzero(pred == ground_truth))
+        count += ground_truth.shape[0]
 except tf.errors.OutOfRangeError:
-    acc /= y_test.shape[0] * E
-    print('Latent model accuracy new: ', acc)
-for i in range(0, N, B):
-    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
-        x_train_ph: x_train[i:i + B],
-        y_train_ph: y_train[i:i + B],
-        z_mean_ph: z_train[i:i + B],
-        z_log_var_ph: z_log_var_train[i:i + B],
-        true_pred_ph: true_pred[i:i + B]
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-acc /= y_train.shape[0]
-print('Latent model accuracy: ', acc)
+    acc /= count
+    print('Latent model test accuracy: ', acc)
+
+
+dataset1_string = sess.run(dataset1.batch(B).make_one_shot_iterator().string_handle())
 acc = 0
-for i in range(0, x_test.shape[0], B):
-    pred = sess.run(latent_clf(z_mean_ph), feed_dict={
-        x_train_ph: x_test[i:i + B],
-        y_train_ph: y_test[i:i + B],
-        z_mean_ph: z_test[i:i + B],
-        z_log_var_ph: z_log_var_test[i:i + B],
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-acc /= y_test.shape[0]
-print('Latent model accuracy: ', acc)
+try:
+    while True:
+        pred, ground_truth = sess.run([L_label_x, y_train_ph], feed_dict={handle: dataset1_string})
+        pred = np.argmax(pred, axis=1)
+        acc += float(np.count_nonzero(pred == ground_truth))
+except tf.errors.OutOfRangeError:
+    acc /= y_train.shape[0]
+    print('Recomposed model train accuracy: ', acc)
+test_dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
+acc = 0
+try:
+    while True:
+        pred, ground_truth = sess.run([L_label_x, y_train_ph], feed_dict={handle: test_dataset_string})
+        pred = np.argmax(pred, axis=1)
+        acc += float(np.count_nonzero(pred == ground_truth))
+except tf.errors.OutOfRangeError:
+    acc /= y_test.shape[0]
+    print('Recomposed model test accuracy: ', acc)
 
 
 # Evaluation ================================================================================================
-acc = 0
-for i in range(0, N, B):
-    pred = sess.run(L_label_x, feed_dict={
-        x_train_ph: x_train[i:i + B],
-        y_train_ph: y_train[i:i + B],
-        z_mean_ph: z_train[i:i + B],
-        z_log_var_ph: z_log_var_train[i:i + B],
-        true_pred_ph: true_pred[i:i + B]
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_train[i:i + B]))
-acc /= y_train.shape[0]
-print('Recomposed model accuracy: ', acc)
-acc = 0
-for i in range(0, x_test.shape[0], B):
-    pred = sess.run(L_label_x, feed_dict={
-        x_train_ph: x_test[i:i + B],
-        y_train_ph: y_test[i:i + B],
-        z_mean_ph: z_test[i:i + B],
-        z_log_var_ph: z_log_var_test[i:i + B],
-    })
-    pred = np.argmax(pred, axis=1)
-    acc += float(np.count_nonzero(pred == y_test[i:i + B]))
-acc /= y_test.shape[0]
-print('Recomposed model accuracy: ', acc)
+# full_dataset_string = sess.run(full_dataset.batch(B).make_one_shot_iterator().string_handle())
+# acc = 0
+# try:
+#     while True:
+#         pred, ground_truth = sess.run([L_label_x, y_train_ph], feed_dict={handle: full_dataset_string})
+#         pred = np.argmax(pred, axis=1)
+#         acc += float(np.count_nonzero(pred == ground_truth))
+# except tf.errors.OutOfRangeError:
+#     acc /= y_train.shape[0]
+#     print('Recomposed model train accuracy: ', acc)
+# test_dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
+# acc = 0
+# try:
+#     while True:
+#         pred, ground_truth = sess.run([L_label_x, y_train_ph], feed_dict={handle: test_dataset_string})
+#         pred = np.argmax(pred, axis=1)
+#         acc += float(np.count_nonzero(pred == ground_truth))
+# except tf.errors.OutOfRangeError:
+#     acc /= y_test.shape[0]
+#     print('Recomposed model test accuracy: ', acc)
 
 # scales_grads = []
 # means_grads = []

@@ -8,6 +8,7 @@ import tensorflow_probability as tfp
 from keras import backend as K
 from keras.datasets import mnist
 from sklearn.mixture.gaussian_mixture import GaussianMixture
+from tensorflow.contrib.factorization.python.ops import gmm as gmm_lib
 
 from mnist.vae import train_vae
 
@@ -16,6 +17,29 @@ tfb = tfp.bijectors
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="3"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
+
+
+def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
+    N = tf.shape(mu1)[0]
+    M = mu2.shape[0]
+    Z = mu1.shape[1]
+    mu1 = tf.reshape(mu1, [N, 1, Z])
+    sigma1 = tf.reshape(sigma1, [N, 1, Z, Z])
+    mu1 = tf.tile(mu1, [1, M, 1])
+    sigma1 = tf.tile(sigma1, [1, M, 1, 1])
+    mu2 = tf.broadcast_to(mu2, [N, M, Z])
+    sigma2 = tf.broadcast_to(sigma2, [N, M, Z, Z])
+    mu1 = tf.reshape(mu1, [N, M, Z, 1])
+    mu2 = tf.reshape(mu2, [N, M, Z, 1])
+    sigma = (sigma1 + sigma2) / 2.0
+    # DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
+    DB = 1/2 * tf.linalg.logdet(sigma) - 1/4 * tf.linalg.logdet(sigma1) - 1/4 * tf.linalg.logdet(sigma2)
+    DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma), mu1-mu2)), [N, M])
+    # D_KL = tf.log(tf.linalg.det(sigma2) / tf.linalg.det(sigma1)) - Z.value
+    # D_KL += tf.linalg.trace(tf.matmul(tf.linalg.inv(sigma2), sigma1))
+    # D_KL += tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma2), mu1-mu2)), [N, M])
+    # D_KL *= 1/2
+    return tf.exp(-DB)
 
 
 # MNIST dataset
@@ -49,29 +73,6 @@ print("Black-box model accuracy: %.4f" % black_box_model.evaluate(x_test, y_test
 true_pred = black_box_model.predict(x_train)
 
 
-def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
-    N = tf.shape(mu1)[0]
-    M = mu2.shape[0]
-    Z = mu1.shape[1]
-    mu1 = tf.reshape(mu1, [N, 1, Z])
-    sigma1 = tf.reshape(sigma1, [N, 1, Z, Z])
-    mu1 = tf.tile(mu1, [1, M, 1])
-    sigma1 = tf.tile(sigma1, [1, M, 1, 1])
-    mu2 = tf.broadcast_to(mu2, [N, M, Z])
-    sigma2 = tf.broadcast_to(sigma2, [N, M, Z, Z])
-    mu1 = tf.reshape(mu1, [N, M, Z, 1])
-    mu2 = tf.reshape(mu2, [N, M, Z, 1])
-    sigma = (sigma1 + sigma2) / 2.0
-    # DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
-    DB = 1/2 * tf.linalg.logdet(sigma) - 1/4 * tf.linalg.logdet(sigma1) - 1/4 * tf.linalg.logdet(sigma2)
-    DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma), mu1-mu2)), [N, M])
-    # D_KL = tf.log(tf.linalg.det(sigma2) / tf.linalg.det(sigma1)) - Z.value
-    # D_KL += tf.linalg.trace(tf.matmul(tf.linalg.inv(sigma2), sigma1))
-    # D_KL += tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma2), mu1-mu2)), [N, M])
-    # D_KL *= 1/2
-    return tf.exp(-DB)
-
-
 latent_dim = 5
 num_pattern = 200
 N = x_train.shape[0]
@@ -82,39 +83,207 @@ Z = latent_dim
 B = 8192
 E = 1000
 
-print('Running experiment with latent dim: %d; num patterns: %d', (Z, M))
 encoder, decoder, vae = train_vae(x_train, y_train, latent_dim=Z, weights='mnist_vae_%d.h5' % Z)
 z_train, z_log_var_train, _ = encoder.predict(x_train)
 z_test, z_log_var_test, _ = encoder.predict(x_test)
 
 # Creating one full datasets and two sub-datasets
 full_dataset = tf.data.Dataset.from_tensor_slices((x_train, z_train, z_log_var_train, y_train))
-indices1 = np.argwhere(np.logical_or.reduce((y_train == 0, y_train == 1, y_train == 2, y_train == 3, y_train == 4)))[:, 0]
-dataset1 = tf.data.Dataset.from_tensor_slices((x_train[indices1], z_train[indices1], z_log_var_train[indices1], y_train[indices1]))
-indices2 = np.argwhere(np.logical_or.reduce((y_train == 5, y_train == 6, y_train == 7, y_train == 8, y_train == 9)))[:, 0]
-dataset2 = tf.data.Dataset.from_tensor_slices((x_train[indices2], z_train[indices2], z_log_var_train[indices2], y_train[indices2]))
+indices1 = np.argwhere(
+    np.logical_or.reduce((y_train == 0, y_train == 1, y_train == 2, y_train == 3, y_train == 4)))[:, 0]
+dataset1 = tf.data.Dataset.from_tensor_slices(
+    (x_train[indices1], z_train[indices1], z_log_var_train[indices1], y_train[indices1]))
+indices2 = np.argwhere(
+    np.logical_or.reduce((y_train == 5, y_train == 6, y_train == 7, y_train == 8, y_train == 9)))[:, 0]
+dataset2 = tf.data.Dataset.from_tensor_slices(
+    (x_train[indices2], z_train[indices2], z_log_var_train[indices2], y_train[indices2]))
 
 test_dataset = tf.data.Dataset.from_tensor_slices((x_test, z_test, z_log_var_test, y_test))
-test_indices1 = np.argwhere(np.logical_or.reduce((y_test == 0, y_test == 1, y_test == 2, y_test == 3, y_test == 4)))[:, 0]
-test_dataset1 = tf.data.Dataset.from_tensor_slices((x_test[test_indices1], z_test[test_indices1], z_log_var_test[test_indices1], y_test[test_indices1]))
-test_indices2 = np.argwhere(np.logical_or.reduce((y_test == 5, y_test == 6, y_test == 7, y_test == 8, y_test == 9)))[:, 0]
-test_dataset2 = tf.data.Dataset.from_tensor_slices((x_test[test_indices2], z_test[test_indices2], z_log_var_test[test_indices2], y_test[test_indices2]))
+test_indices1 = np.argwhere(
+    np.logical_or.reduce((y_test == 0, y_test == 1, y_test == 2, y_test == 3, y_test == 4)))[:, 0]
+test_dataset1 = tf.data.Dataset.from_tensor_slices(
+    (x_test[test_indices1], z_test[test_indices1], z_log_var_test[test_indices1], y_test[test_indices1]))
+test_indices2 = np.argwhere(
+    np.logical_or.reduce((y_test == 5, y_test == 6, y_test == 7, y_test == 8, y_test == 9)))[:, 0]
+test_dataset2 = tf.data.Dataset.from_tensor_slices(
+    (x_test[test_indices2], z_test[test_indices2], z_log_var_test[test_indices2], y_test[test_indices2]))
 
-handle = tf.placeholder(tf.string, shape=[])
-iterator = tf.data.Iterator.from_string_handle(handle, full_dataset.batch(B).output_types, full_dataset.batch(B).output_shapes)
-x_train_ph, z_mean_ph, z_log_var_ph, y_train_ph = iterator.get_next()
 
-# x_train_ph = tf.placeholder(tf.float32, shape=[None, x_train.shape[1]])
-# y_train_ph = tf.placeholder(tf.float32, shape=[None,])
-# z_mean_ph = tf.placeholder(tf.float32, shape=[None, z_train.shape[1]])
-# z_log_var_ph = tf.placeholder(tf.float32, shape=[None, z_log_var_train.shape[1]])
-z_cov = tf.matrix_diag(tf.exp(z_log_var_ph + 1e-10))
+class AgentFactory(object):
+    def __init__(self):
+        """
+        Objects which are shared across many agents
+        (e.g. vae, ...)
+        """
+        self.handle = tf.placeholder(tf.string, shape=[])
+        iterator = tf.data.Iterator.from_string_handle(self.handle, full_dataset.batch(B).output_types,
+                                                       full_dataset.batch(B).output_shapes)
+        x_train_ph, z_mean_ph, z_log_var_ph, y_train_ph = iterator.get_next()
 
-# if os.path.isfile('gmm_means_15.npy'):
-#     print('Loading GMM model from file...')
-#     means_ = np.load('gmm_means.npy')
-#     covariances_ = np.load('gmm_covariances.npy')
-# else:
+        # x_train_ph = tf.placeholder(tf.float32, shape=[None, x_train.shape[1]])
+        # y_train_ph = tf.placeholder(tf.float32, shape=[None,])
+        # z_mean_ph = tf.placeholder(tf.float32, shape=[None, z_train.shape[1]])
+        # z_log_var_ph = tf.placeholder(tf.float32, shape=[None, z_log_var_train.shape[1]])
+        z_cov = tf.matrix_diag(tf.exp(z_log_var_ph + 1e-10))
+
+        self.gmm = gmm_lib.GMM(num_clusters=M, covariance_type='full')
+        # gmm.fit(x=z_mean_ph, y=None)
+        self.gmm_train_step = self.gmm._get_train_ops(z_mean_ph, None)
+        means_ = self.gmm.clusters()
+        covariances_ = self.gmm.covariances()
+
+        # Train the latent classifier ==================================================================================
+        print('Training latent classifier...')
+        self.latent_clf = keras.Sequential([
+            keras.layers.InputLayer(input_tensor=z_mean_ph, input_shape=(Z,)),
+            keras.layers.Dense(128, activation=tf.nn.relu),
+            keras.layers.Dense(10, activation=tf.nn.softmax)
+        ])
+        latent_loss = K.sparse_categorical_crossentropy(y_train_ph, self.latent_clf.output, from_logits=True)
+        self.latent_train_step = tf.train.AdamOptimizer().minimize(latent_loss)
+
+        # Train the specialized classifiers ================================================================================
+        print('Training specialized classifiers...')
+        scale_to_unconstrained = tfb.Chain([
+            # step 3: flatten the lower triangular portion of the matrix
+            tfb.Invert(tfb.FillTriangular(validate_args=True)),
+            # step 2: take the log of the diagonals
+            tfb.TransformDiagonal(tfb.Invert(tfb.Exp(validate_args=True))),
+            # # step 1: decompose the precision matrix into its Cholesky factors
+            # tfb.Invert(tfb.CholeskyOuterProduct(validate_args=True)),
+        ])
+
+        random_init = False
+        if random_init:
+            means = tf.Variable(initial_value=tf.random_uniform(means_.shape), trainable=True, dtype=tf.float32)
+            scales_unconstrained = tf.Variable(
+                initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)),
+                trainable=True, dtype=tf.float32)
+            scales_unconstrained = tf.Variable(initial_value=tf.random_uniform(scales_unconstrained.shape),
+                                               trainable=True,
+                                               dtype=tf.float32)
+            scales = scale_to_unconstrained.inverse(scales_unconstrained)
+        else:
+            means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
+            scales_unconstrained = tf.Variable(
+                initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)),
+                trainable=True, dtype=tf.float32)
+            scales = scale_to_unconstrained.inverse(scales_unconstrained)
+
+        covariances = tf.matmul(scales, tf.linalg.transpose(scales))
+        p = tfp.distributions.MultivariateNormalTriL(
+            loc=means,
+            scale_tril=scales + tf.eye(Z, Z, batch_shape=(M,)) * 1e-5,
+            validate_args=True
+        )
+        S_label_pattern = tfp.monte_carlo.expectation(
+            f=lambda x: self.latent_clf(x),
+            samples=p.sample(1000),
+            log_prob=p.log_prob,
+            use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
+        )
+
+        coeffs = Bhattacharyya_coeff(z_mean_ph, z_cov, means, covariances)
+        coeffs = tf.reshape(coeffs, [tf.shape(x_train_ph)[0], M, 1])
+        coeffs_sum = tf.reduce_sum(coeffs, axis=[1, 2])
+        coeffs = tf.tile(coeffs, [1, 1, L])
+        S_label_pattern = tf.reshape(S_label_pattern, [1, M, L])
+        S_label_pattern = tf.tile(S_label_pattern, [tf.shape(x_train_ph)[0], 1, 1])
+
+        S_label_x = coeffs * S_label_pattern + (1 - coeffs) * (1 / L)
+
+        # Combine specialized classifiers to obtained recomposed model =====================================================
+        coeffs_sum = tf.reshape(coeffs_sum, [tf.shape(x_train_ph)[0], 1, 1])
+        L_label_x = (coeffs / coeffs_sum) * S_label_x
+        L_label_x = tf.reduce_sum(L_label_x, axis=1)
+
+        # Construct loss function and optimizer ============================================================================
+        true_pred_ph = tf.placeholder(tf.float32, shape=[None, true_pred.shape[1]])
+        loss = tf.reduce_mean(
+            tf.reduce_mean(tf.square(tf.log(tf.clip_by_value(L_label_x, 1e-10, 1.0)) - true_pred_ph), axis=1))
+        loss = tf.debugging.check_numerics(
+            loss,
+            'loss'
+        )
+
+        optimizer = tf.train.AdamOptimizer()
+        # opt = optimizer.minimize(loss, var_list=[scales_unconstrained, means])
+        grads_and_vars = optimizer.compute_gradients(loss, var_list=[scales_unconstrained, means])
+        # clipped_grads_and_vars = [(tf.clip_by_norm(g, 1), v) for g, v in grads_and_vars if g is not None]
+        grads_and_vars = [(tf.debugging.check_numerics(g, 'gradient'), v) for g, v in grads_and_vars]
+        opt = optimizer.apply_gradients(grads_and_vars)
+
+        self.S_label_pattern = S_label_pattern
+
+
+    def spawn(self, sess, dataset):
+        """
+        Run through the computational graph with a dataset
+        to create an agent
+        :param sess:
+        :param x:
+        :param y:
+        :return:
+        """
+        # 1. Train the latent classifier
+        dataset_string = sess.run(dataset.make_one_shot_iterator().string_handle())
+        try:
+            while True:
+                sess.run(self.latent_train_step, feed_dict={self.handle: dataset_string})
+        except tf.errors.OutOfRangeError:
+            pass
+
+        # 2. Train the GMM
+        try:
+            while True:
+                sess.run(self.gmm_train_step, feed_dict={self.handle: dataset_string})
+        except tf.errors.OutOfRangeError:
+            pass
+
+        # 3. Compute S_labels_patterns
+        try:
+            S_label_pattern_ = sess.run(self.S_label_pattern, feed_dict={self.handle: dataset_string})
+            while True:
+                s = sess.run(self.S_label_pattern, feed_dict={self.handle: dataset_string})
+                S_label_pattern_ = np.concatenate((S_label_pattern_, s))
+        except tf.errors.OutOfRangeError:
+            pass
+
+        patterns = sess.run(self.gmm.clusters())
+
+        return Agent(patterns, S_label_pattern_)
+
+
+class Agent(object):
+    def __init__(self, patterns, S_label_pattern):
+        self.patterns = patterns
+        self.S_label_pattern = S_label_pattern
+
+    def predict(self, x):
+        pass
+
+    def evaluate(self, dataset):
+        pass
+
+
+class SpecializedModel(object):
+    def __init__(self):
+        self.centroids = None
+        self.labels_centroids = None
+
+
+class FusionMachine(object):
+    def __init__(self):
+        pass
+
+
+agent_factory = AgentFactory()
+agent1 = agent_factory.spawn(sess)
+agent2 = agent_factory.spawn(sess)
+
+
+
+
 print('Training GMM model...')
 gmm1 = GaussianMixture(n_components=M, covariance_type='full').fit(z_train[indices1])
 gmm2 = GaussianMixture(n_components=M, covariance_type='full').fit(z_train[indices2])
@@ -128,95 +297,11 @@ gmm_combine = GaussianMixture(n_components=M, covariance_type='full').fit(np.con
 #     plt.savefig('new_mean_%d.png' % i, dpi=300)
 
 
-# Train the latent classifier ======================================================================================
 config = tf.ConfigProto()
 config.gpu_options.allow_growth=True
 sess = tf.Session(config=config)
 K.set_session(sess)
 
-print('Training latent classifier...')
-latent_clf = keras.Sequential([
-    keras.layers.InputLayer(input_tensor=z_mean_ph, input_shape=(Z,)),
-    keras.layers.Dense(128, activation=tf.nn.relu),
-    keras.layers.Dense(10, activation=tf.nn.softmax)
-])
-latent_loss = K.sparse_categorical_crossentropy(y_train_ph, latent_clf.output, from_logits=True)
-latent_train_step = tf.train.AdamOptimizer().minimize(latent_loss)
-# latent_clf.compile(optimizer='adam',
-#                    loss='sparse_categorical_crossentropy',
-#                    metrics=['accuracy'])
-# latent_clf.fit(z_train, y_train, epochs=10, verbose=0)
-# _, latent_clf_acc = latent_clf.evaluate(z_test, y_test)
-# print('Latent model accuracy: ', latent_clf_acc)
-
-
-# Train the specialized classifiers ================================================================================
-print('Training specialized classifiers...')
-scale_to_unconstrained = tfb.Chain([
-    # step 3: flatten the lower triangular portion of the matrix
-    tfb.Invert(tfb.FillTriangular(validate_args=True)),
-    # step 2: take the log of the diagonals
-    tfb.TransformDiagonal(tfb.Invert(tfb.Exp(validate_args=True))),
-    # # step 1: decompose the precision matrix into its Cholesky factors
-    # tfb.Invert(tfb.CholeskyOuterProduct(validate_args=True)),
-])
-
-random_init = False
-if random_init:
-    means = tf.Variable(initial_value=tf.random_uniform(means_.shape), trainable=True, dtype=tf.float32)
-    scales_unconstrained = tf.Variable(initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)),
-                                       trainable=True, dtype=tf.float32)
-    scales_unconstrained = tf.Variable(initial_value=tf.random_uniform(scales_unconstrained.shape), trainable=True,
-                                       dtype=tf.float32)
-    scales = scale_to_unconstrained.inverse(scales_unconstrained)
-else:
-    means = tf.Variable(initial_value=means_, trainable=True, dtype=tf.float32)
-    scales_unconstrained = tf.Variable(initial_value=scale_to_unconstrained.forward(np.linalg.cholesky(covariances_)),
-                                       trainable=True, dtype=tf.float32)
-    scales = scale_to_unconstrained.inverse(scales_unconstrained)
-
-covariances = tf.matmul(scales, tf.linalg.transpose(scales))
-p = tfp.distributions.MultivariateNormalTriL(
-    loc=means,
-    scale_tril=scales + tf.eye(Z, Z, batch_shape=(M,)) * 1e-5,
-    validate_args=True
-)
-S_label_pattern = tfp.monte_carlo.expectation(
-    f=lambda x: latent_clf(x),
-    samples=p.sample(1000),
-    log_prob=p.log_prob,
-    use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
-)
-
-coeffs = Bhattacharyya_coeff(z_mean_ph, z_cov, means, covariances)
-coeffs = tf.reshape(coeffs, [tf.shape(x_train_ph)[0], M, 1])
-coeffs_sum = tf.reduce_sum(coeffs, axis=[1, 2])
-coeffs = tf.tile(coeffs, [1, 1, L])
-S_label_pattern = tf.reshape(S_label_pattern, [1, M, L])
-S_label_pattern = tf.tile(S_label_pattern, [tf.shape(x_train_ph)[0], 1, 1])
-
-S_label_x = coeffs * S_label_pattern + (1 - coeffs) * (1 / L)
-
-# Combine specialized classifiers to obtained recomposed model =====================================================
-coeffs_sum = tf.reshape(coeffs_sum, [tf.shape(x_train_ph)[0], 1, 1])
-L_label_x = (coeffs / coeffs_sum) * S_label_x
-L_label_x = tf.reduce_sum(L_label_x, axis=1)
-
-
-# Construct loss function and optimizer ============================================================================
-true_pred_ph = tf.placeholder(tf.float32, shape=[None, true_pred.shape[1]])
-loss = tf.reduce_mean(tf.reduce_mean(tf.square(tf.log(tf.clip_by_value(L_label_x, 1e-10, 1.0)) - true_pred_ph), axis=1))
-loss = tf.debugging.check_numerics(
-    loss,
-    'loss'
-)
-
-optimizer = tf.train.AdamOptimizer()
-# opt = optimizer.minimize(loss, var_list=[scales_unconstrained, means])
-grads_and_vars = optimizer.compute_gradients(loss, var_list=[scales_unconstrained, means])
-# clipped_grads_and_vars = [(tf.clip_by_norm(g, 1), v) for g, v in grads_and_vars if g is not None]
-grads_and_vars = [(tf.debugging.check_numerics(g, 'gradient'), v) for g, v in grads_and_vars]
-opt = optimizer.apply_gradients(grads_and_vars)
 
 # Tensorflow session ========================================================================================
 sess.run(tf.global_variables_initializer())

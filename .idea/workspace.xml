@@ -31,14 +31,14 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.8739612">
+    <splitter split-orientation="horizontal" split-proportion="0.9">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mnist/vae.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="340">
-                  <caret line="140" column="4" selection-start-line="140" selection-start-column="4" selection-end-line="140" selection-end-column="4" />
+                <state relative-caret-position="179">
+                  <caret line="193" column="8" selection-start-line="193" selection-start-column="8" selection-end-line="193" selection-end-column="33" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -59,8 +59,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/mnist/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="266">
-                  <caret line="339" column="36" lean-forward="true" selection-start-line="339" selection-start-column="36" selection-end-line="339" selection-end-column="36" />
+                <state relative-caret-position="1509">
+                  <caret line="231" column="26" lean-forward="true" selection-start-line="231" selection-start-column="26" selection-end-line="231" selection-end-column="26" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -119,12 +119,12 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/mnist/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="270">
-                  <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
+                <state relative-caret-position="196">
+                  <caret line="232" column="51" selection-start-line="232" selection-start-column="51" selection-end-line="232" selection-end-column="51" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -145,7 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>num_p</find>
       <find>recomposed model accu</find>
       <find>gmm</find>
       <find>scale</find>
@@ -169,12 +168,13 @@
       <find>gmm1</find>
       <find>_get_train</find>
       <find>astype</find>
-      <find>B =</find>
       <find>allow_</find>
       <find>gmm.fit</find>
       <find>GaussianMix</find>
       <find>sess =</find>
       <find>def predict</find>
+      <find>load_weights</find>
+      <find>train_vae</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -206,9 +206,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+    <option name="x" value="-10" />
+    <option name="width" value="980" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -289,6 +289,9 @@
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mnist" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -364,7 +367,11 @@
       <workItem from="1559159855394" duration="5433000" />
       <workItem from="1559260622113" duration="31868000" />
       <workItem from="1559532852277" duration="214000" />
-      <workItem from="1559533129554" duration="46381000" />
+      <workItem from="1559533129554" duration="47767000" />
+      <workItem from="1560029834546" duration="1532000" />
+      <workItem from="1560064357882" duration="2788000" />
+      <workItem from="1560135128895" duration="2376000" />
+      <workItem from="1560254193255" duration="2852000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -527,11 +534,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559676771570</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Refactor into OOP (cont) - Add agent fusion code">
+      <created>1559737940059</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1559737940059</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="358545000" />
+    <option name="totallyTimeSpent" value="369479000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -544,7 +558,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" weight="0.02010724" />
@@ -561,12 +574,12 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.4978701" weight="0.33097595" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" visible="true" weight="0.46817538" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" visible="true" weight="0.3946252" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="bottom" id="Messages" order="14" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5112016" weight="0.02010724" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.32747602" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.48879838" side_tool="true" weight="0.02010724" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.48879838" side_tool="true" visible="true" weight="0.02010724" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
@@ -626,7 +639,8 @@
     <MESSAGE value="Add tf dataset" />
     <MESSAGE value="Add tf dataset (cont)" />
     <MESSAGE value="Refactor into OOP" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor into OOP" />
+    <MESSAGE value="Refactor into OOP (cont) - Add agent fusion code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor into OOP (cont) - Add agent fusion code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -727,6 +741,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/contrib/learn/python/learn/estimators/estimator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="757" column="6" selection-start-line="757" selection-start-column="6" selection-end-line="757" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/variables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="1221" column="55" selection-start-line="1221" selection-start-column="55" selection-end-line="1221" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/contrib/factorization/python/ops/gmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1131">
+          <caret line="135" column="44" selection-start-line="135" selection-start-column="44" selection-end-line="135" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/sklearn/mixture/gaussian_mixture.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1841">
+          <caret line="588" column="8" selection-start-line="588" selection-start-column="8" selection-end-line="588" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/data/ops/dataset_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="865" column="6" selection-start-line="865" selection-start-column="6" selection-end-line="865" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="193" column="8" selection-start-line="193" selection-start-column="8" selection-end-line="193" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/common.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -773,55 +832,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/contrib/learn/python/learn/estimators/estimator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="757" column="6" selection-start-line="757" selection-start-column="6" selection-end-line="757" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/variables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="1221" column="55" selection-start-line="1221" selection-start-column="55" selection-end-line="1221" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/contrib/factorization/python/ops/gmm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1131">
-          <caret line="135" column="44" selection-start-line="135" selection-start-column="44" selection-end-line="135" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/sklearn/mixture/gaussian_mixture.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1841">
-          <caret line="588" column="8" selection-start-line="588" selection-start-column="8" selection-end-line="588" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/data/ops/dataset_ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="865" column="6" selection-start-line="865" selection-start-column="6" selection-end-line="865" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="140" column="4" selection-start-line="140" selection-start-column="4" selection-end-line="140" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="339" column="36" lean-forward="true" selection-start-line="339" selection-start-column="36" selection-end-line="339" selection-end-column="36" />
+        <state relative-caret-position="1509">
+          <caret line="231" column="26" lean-forward="true" selection-start-line="231" selection-start-column="26" selection-end-line="231" selection-end-column="26" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

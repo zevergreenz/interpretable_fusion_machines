@@ -227,14 +227,10 @@ class AgentFactory(object):
         """
         Run through the computational graph with a dataset
         to create an agent
-        :param sess:
-        :param x:
-        :param y:
-        :return:
         """
         # 1. Train the latent classifier
         print('Step 1...')
-        dataset_string = sess.run(dataset.repeat(100).batch(B).make_one_shot_iterator().string_handle())
+        dataset_string = sess.run(dataset.repeat(1000).batch(B).make_one_shot_iterator().string_handle())
         try:
             while True:
                 sess.run(self.latent_train_step, feed_dict={self.handle: dataset_string})
@@ -252,17 +248,6 @@ class AgentFactory(object):
 
         # 3. Compute S_labels_patterns
         print('Step 3...')
-        # dataset_string = sess.run(dataset.batch(B).make_one_shot_iterator().string_handle())
-        # try:
-        #     S_label_pattern_ = sess.run(self.S_label_pattern, feed_dict={self.handle: dataset_string})
-        #     i = 0
-        #     while True:
-        #         i += 1
-        #         print(i, S_label_pattern_.shape)
-        #         s = sess.run(self.S_label_pattern, feed_dict={self.handle: dataset_string})
-        #         S_label_pattern_ = np.concatenate((S_label_pattern_, s))
-        # except tf.errors.OutOfRangeError:
-        #     pass
         S_label_pattern_ = sess.run(self.S_label_pattern)
         patterns = (means_, gmm.covariances_.astype(np.float32))
 
@@ -334,121 +319,13 @@ class Agent(object):
         return np.count_nonzero(pred == y_test)
 
 
-class SpecializedModel(object):
-    def __init__(self):
-        self.centroids = None
-        self.labels_centroids = None
-
-
-class FusionMachine(object):
-    def __init__(self):
-        pass
-
-
 agent_factory = AgentFactory()
 sess.run(tf.global_variables_initializer())
 agent1 = agent_factory.spawn(sess, dataset1)
 agent2 = agent_factory.spawn(sess, dataset2)
 agent = AgentFactory.fuse(agent1, agent2)
 
-print('Training GMM model...')
-gmm1 = GaussianMixture(n_components=M, covariance_type='full').fit(z_train[indices1])
-gmm2 = GaussianMixture(n_components=M, covariance_type='full').fit(z_train[indices2])
-gmm_combine = GaussianMixture(n_components=M, covariance_type='full').fit(np.concatenate((gmm1.means_, gmm2.means_)))
-# means_, covariances_ = gmm_combine.means_.astype(np.float32), gmm.covariances_.astype(np.float32)
-
-# full_dataset_string = sess.run(dataset1.repeat(E).batch(B).make_one_shot_iterator().string_handle())
-# try:
-#     while True:
-#         sess.run(latent_train_step, feed_dict={handle: full_dataset_string})
-# except tf.errors.OutOfRangeError:
-#     pass
-# sess.run([means.assign(gmm1.means_.astype(np.float32)), scales_unconstrained.assign(scale_to_unconstrained.forward(np.linalg.cholesky(gmm1.covariances_.astype(np.float32))))])
-# dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
-# s1 = sess.run(S_label_pattern, feed_dict={handle: dataset_string})
-#
-# full_dataset_string = sess.run(dataset2.repeat(E).batch(B).make_one_shot_iterator().string_handle())
-# try:
-#     while True:
-#         sess.run(latent_train_step, feed_dict={handle: full_dataset_string})
-# except tf.errors.OutOfRangeError:
-#     pass
-# sess.run([means.assign(gmm2.means_.astype(np.float32)), scales_unconstrained.assign(scale_to_unconstrained.forward(np.linalg.cholesky(gmm2.covariances_.astype(np.float32))))])
-# dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
-# s2 = sess.run(S_label_pattern, feed_dict={handle: dataset_string})
-#
-# idx1 = gmm_combine.predict(gmm1.means_)
-# idx2 = gmm_combine.predict(gmm2.means_)
-# s = np.ones((s1.shape[0], M, 10))
-# for j in range(M):
-#     i1 = np.argwhere(idx1 == j)[:, 0]
-#     for i in i1:
-#         s[:, j, :] *= s1[:, i, :]
-#     i2 = np.argwhere(idx2 == j)[:, 0]
-#     for i in i2:
-#         s[:, j, :] *= s2[:, i, :]
-# normalization_const = np.sum(s, axis=1)
-# normalization_const = np.reshape(normalization_const, (B, 1, 10))
-# normalization_const = np.tile(normalization_const, (1, M, 1))
-# s /= normalization_const
-#
-# sess.run([means.assign(gmm_combine.means_.astype(np.float32)), scales_unconstrained.assign(scale_to_unconstrained.forward(np.linalg.cholesky(gmm_combine.covariances_.astype(np.float32))))])
-# dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
-# coeffs_, coeffs_sum_ = sess.run([coeffs, coeffs_sum], feed_dict={handle: dataset_string})
-# S_label_x_ = coeffs_ * s + (1 - coeffs_) * (1 / L)
-# L_label_x_ = (coeffs_ / coeffs_sum_) * S_label_x_
-# L_label_x_ = np.sum(L_label_x_, axis=1)
-#
-# full_dataset_string = sess.run(dataset1.repeat(E).batch(B).make_one_shot_iterator().string_handle())
-# try:
-#     while True:
-#         sess.run(latent_train_step, feed_dict={handle: full_dataset_string})
-# except tf.errors.OutOfRangeError:
-#     pass
-#
-# full_dataset_string = sess.run(dataset1.batch(B).make_one_shot_iterator().string_handle())
-# acc = 0
-# count = 0
-# try:
-#     while True:
-#         pred, ground_truth = sess.run([latent_clf(z_mean_ph), y_train_ph], feed_dict={handle: full_dataset_string})
-#         pred = np.argmax(pred, axis=1)
-#         acc += float(np.count_nonzero(pred == ground_truth))
-#         count += ground_truth.shape[0]
-# except tf.errors.OutOfRangeError:
-#     acc /= count
-#     print('Latent model train accuracy: ', acc)
-# test_dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
-# acc = 0
-# count = 0
-# try:
-#     while True:
-#         pred, ground_truth = sess.run([latent_clf(z_mean_ph), y_train_ph], feed_dict={handle: test_dataset_string})
-#         pred = np.argmax(pred, axis=1)
-#         acc += float(np.count_nonzero(pred == ground_truth))
-#         count += ground_truth.shape[0]
-# except tf.errors.OutOfRangeError:
-#     acc /= count
-#     print('Latent model test accuracy: ', acc)
-#
-#
-# dataset1_string = sess.run(dataset1.batch(B).make_one_shot_iterator().string_handle())
-# acc = 0
-# try:
-#     while True:
-#         pred, ground_truth = sess.run([L_label_x, y_train_ph], feed_dict={handle: dataset1_string})
-#         pred = np.argmax(pred, axis=1)
-#         acc += float(np.count_nonzero(pred == ground_truth))
-# except tf.errors.OutOfRangeError:
-#     acc /= y_train.shape[0]
-#     print('Recomposed model train accuracy: ', acc)
-# test_dataset_string = sess.run(test_dataset.batch(B).make_one_shot_iterator().string_handle())
-# acc = 0
-# try:
-#     while True:
-#         pred, ground_truth = sess.run([L_label_x, y_train_ph], feed_dict={handle: test_dataset_string})
-#         pred = np.argmax(pred, axis=1)
-#         acc += float(np.count_nonzero(pred == ground_truth))
-# except tf.errors.OutOfRangeError:
-#     acc /= y_test.shape[0]
-#     print('Recomposed model test accuracy: ', acc)
+vae.load_weights('mnist_vae_%d.h5' % Z)
+print('Agent 1: ', agent1.evaluate(x_test, y_test))
+print('Agent 2: ', agent2.evaluate(x_test, y_test))
+print('Agent  : ', agent.evaluate(x_test, y_test))

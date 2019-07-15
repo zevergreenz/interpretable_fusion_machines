@@ -234,9 +234,9 @@ class Agent(object):
         L_label_x = (coeffs / coeffs_sum) * S_label_x
         L_label_x = np.sum(L_label_x, axis=1)
 
-        return L_label_x
+        return L_label_x, coeffs
 
     def evaluate(self, z_mean, z_log_var, y):
-        pred = self.predict(z_mean, z_log_var)
+        pred, _ = self.predict(z_mean, z_log_var)
         pred = np.argmax(pred, axis=1)
-        return np.count_nonzero(pred == y)
+        return np.count_nonzero(pred == y[:,0])

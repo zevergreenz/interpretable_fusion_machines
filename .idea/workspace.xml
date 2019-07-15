@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/mnist/cifar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mnist/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mnist/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mnist/vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/vae.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,14 +33,14 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.38812786">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mnist/vae.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3111">
-                  <caret line="193" column="8" selection-start-line="193" selection-start-column="8" selection-end-line="193" selection-end-column="33" />
+                <state relative-caret-position="544">
+                  <caret line="244" column="21" selection-start-line="244" selection-start-column="14" selection-end-line="244" selection-end-column="21" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -49,7 +51,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/common.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="595">
+                <state relative-caret-position="390">
                   <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
                   <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
                 </state>
@@ -57,10 +59,31 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/gmm.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="390">
+                  <caret line="102" column="26" lean-forward="true" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mnist/cifar.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-307">
+                  <caret line="82" column="27" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/mnist/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="471">
-                  <caret line="98" selection-start-line="98" selection-end-line="100" selection-end-column="66" />
+                <state relative-caret-position="113">
+                  <caret line="66" column="65" lean-forward="true" selection-start-line="66" selection-end-line="67" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -71,8 +94,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mnist/agent.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="263">
-                  <caret line="214" column="25" lean-forward="true" selection-start-line="214" selection-start-column="25" selection-end-line="214" selection-end-column="25" />
+                <state relative-caret-position="-1887">
+                  <caret line="9" selection-start-line="9" selection-end-line="29" selection-end-column="22" />
                   <folding>
                     <element signature="e#0#12#0" expanded="true" />
                   </folding>
@@ -89,50 +112,27 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/mnist/latent_classifier.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="102">
-                  <caret line="6" column="86" selection-start-line="6" selection-start-column="86" selection-end-line="6" selection-end-column="86" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
-              <provider selected="true" editor-type-id="text-editor" />
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/mnist/recomposed_classifier.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="408">
-                  <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/mnist/specialized_classifier.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="561">
-                  <caret line="33" column="80" selection-start-line="33" selection-start-column="80" selection-end-line="33" selection-end-column="80" />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+        <leaf>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/mnist/main.py">
+            <entry file="file://$PROJECT_DIR$/mnist/vae.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1564">
-                  <caret line="92" column="36" lean-forward="true" selection-start-line="92" selection-start-column="36" selection-end-line="92" selection-end-column="36" />
+                <state relative-caret-position="169">
+                  <caret line="180" column="32" lean-forward="true" selection-start-line="180" selection-start-column="32" selection-end-line="180" selection-end-column="32" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/losses.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
                 </state>
               </provider>
             </entry>
@@ -150,13 +150,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>accuracy new</find>
-      <find>E = 10</find>
-      <find>monte_</find>
-      <find>E =</find>
-      <find>latent</find>
-      <find>monte_car</find>
-      <find>Gaussianm</find>
       <find>latent_train_step</find>
       <find>GaussianM</find>
       <find>latent_mod</find>
@@ -175,17 +168,25 @@
       <find>M</find>
       <find>L</find>
       <find>encoder</find>
-      <find>tfb</find>
       <find>num_labels</find>
       <find>dataset.outp</find>
       <find>tf.shape</find>
       <find>dataset.batch</find>
+      <find>model</find>
+      <find>tfb</find>
+      <find>vae</find>
+      <find>plot_model</find>
+      <find>tf.keras</find>
+      <find>binary_crossentropy</find>
+      <find>train_</find>
+      <find>Input</find>
     </findStrings>
     <replaceStrings>
       <replace>self.batch_size</replace>
       <replace>self.latent_dim</replace>
       <replace>self.num_pattern</replace>
       <replace>self.num_labels</replace>
+      <replace>black_box_model</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -210,18 +211,20 @@
         <option value="$PROJECT_DIR$/mnist/plot.py" />
         <option value="$PROJECT_DIR$/mnist/recomposed_classifier.py" />
         <option value="$PROJECT_DIR$/mnist/specialized_classifier.py" />
-        <option value="$PROJECT_DIR$/mnist/vae.py" />
         <option value="$PROJECT_DIR$/pytorch_test.py" />
-        <option value="$PROJECT_DIR$/mnist/agent.py" />
         <option value="$PROJECT_DIR$/mnist/main.py" />
         <option value="$PROJECT_DIR$/mnist/__init__.py" />
+        <option value="$PROJECT_DIR$/mnist/vae.py" />
+        <option value="$PROJECT_DIR$/mnist/cifar.py" />
+        <option value="$PROJECT_DIR$/mnist/agent.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="width" value="980" />
-    <option name="height" value="1040" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="978" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -280,7 +283,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.cifar">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -295,6 +298,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="cifar" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="interpretable_fusion_machines" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mnist" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mnist/cifar.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -324,6 +346,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.cifar" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -400,7 +423,8 @@
       <workItem from="1562510032588" duration="599000" />
       <workItem from="1562551750340" duration="9941000" />
       <workItem from="1562602393332" duration="598000" />
-      <workItem from="1562647687746" duration="5531000" />
+      <workItem from="1562647687746" duration="14749000" />
+      <workItem from="1563155418351" duration="26389000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -584,11 +608,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562659701758</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Remove unused files">
+      <created>1562659830095</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1562659830095</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="398492000" />
+    <option name="totallyTimeSpent" value="434099000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -601,14 +632,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" weight="0.09919571" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.10053619" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32953367" />
-      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50603217" side_tool="true" weight="0.3536068" />
+      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.5067024" side_tool="true" weight="0.2602546" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32673267" />
       <window_info anchor="bottom" id="Docker" order="4" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="5" />
@@ -617,13 +647,13 @@
       <window_info anchor="bottom" id="Debug" order="8" sideWeight="0.49865952" weight="0.44978783" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
-      <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.4978701" weight="0.33097595" />
-      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49396783" weight="0.261669" />
+      <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.49731904" weight="0.33097595" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49329758" visible="true" weight="0.4596888" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="bottom" id="Messages" order="14" />
-      <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5112016" weight="0.02010724" />
+      <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5092593" weight="0.2191689" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.32747602" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.48879838" side_tool="true" weight="0.02010724" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.49074075" side_tool="true" weight="0.041436464" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
@@ -659,7 +689,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add plots" />
     <MESSAGE value="Renaming stuff" />
     <MESSAGE value="Refactor project" />
     <MESSAGE value="Latent classifier" />
@@ -684,7 +713,8 @@
     <MESSAGE value="Refactor into OOP (cont) - Add agent fusion code" />
     <MESSAGE value="Refactor code" />
     <MESSAGE value="Refactor Agent and AgentFactory into a separate file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor Agent and AgentFactory into a separate file" />
+    <MESSAGE value="Remove unused files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove unused files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -705,12 +735,6 @@
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$vae.coverage" NAME="vae Coverage Results" MODIFIED="1555454690311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-1465004018/codecs.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/utils/vis_utils.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/numpy/linalg/linalg.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/numpy/lib/twodim_base.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/python_stubs/-1647038102/builtins.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/python_stubs/-1647038102/numpy/random/mtrand.py" />
     <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/numpy/core/fromnumeric.py" />
     <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/numpy/lib/arraysetops.py" />
     <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/engine/sequential.py" />
@@ -731,13 +755,6 @@
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/training/adam.py" />
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/training/optimizer.py" />
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/numpy/core/multiarray.py" />
-    <entry file="file://$PROJECT_DIR$/gmm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="132" selection-start-line="132" selection-end-line="132" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-1465004018/codecs.py" />
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/linalg/linalg_impl.py" />
     <entry file="file://$PROJECT_DIR$/../Library/Caches/PyCharm2019.1/remote_sources/-1647038102/-2146050958/tensorflow/contrib/learn/python/learn/estimators/estimator.py" />
@@ -792,21 +809,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3111">
-          <caret line="193" column="8" selection-start-line="193" selection-start-column="8" selection-end-line="193" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/common.py">
+    <entry file="file://$PROJECT_DIR$/mnist/latent_classifier.py" />
+    <entry file="file://$PROJECT_DIR$/mnist/recomposed_classifier.py" />
+    <entry file="file://$PROJECT_DIR$/mnist/specialized_classifier.py" />
+    <entry file="file://$PROJECT_DIR$/pytorch_test.py" />
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/datasets/cifar10.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
-          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
+        <state relative-caret-position="-226">
+          <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -817,34 +830,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/recomposed_classifier.py">
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/engine/training.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
+        <state relative-caret-position="135">
+          <caret line="544" column="6" selection-start-line="544" selection-start-column="6" selection-end-line="544" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/specialized_classifier.py">
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/layers/convolutional.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="80" selection-start-line="33" selection-start-column="80" selection-end-line="33" selection-end-column="80" />
+        <state relative-caret-position="120">
+          <caret line="431" column="8" selection-start-line="431" selection-start-column="8" selection-end-line="431" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/main.py">
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/layers/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="98" selection-start-line="98" selection-end-line="100" selection-end-column="66" />
+        <state>
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/losses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="33" column="51" selection-start-line="33" selection-start-column="6" selection-end-line="33" selection-end-column="51" />
+          <caret line="36" column="24" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="102" column="26" lean-forward="true" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/cifar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-307">
+          <caret line="82" column="27" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pytorch_test.py">
+    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="14" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
+        <state relative-caret-position="544">
+          <caret line="244" column="21" selection-start-line="244" selection-start-column="14" selection-end-line="244" selection-end-column="21" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -853,23 +897,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mnist/agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="214" column="25" lean-forward="true" selection-start-line="214" selection-start-column="25" selection-end-line="214" selection-end-column="25" />
+        <state relative-caret-position="-1887">
+          <caret line="9" selection-start-line="9" selection-end-line="29" selection-end-column="22" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/latent_classifier.py">
+    <entry file="file://$PROJECT_DIR$/mnist/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="86" selection-start-line="6" selection-start-column="86" selection-end-line="6" selection-end-column="86" />
+        <state relative-caret-position="113">
+          <caret line="66" column="65" lean-forward="true" selection-start-line="66" selection-end-line="67" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

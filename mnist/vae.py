@@ -1,13 +1,18 @@
 import os
 
+import tensorflow as tf
+import tensorflow_probability as tfp
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import keras
 from keras import backend as K
+from keras import layers
 from keras.layers import Lambda, Input, Dense
-from keras.losses import mse
+from keras.losses import mse, sparse_categorical_crossentropy
 from keras.models import Model
 from keras.utils import plot_model
+
 from sklearn.mixture.gaussian_mixture import GaussianMixture
 
 
@@ -188,6 +193,97 @@ def train_vae(x_train, y_train, latent_dim=2, weights='mnist_vae.h5'):
     vae_loss = K.mean(reconstruction_loss + kl_loss)
     vae.add_loss(vae_loss)
     vae.compile(optimizer='adam')
+
+    if os.path.isfile(weights):
+        print("Found saved weights, loading from file ...")
+        vae.load_weights(weights)
+    else:
+        # train the autoencoder
+        print("Saving weights to %s" % weights)
+        vae.fit(x_train,
+                epochs=epochs,
+                batch_size=batch_size,
+                verbose=0)
+                # validation_data=(x_test, None))
+        vae.save_weights(weights)
+
+    return encoder, decoder, vae
+
+def train_cnn_vae(x_train, y_train, latent_dim=2, weights='cnn_vae.h5'):
+    # network parameters
+    original_dim = x_train.shape[1]
+    input_shape = (original_dim, )
+    intermediate_dim = 1024
+    batch_size = 256
+    epochs = 70
+
+    """
+      Convolutional structure for the encoder net
+    """
+
+    encoder = keras.Sequential([
+        layers.Conv2D(filters=64, kernel_size=4, strides=2, activation=tf.nn.relu, padding='same', input_shape=x_train.shape[1:], batch_size=batch_size),
+        layers.Conv2D(filters=128, kernel_size=4, strides=2, activation=tf.nn.relu, padding='same'),
+        layers.Conv2D(filters=512, kernel_size=4, strides=2, activation=tf.nn.relu, padding='same'),
+        layers.Flatten()
+    ])
+
+    """
+      DeConv structure for the decoder net
+    """
+
+    decoder = keras.Sequential([
+        layers.Dense(2048, input_shape=(1024,)),
+        layers.Reshape(target_shape=(4, 4, 128), input_shape=(None, 1024)),
+        layers.Conv2DTranspose(filters=256, kernel_size=4, strides=2, activation=tf.nn.relu, padding='same'),
+        layers.Conv2DTranspose(filters=64, kernel_size=4, strides=2, activation=tf.nn.relu, padding='same'),
+        layers.Conv2DTranspose(filters=3, kernel_size=4, strides=2, activation=tf.nn.relu, padding='same')
+    ])
+    # x = tf.placeholder(tf.float32, shape=[batch_size, 32, 32, 3])
+    x = Input(shape=[32, 32, 3])
+
+    encoded = encoder(x)
+
+    mean = layers.Dense(1024, activation=tf.nn.softplus)(encoded)
+    sigma = layers.Dense(1024, activation=tf.nn.relu)(encoded)
+
+    z = Lambda(sampling, output_shape=(1024,), name='z')([mean, sigma])
+    # z = mean + tf.multiply(tf.sqrt(tf.exp(sigma)),
+    #                        tf.random_normal(shape=(batch_size, 1024)))
+
+    x_reco = decoder(z)
+
+    vae = Model(x, x_reco, name='vae_cnn')
+
+    # reconstruction_term = -tf.reduce_sum(tfp.distributions.MultivariateNormalDiag(
+    #     layers.Flatten()(x_reco), scale_identity_multiplier=0.05).log_prob(layers.Flatten()(x)))
+    reconstruction_term = tf.reduce_sum(keras.losses.categorical_crossentropy(x, x_reco), axis=[1, 2])
+
+    kl_divergence = tf.reduce_sum(tf.keras.metrics.kullback_leibler_divergence(x, x_reco), axis=[1, 2])
+
+    cost = tf.reduce_mean(reconstruction_term + kl_divergence)
+
+    vae.add_loss(cost)
+    vae.compile(optimizer='adam')
+
+    # optimizer = tf.train.AdamOptimizer(learning_rate=0.0001).minimize(cost)
+    #
+    # runs = 20
+    # n_minibatches = int(x_train.shape[0] / batch_size)
+    #
+    # print("Number of minibatches: ", n_minibatches)
+    #
+    # sess = tf.InteractiveSession()
+    # init = tf.global_variables_initializer()
+    # sess.run(init)
+    #
+    # for epoch in range(runs):
+    #     pbar = tf.contrib.keras.utils.Progbar(n_minibatches)
+    #     for i in range(n_minibatches):
+    #         x_batch = x_train[i * batch_size:(i + 1) * batch_size] / 255.
+    #         cost_, _ = sess.run((cost, optimizer), feed_dict={x: x_batch})
+    #
+    #         pbar.add(1, [("cost", cost_)])
 
     if os.path.isfile(weights):
         print("Found saved weights, loading from file ...")

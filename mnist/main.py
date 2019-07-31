@@ -8,7 +8,7 @@ from keras import backend as K
 from keras.datasets import mnist
 
 from mnist.vae import train_vae
-from mnist.agent import Agent, AgentFactory
+from agent import AgentFactory
 
 tfb = tfp.bijectors
 

@@ -8,8 +8,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
-from mnist.vae import train_vae, train_cnn_vae
-from mnist.agent import Agent, AgentFactory
+from mnist.vae import train_vae
+from agent import AgentFactory
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="2"  # specify which GPU(s) to be used

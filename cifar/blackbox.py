@@ -100,20 +100,8 @@ print("Allocating GPU memory")
 model.load_weights('WRN-28-10 Weights.h5')
 print("Model loaded.")
 
-# Callbacks
-csv_logger = callbacks.CSVLogger(name + '/log.csv', append=True, separator=';')
-save_c = callbacks.ModelCheckpoint(name + '/WRN-28-10 Weights.h5', monitor="val_acc", save_best_only=True)
-lrs = LearningRateScheduler(schedule=schedule)
-
-# for i in range(0, nb_epoch):
-#     print('i = ' + str(i))
-#     for x_batch, y_batch in generator.flow(trainX, trainY, batch_size=len(trainX)):
-#         for testx_batch, testy_batch in test_generator.flow(testX, testY, batch_size=len(testX)):
-#             x_batch = random_crop(x_batch)
-#             testx_batch = random_crop(testx_batch)
-#             model.fit(x_batch, y_batch, nb_epoch=1, callbacks=[csv_logger, save_c, lrs], validation_data=(testx_batch, testy_batch))
-#             break
-#         break
-
 scores = model.evaluate_generator(test_generator.flow(testX, testY, nb_epoch), (testX.shape[0] / batch_size + 1))
 print("Accuracy = %f" % (100 * scores[1]))
+
+def train_blackbox():
+    return model

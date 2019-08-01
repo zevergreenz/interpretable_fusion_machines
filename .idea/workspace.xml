@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="Add Ziyue's VAE model for CIFAR10">
-      <change afterPath="$PROJECT_DIR$/cifar/vae2.py" afterDir="false" />
+    <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/cifar/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cifar/blackbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifar/blackbox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cifar/cifar.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifar/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cifar/vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/cifar/vae.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cifar/vae2.py" beforeDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +41,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mnist/vae.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3893">
-                  <caret line="244" column="21" selection-start-line="244" selection-start-column="14" selection-end-line="244" selection-end-column="21" />
+                <state relative-caret-position="144">
+                  <caret line="209" column="32" lean-forward="true" selection-start-line="209" selection-start-column="32" selection-end-line="209" selection-end-column="32" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -59,20 +63,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/gmm.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1598">
+                <state relative-caret-position="17">
                   <caret line="102" column="26" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cifar/cifar.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="136">
-                  <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-                  <folding>
-                    <element signature="e#0#9#0" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -80,8 +72,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mnist/main.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="187">
-                  <caret line="21" column="32" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+                <state relative-caret-position="196">
+                  <caret line="67" column="34" lean-forward="true" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
                   </folding>
@@ -92,7 +84,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/agent.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="68">
+                <state relative-caret-position="17">
                   <caret line="9" selection-start-line="9" selection-end-line="29" selection-end-column="22" />
                   <folding>
                     <element signature="e#0#12#0" expanded="true" />
@@ -101,20 +93,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/mnist/plot.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="187">
                   <caret line="11" column="55" selection-start-line="11" selection-start-column="55" selection-end-line="11" selection-end-column="55" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/cifar/blackbox.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="492">
-                  <caret line="88" column="23" lean-forward="true" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
                 </state>
               </provider>
             </entry>
@@ -135,20 +118,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cifar/vae.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="130">
-                  <caret line="184" selection-start-line="184" selection-end-line="191" />
-                  <folding>
-                    <element signature="e#0#9#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/cifar/vae2.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="147">
-                  <caret line="99" column="19" selection-start-line="99" selection-start-column="19" selection-end-line="99" selection-end-column="19" />
+                <state relative-caret-position="308">
+                  <caret line="133" column="41" selection-start-line="133" selection-start-column="41" selection-end-line="133" selection-end-column="41" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -157,13 +128,52 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/engine/topology.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="215">
+                  <caret line="1418" column="32" lean-forward="true" selection-start-line="1418" selection-start-column="32" selection-end-line="1418" selection-end-column="32" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/cifar/wide_residual_net.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1190">
+                <state relative-caret-position="17">
                   <caret line="75" column="23" lean-forward="true" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
                   <folding>
                     <element signature="e#0#30#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/cifar/main.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="425">
+                  <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/cifar/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="17">
+                  <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/cifar/blackbox.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="220">
+                  <caret line="100" column="22" selection-start-line="100" selection-start-column="22" selection-end-line="100" selection-end-column="22" />
                 </state>
               </provider>
             </entry>
@@ -181,7 +191,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>GaussianM</find>
       <find>latent_mod</find>
       <find>gmm1</find>
       <find>_get_train</find>
@@ -211,6 +220,7 @@
       <find>train_</find>
       <find>Input</find>
       <find>load</find>
+      <find>Reshape</find>
     </findStrings>
     <replaceStrings>
       <replace>self.batch_size</replace>
@@ -249,17 +259,18 @@
         <option value="$PROJECT_DIR$/mnist/cifar.py" />
         <option value="$PROJECT_DIR$/mnist/agent.py" />
         <option value="$PROJECT_DIR$/cifar/wide_residual_net.py" />
-        <option value="$PROJECT_DIR$/cifar/blackbox.py" />
-        <option value="$PROJECT_DIR$/cifar/vae.py" />
         <option value="$PROJECT_DIR$/cifar/vae2.py" />
+        <option value="$PROJECT_DIR$/cifar/vae.py" />
+        <option value="$PROJECT_DIR$/cifar/blackbox.py" />
+        <option value="$PROJECT_DIR$/cifar/cifar.py" />
+        <option value="$PROJECT_DIR$/cifar/__init__.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="y" value="-10" />
-    <option name="width" value="980" />
-    <option name="height" value="1050" />
+    <option name="x" value="792" />
+    <option name="width" value="815" />
+    <option name="height" value="958" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -328,7 +339,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.vae2">
+  <component name="RunManager" selected="Python.cifar_main">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -373,20 +384,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="cifar" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="cifar_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/mnist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/cifar" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\research\PycharmProjects\interpretable_fusion_machines\cifar\cifar.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cifar/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -439,7 +447,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="vae2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="vae" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -449,7 +457,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cifar/vae2.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cifar/vae.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -458,13 +466,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.blackbox" />
+      <item itemvalue="Python.cifar_main" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.vae" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.vae2" />
+        <item itemvalue="Python.cifar_main" />
+        <item itemvalue="Python.vae" />
         <item itemvalue="Python.vae" />
         <item itemvalue="Python.blackbox" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.cifar" />
       </list>
     </recent_temporary>
   </component>
@@ -543,7 +557,7 @@
       <workItem from="1562647687746" duration="14749000" />
       <workItem from="1563155418351" duration="26389000" />
       <workItem from="1564544093584" duration="9954000" />
-      <workItem from="1564566040647" duration="1329000" />
+      <workItem from="1564566040647" duration="10822000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -762,11 +776,25 @@
       <option name="project" value="LOCAL" />
       <updated>1564565007336</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="WIP">
+      <created>1564567463720</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1564567463720</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Fix VAE 2">
+      <created>1564661983935</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1564661983935</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="445382000" />
+    <option name="totallyTimeSpent" value="454875000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -778,8 +806,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
+    <frame x="-5" y="-5" width="1550" height="838" extended-state="6" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.103217155" />
@@ -796,7 +823,7 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.49731904" weight="0.33097595" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49329758" visible="true" weight="0.39179632" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49329758" visible="true" weight="0.3125884" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="bottom" id="Messages" order="14" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5092593" weight="0.2191689" />
@@ -847,8 +874,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add recomposed &amp; specialize classifier" />
-    <MESSAGE value="Reimplement specialized model" />
     <MESSAGE value="Add code to visualize centroids" />
     <MESSAGE value="Refactor code, implementing batch training" />
     <MESSAGE value="Add batch training + evaluation" />
@@ -872,7 +897,9 @@
     <MESSAGE value="Add new black-box model for CIFAR" />
     <MESSAGE value="Add new black-box model for CIFAR (0.92 accuracy)" />
     <MESSAGE value="Add Ziyue's VAE model for CIFAR10" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Ziyue's VAE model for CIFAR10" />
+    <MESSAGE value="WIP" />
+    <MESSAGE value="Fix VAE 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix VAE 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -893,9 +920,6 @@
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1556045498718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/math_ops.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/engine/training.py" />
-    <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/training/optimizer.py" />
     <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/sklearn/mixture/gaussian_mixture.py" />
     <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/sklearn/mixture/base.py" />
     <entry file="file://$PROJECT_DIR$/../.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/variables.py" />
@@ -936,16 +960,6 @@
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/layers/convolutional.py" />
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/layers/__init__.py" />
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/losses.py" />
-    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3893">
-          <caret line="244" column="21" selection-start-line="244" selection-start-column="14" selection-end-line="244" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/common.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -954,27 +968,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gmm.py">
+    <entry file="file://$PROJECT_DIR$/cifar/vae.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1598">
-          <caret line="102" column="26" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cifar/cifar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="21" column="32" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+        <state relative-caret-position="925">
+          <caret line="184" selection-start-line="184" selection-end-line="191" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -983,11 +980,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/agent.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
+        <state relative-caret-position="17">
           <caret line="9" selection-start-line="9" selection-end-line="29" selection-end-column="22" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="67" column="34" lean-forward="true" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cifar/wide_residual_net.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="75" column="23" lean-forward="true" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/engine/topology.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="1418" column="32" lean-forward="true" selection-start-line="1418" selection-start-column="32" selection-end-line="1418" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/keras/layers/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="622" column="8" selection-start-line="622" selection-start-column="8" selection-end-line="622" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/vae.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="209" column="32" lean-forward="true" selection-start-line="209" selection-start-column="32" selection-end-line="209" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="102" column="26" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cifar/blackbox.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="100" column="22" selection-start-line="100" selection-start-column="22" selection-end-line="100" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -998,13 +1053,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cifar/blackbox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="88" column="23" lean-forward="true" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1012,32 +1060,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cifar/wide_residual_net.py">
+    <entry file="file://$PROJECT_DIR$/cifar/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1190">
-          <caret line="75" column="23" lean-forward="true" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cifar/vae.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="184" selection-start-line="184" selection-end-line="191" />
+        <state relative-caret-position="308">
+          <caret line="133" column="41" selection-start-line="133" selection-start-column="41" selection-end-line="133" selection-end-column="41" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cifar/vae2.py">
+    <entry file="file://$PROJECT_DIR$/cifar/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="99" column="19" selection-start-line="99" selection-start-column="19" selection-end-line="99" selection-end-column="19" />
+        <state relative-caret-position="425">
+          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
           <folding>
-            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -8,7 +8,8 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
-from mnist.vae import train_vae
+from cifar.blackbox import train_blackbox
+from cifar.vae import train_cnn_vae
 from agent import AgentFactory
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
@@ -22,44 +23,7 @@ x_train = x_train.astype('float32') / 255
 x_test = x_test.astype('float32') / 255
 
 # Build a black-box model and get its predictions
-black_box_model_weights_filename = 'cifar10_black_box.h5'
-black_box_model = Sequential()
-black_box_model.add(Conv2D(32, (3, 3), padding='same',
-                 input_shape=x_train.shape[1:]))
-black_box_model.add(Activation('relu'))
-black_box_model.add(Conv2D(32, (3, 3)))
-black_box_model.add(Activation('relu'))
-black_box_model.add(MaxPooling2D(pool_size=(2, 2)))
-black_box_model.add(Dropout(0.25))
-
-black_box_model.add(Conv2D(64, (3, 3), padding='same'))
-black_box_model.add(Activation('relu'))
-black_box_model.add(Conv2D(64, (3, 3)))
-black_box_model.add(Activation('relu'))
-black_box_model.add(MaxPooling2D(pool_size=(2, 2)))
-black_box_model.add(Dropout(0.25))
-
-black_box_model.add(Flatten())
-black_box_model.add(Dense(512))
-black_box_model.add(Activation('relu'))
-black_box_model.add(Dropout(0.5))
-black_box_model.add(Dense(10))
-black_box_model.add(Activation('softmax'))
-
-black_box_model.compile(optimizer='adam',
-                   loss='sparse_categorical_crossentropy',
-                   metrics=['accuracy'])
-if os.path.isfile(black_box_model_weights_filename):
-    print("Loading black-box model weights...")
-    black_box_model.load_weights(black_box_model_weights_filename)
-else:
-    print("Training black-box model...")
-    black_box_model.fit(x_train, y_train, epochs=50, verbose=0)
-    print("Saving weights...")
-    black_box_model.save_weights(black_box_model_weights_filename)
-print("Black-box model accuracy: %.4f" % black_box_model.evaluate(x_test, y_test)[1])
-true_pred = black_box_model.predict(x_train)
-
+black_box_model = train_blackbox()
 
 latent_dim = 10
 num_pattern = 200

@@ -1,28 +1,17 @@
 # Source: https://github.com/olympus999/cifar-10-wrn
 
+import keras.utils.np_utils as kutils
 import numpy as np
-import sklearn.metrics as metrics
-import tensorflow as tf
-import os, os.path
-import pandas as pd
-import math
+from keras.datasets import cifar10
+from keras.optimizers import SGD
+from keras.preprocessing.image import ImageDataGenerator
 
 import cifar.wide_residual_net as wrn
-from keras.datasets import cifar10
-import keras.callbacks as callbacks
-import keras.utils.np_utils as kutils
-from keras.preprocessing.image import ImageDataGenerator
-from keras.utils import plot_model
-from keras.optimizers import SGD
-from keras.callbacks import LearningRateScheduler
 
-from keras import backend as K
-from keras.backend.tensorflow_backend import set_session
-
+import os
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="1"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
-
 
 name = 'KaggleV2.3 - WRN-28-10'
 

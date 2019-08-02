@@ -1,15 +1,15 @@
-import tensorflow as tf
-from keras import layers
-import tensorflow_probability as tfp
-import os
-import keras.backend as K
 import keras
+import keras.backend as K
+import tensorflow as tf
+import tensorflow_probability as tfp
+from keras import layers
+import os
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="1"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
-batch_size = 250
+batch_size = 256
 
 """
   Convolutional structure for the encoder net

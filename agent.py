@@ -106,7 +106,7 @@ class AgentFactory(object):
         )
         S_label_pattern = tfp.monte_carlo.expectation(
             f=lambda x: self.latent_clf(x),
-            samples=p.sample(1000),
+            samples=p.sample(1),
             log_prob=p.log_prob,
             use_reparametrization=(p.reparameterization_type == tfp.distributions.FULLY_REPARAMETERIZED)
         )

@@ -13,7 +13,7 @@ from cifar.vae import train_cnn_vae
 from agent import AgentFactory
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="2"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="1"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 
@@ -25,15 +25,15 @@ x_test = x_test.astype('float32') / 255
 # Build a black-box model and get its predictions
 black_box_model = train_blackbox()
 
-latent_dim = 10
-num_pattern = 200
+latent_dim = 1024
+num_pattern = 10
 N = x_train.shape[0]
 M = num_pattern
 L = 10
-D = 784
+D = 32*32*3
 Z = latent_dim
-B = 8192
-E = 1000
+B = 64
+# E = 1000
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth=True
@@ -44,7 +44,7 @@ K.set_session(sess)
 # x_train = np.reshape(x_train, [-1, original_dim])
 # x_test = np.reshape(x_test, [-1, original_dim])
 
-encoder, decoder, _ = train_vae(x_train, y_train, latent_dim=Z, weights='cifar_vae_%d.h5' % Z)
+encoder, decoder, _ = train_cnn_vae()
 z_train, z_log_var_train, _ = encoder.predict(x_train)
 z_test, z_log_var_test, _ = encoder.predict(x_test)
 

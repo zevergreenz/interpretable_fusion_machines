@@ -15,6 +15,7 @@ from agent import AgentFactory
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="1"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
+np.seterr(divide='ignore', invalid='ignore')
 
 
 # CIFAR10 dataset
@@ -26,13 +27,13 @@ x_test = x_test.astype('float32') / 255
 black_box_model = train_blackbox()
 
 latent_dim = 1024
-num_pattern = 10
+num_pattern = 50
 N = x_train.shape[0]
 M = num_pattern
 L = 10
 D = 32*32*3
 Z = latent_dim
-B = 64
+B = 32
 # E = 1000
 
 config = tf.ConfigProto()
@@ -47,6 +48,16 @@ K.set_session(sess)
 encoder, decoder, _ = train_cnn_vae()
 z_train, z_log_var_train, _ = encoder.predict(x_train)
 z_test, z_log_var_test, _ = encoder.predict(x_test)
+
+# threshold = 1000
+# x_train = x_train[:threshold]
+# y_train = y_train[:threshold]
+# x_test = x_test[:threshold]
+# y_test = y_test[:threshold]
+# z_train = z_train[:threshold]
+# z_log_var_train = z_log_var_train[:threshold]
+# z_test = z_test[:threshold]
+# z_log_var_test = z_log_var_test[:threshold]
 
 # Creating one full datasets and two sub-datasets
 full_dataset = tf.data.Dataset.from_tensor_slices((x_train, z_train, z_log_var_train, y_train))
@@ -70,7 +81,7 @@ test_dataset2 = tf.data.Dataset.from_tensor_slices(
     (x_test[test_indices2], z_test[test_indices2], z_log_var_test[test_indices2], y_test[test_indices2]))
 
 
-agent_factory = AgentFactory(full_dataset, latent_dim=Z, num_pattern=200, num_labels=10)
+agent_factory = AgentFactory(full_dataset, batch_size=B, latent_dim=Z, num_pattern=M, num_labels=10)
 sess.run(tf.global_variables_initializer())
 agent1 = agent_factory.spawn(sess, dataset1, num_data=len(indices1))
 agent2 = agent_factory.spawn(sess, dataset2, num_data=len(indices2))

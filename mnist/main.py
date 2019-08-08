@@ -13,9 +13,8 @@ from agent import AgentFactory
 tfb = tfp.bijectors
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="0"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
-
 
 
 # MNIST dataset
@@ -49,7 +48,7 @@ print("Black-box model accuracy: %.4f" % black_box_model.evaluate(x_test, y_test
 true_pred = black_box_model.predict(x_train)
 
 
-latent_dim = 5
+latent_dim = 10
 num_pattern = 200
 N = x_train.shape[0]
 M = num_pattern
@@ -90,7 +89,11 @@ test_dataset2 = tf.data.Dataset.from_tensor_slices(
     (x_test[test_indices2], z_test[test_indices2], z_log_var_test[test_indices2], y_test[test_indices2]))
 
 
-agent_factory = AgentFactory(full_dataset)
+agent_factory = AgentFactory(full_dataset,
+                             batch_size=B,
+                             latent_dim=Z,
+                             num_pattern=M,
+                             num_labels=10)
 sess.run(tf.global_variables_initializer())
 agent1 = agent_factory.spawn(sess, dataset1, num_data=len(indices1))
 agent2 = agent_factory.spawn(sess, dataset2, num_data=len(indices2))

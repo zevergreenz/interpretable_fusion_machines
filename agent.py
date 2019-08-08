@@ -4,6 +4,7 @@ import tensorflow as tf
 import tensorflow_probability as tfp
 from keras import backend as K
 from sklearn.mixture.gaussian_mixture import GaussianMixture
+import matplotlib.pyplot as plt
 tfb = tfp.bijectors
 
 
@@ -21,7 +22,9 @@ def Bhattacharyya_coeff(mu1, sigma1, mu2, sigma2):
     mu2 = tf.reshape(mu2, [N, M, Z, 1])
     sigma = (sigma1 + sigma2) / 2.0
     # DB = 0.5 * tf.log(tf.linalg.det(sigma) / tf.sqrt(tf.linalg.det(sigma1)*tf.linalg.det(sigma2)))
-    DB = 1/2 * tf.linalg.logdet(sigma) - 1/4 * tf.linalg.logdet(sigma1) - 1/4 * tf.linalg.logdet(sigma2)
+    DB = 1/2 * tf.linalg.logdet(sigma)
+    DB -= 1/4 * tf.linalg.logdet(sigma1)
+    DB -= 1/4 * tf.linalg.logdet(sigma2)
     DB += 1/8 * tf.reshape(tf.matmul(tf.linalg.transpose(mu1-mu2), tf.matmul(tf.linalg.inv(sigma), mu1-mu2)), [N, M])
     # D_KL = tf.log(tf.linalg.det(sigma2) / tf.linalg.det(sigma1)) - Z.value
     # D_KL += tf.linalg.trace(tf.matmul(tf.linalg.inv(sigma2), sigma1))
@@ -163,13 +166,13 @@ class AgentFactory(object):
         _, z_mean, _, _ = sess.run(self.iterator.get_next(), feed_dict={self.handle: dataset_string})
         gmm = GaussianMixture(n_components=self.num_pattern, covariance_type='full').fit(z_mean)
         means_ = gmm.means_.astype(np.float32)
-        scales_ = self.scale_to_unconstrained.forward(np.linalg.cholesky(gmm.covariances_.astype(np.float32)))
+        scales_ = self.scale_to_unconstrained.forward(np.linalg.cholesky(gmm.covariances_).astype(np.float32))
         sess.run([self.means.assign(means_), self.scales_unconstrained.assign(scales_)], feed_dict={self.handle: dataset_string})
 
         # 3. Compute S_labels_patterns
         print('Step 3...')
         S_label_pattern_ = sess.run(self.S_label_pattern)
-        patterns = (means_, gmm.covariances_.astype(np.float32))
+        patterns = (means_, gmm.covariances_)
 
         return Agent(sess, patterns, S_label_pattern_)
 
@@ -193,7 +196,7 @@ class AgentFactory(object):
         normalization_const = np.tile(normalization_const, (1, 10))
         s /= normalization_const
 
-        return Agent(agent1.sess, (gmm.means_.astype(np.float32), gmm.covariances_.astype(np.float32)), s)
+        return Agent(agent1.sess, (gmm.means_, gmm.covariances_), s)
 
 
 class Agent(object):
@@ -206,21 +209,20 @@ class Agent(object):
         self.latent_dim = patterns[0].shape[1]
         self.num_labels = S_label_pattern.shape[1]
 
+        self.mu1 = tf.placeholder(tf.float64, shape=(None, self.latent_dim))
+        self.sigma1 = tf.placeholder(tf.float64, shape=(None, self.latent_dim))
+        self.sigma1_transformed = tf.matrix_diag(tf.exp(self.sigma1 + 1e-10))
+        self.mu2 = tf.placeholder(tf.float64, shape=(None, self.latent_dim))
+        self.sigma2 = tf.placeholder(tf.float64, shape=(None, self.latent_dim, self.latent_dim))
+        self.coeffs_ph = Bhattacharyya_coeff(self.mu1, self.sigma1_transformed, self.mu2, self.sigma2)
 
     def predict(self, z_mean, z_log_var):
-        # z_mean, z_log_var, _ = encoder.predict(x)
         means, covariances = self.patterns
-        mu1 = tf.placeholder(tf.float32, shape=(None, self.latent_dim))
-        sigma1 = tf.placeholder(tf.float32, shape=(None, self.latent_dim))
-        sigma1_transformed = tf.matrix_diag(tf.exp(sigma1 + 1e-10))
-        mu2 = tf.placeholder(tf.float32, shape=(None, self.latent_dim))
-        sigma2 = tf.placeholder(tf.float32, shape=(None, self.latent_dim, self.latent_dim))
-        coeffs_ph = Bhattacharyya_coeff(mu1, sigma1_transformed, mu2, sigma2)
-        coeffs = self.sess.run(coeffs_ph, feed_dict={
-            mu1: z_mean,
-            sigma1: z_log_var,
-            mu2: means,
-            sigma2: covariances
+        coeffs = self.sess.run(self.coeffs_ph, feed_dict={
+            self.mu1: z_mean,
+            self.sigma1: z_log_var,
+            self.mu2: means,
+            self.sigma2: covariances
         })
         coeffs_sum = np.sum(coeffs, axis=1)
         coeffs = coeffs[:, :, np.newaxis]
@@ -236,7 +238,45 @@ class Agent(object):
 
         return L_label_x, coeffs
 
-    def evaluate(self, z_mean, z_log_var, y):
-        pred, _ = self.predict(z_mean, z_log_var)
-        pred = np.argmax(pred, axis=1)
-        return np.count_nonzero(pred == y[:,0])
+    def evaluate(self, z_mean, z_log_var, y, batch_size=4):
+        res = 0
+        for i in range(0, z_mean.shape[0], batch_size):
+            pred, _ = self.predict(z_mean[i:i+batch_size], z_log_var[i:i+batch_size])
+            pred = np.argmax(pred, axis=1)
+            res += np.count_nonzero(pred == y[i:i+batch_size, 0])
+        return res
+        # pred, _ = self.predict(z_mean, z_log_var)
+        # pred = np.argmax(pred, axis=1)
+        # return np.count_nonzero(pred == y[:,0])
+
+    def visualize_pattern(self, j, decoder):
+        j = 124
+        plt.clf()
+        plt.bar(range(0, 10), self.S_label_pattern[j])
+        plt.xticks(np.arange(0, 10, 1))
+        plt.yticks(np.arange(0, 1.1, 0.1))
+        plt.savefig('test_hist.png')
+        plt.clf()
+        plt.imshow(np.reshape(decoder.predict(self.patterns[0][j:j + 1]), (28, 28)))
+        plt.savefig('test_hist_p.png')
+
+    def predict_and_explain(self, z_mean, z_log_var, x, y, decoder, k=3):
+        pred, coeffs = self.predict(z_mean, z_log_var)
+        coeffs = coeffs[0, :, 0]
+        coeffs = coeffs / np.sum(coeffs)
+        idx = np.argsort(coeffs)[::-1]
+        plt.clf()
+        plt.imshow(np.reshape(x, (28, 28)))
+        plt.savefig('test_image.png')
+        print('Correct label: %d' % y[0])
+        print('Prediction: %d' % np.argmax(pred))
+        for i, j in enumerate(idx[:k]):
+            plt.clf()
+            plt.imshow(np.reshape(decoder.predict(self.patterns[0][j:j+1]), (28, 28)))
+            plt.savefig('pattern_%d.png' % (i+1))
+            print('Pattern %d score %.5f' % (i, coeffs[j]))
+
+
+
+
+

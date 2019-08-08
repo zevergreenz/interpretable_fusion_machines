@@ -89,7 +89,7 @@ from keras.datasets.cifar10 import load_data
 (X_train, y_train), (X_test, y_test) = load_data()
 
 
-runs = 1
+runs = 100
 n_minibatches = int(X_train.shape[0] / batch_size)
 
 print("Number of minibatches: ", n_minibatches)
@@ -98,13 +98,20 @@ sess = tf.InteractiveSession()
 init = tf.global_variables_initializer()
 sess.run(init)
 
-for epoch in range(runs):
-    pbar = tf.contrib.keras.utils.Progbar(n_minibatches)
-    for i in range(n_minibatches):
-        x_batch = X_train[i * batch_size:(i + 1) * batch_size] / 255.
-        cost_, _ = sess.run((cost, optimizer), feed_dict={x: x_batch})
+TRAIN = False
+if TRAIN:
+    for epoch in range(runs):
+        pbar = tf.contrib.keras.utils.Progbar(n_minibatches)
+        for i in range(n_minibatches):
+            x_batch = X_train[i * batch_size:(i + 1) * batch_size] / 255.
+            cost_, _ = sess.run((cost, optimizer), feed_dict={x: x_batch})
 
-        pbar.add(1, [("cost", cost_)])
+            pbar.add(1, [("cost", cost_)])
+    my_vae.save_weights('vae_weights.h5')
+else:
+    print('Loading vae weights...')
+    my_vae.load_weights('vae_weights.h5')
+
 
 import matplotlib.pyplot as plt
 import numpy as np

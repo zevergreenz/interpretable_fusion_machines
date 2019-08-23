@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="maplecg-bayes" createEmptyFolders="true" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="maplecgpu" createEmptyFolders="true" autoUploadExternalChanges="true">
     <serverData>
       <paths name="maplecg-bayes">
         <serverdata>
           <mappings>
             <mapping deploy="/home/chithanh/tmp/pycharm_interpretable_fusion_machines" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="maplecgpu">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/chithanh/pycharm/interpretable_fusion_machines" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

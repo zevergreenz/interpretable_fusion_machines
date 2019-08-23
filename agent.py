@@ -198,6 +198,41 @@ class AgentFactory(object):
 
         return Agent(agent1.sess, (gmm.means_, gmm.covariances_), s)
 
+    def fuse2(self, agent1, agent2):
+        s1 = agent1.S_label_pattern
+        s2 = agent2.S_label_pattern
+        p1 = agent1.patterns[0]
+        p2 = agent2.patterns[0]
+        c1 = agent1.patterns[1]
+        c2 = agent2.patterns[1]
+        from gaus_marginal_matching import match_local_atoms
+        p, _, assignment = match_local_atoms(local_atoms=[p1, p2], sigma=5., sigma0=5., gamma=10., it=20, optimize_hyper=True)
+        c = np.zeros((p.shape[0], p.shape[1], p.shape[1]))
+        idx1 = np.array(assignment[0])
+        idx2 = np.array(assignment[1])
+
+        num_pattern = p.shape[0]
+        s = np.ones((num_pattern, 10))
+        for j in range(num_pattern):
+            i1 = np.argwhere(idx1 == j)[:, 0]
+            count = 0
+            for i in i1:
+                s[j, :] *= s1[i, :]
+                c[j, :, :] += c1[i, :, :]
+                count += 1
+            i2 = np.argwhere(idx2 == j)[:, 0]
+            for i in i2:
+                s[j, :] *= s2[i, :]
+                c[j, :, :] += c2[i, :, :]
+                count += 1
+            c[j, :, :] /= count
+        normalization_const = np.sum(s, axis=1, keepdims=True)
+        # normalization_const = np.reshape(normalization_const, (self.num_pattern, 10))
+        normalization_const = np.tile(normalization_const, (1, 10))
+        s /= normalization_const
+
+        return Agent(agent1.sess, (p,c), s), assignment
+
 
 class Agent(object):
 

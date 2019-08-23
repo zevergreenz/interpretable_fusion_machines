@@ -9,11 +9,12 @@ from keras.datasets import mnist
 
 from mnist.vae import train_vae
 from agent import AgentFactory
+from gaus_marginal_matching import match_local_atoms
 
 tfb = tfp.bijectors
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="0"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="4"  # specify which GPU(s) to be used
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 
@@ -31,7 +32,7 @@ black_box_model_weights_filename = 'black_box.h5'
 black_box_model = keras.Sequential([
     keras.layers.Dense(784, input_shape=(28*28,), activation=tf.nn.relu),
     keras.layers.Dense(500, activation=tf.nn.relu),
-    keras.layers.Dense(10)
+    keras.layers.Dense(10, activation=tf.nn.softmax)
 ])
 black_box_model.compile(optimizer='adam',
                    loss='sparse_categorical_crossentropy',
@@ -69,12 +70,19 @@ z_test, z_log_var_test, _ = encoder.predict(x_test)
 
 # Creating one full datasets and two sub-datasets
 full_dataset = tf.data.Dataset.from_tensor_slices((x_train, z_train, z_log_var_train, y_train))
-indices1 = np.argwhere(
-    np.logical_or.reduce((y_train == 0, y_train == 1, y_train == 2, y_train == 3, y_train == 4)))[:, 0]
+# indices1 = np.argwhere(
+#     np.logical_or.reduce((y_train == 0, y_train == 1, y_train == 2, y_train == 3, y_train == 4)))[:, 0]
+indices1 = np.random.choice(range(x_train.shape[0]), size=(x_train.shape[0] // 2,), replace=False)
+ind = np.zeros(x_train.shape[0], dtype=bool)
+ind[indices1] = True
+indices2 = ~ind
+indices2 = np.argwhere(indices2)[:, 0]
+indices1 = indices1[:250]
+indices2 = indices2[:250]
 dataset1 = tf.data.Dataset.from_tensor_slices(
     (x_train[indices1], z_train[indices1], z_log_var_train[indices1], y_train[indices1]))
-indices2 = np.argwhere(
-    np.logical_or.reduce((y_train == 5, y_train == 6, y_train == 7, y_train == 8, y_train == 9)))[:, 0]
+# indices2 = np.argwhere(
+#     np.logical_or.reduce((y_train == 5, y_train == 6, y_train == 7, y_train == 8, y_train == 9)))[:, 0]
 dataset2 = tf.data.Dataset.from_tensor_slices(
     (x_train[indices2], z_train[indices2], z_log_var_train[indices2], y_train[indices2]))
 
@@ -97,8 +105,9 @@ agent_factory = AgentFactory(full_dataset,
 sess.run(tf.global_variables_initializer())
 agent1 = agent_factory.spawn(sess, dataset1, num_data=len(indices1))
 agent2 = agent_factory.spawn(sess, dataset2, num_data=len(indices2))
-agent = agent_factory.fuse(agent1, agent2)
+agent, assignment = agent_factory.fuse(agent1, agent2)
 
+y_test = y_test[:, np.newaxis]
 print('Agent 1: ', agent1.evaluate(z_test, z_log_var_test, y_test))
 print('Agent 2: ', agent2.evaluate(z_test, z_log_var_test, y_test))
 print('Agent  : ', agent.evaluate(z_test, z_log_var_test, y_test))

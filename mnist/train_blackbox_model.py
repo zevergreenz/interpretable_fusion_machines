@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 tfb = tfp.bijectors
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-# os.environ["CUDA_VISIBLE_DEVICES"]="3, 4"  # specify which GPU(s) to be used
+os.environ["CUDA_VISIBLE_DEVICES"]="3, 4"  # specify which GPU(s) to be used
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # disable warnings
 
 
@@ -27,7 +27,7 @@ x_test = x_test.reshape(x_test.shape[0], 28, 28,1)
 input_shape = x_train.shape[1:]
 num_classes = 10
 batch_size = 64
-epochs = 20
+epochs = 200
 
 y_train = keras.utils.to_categorical(y_train, num_classes)
 x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size = 0.1, random_state=42)
@@ -86,3 +86,7 @@ print("Black-box model accuracy: %.4f" % (np.count_nonzero(predicted_classes == 
 
 print("Saving model...")
 black_box_model.save('blackbox_model.h5')
+
+pred_train = black_box_model.predict(x_train)
+pred_test  = black_box_model.predict(x_test)
+# np.save('softmax_outputs.npy', [pred_train, pred_test])

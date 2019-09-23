@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mnist/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mnist/preprocess.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mnist/split_dataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uci/model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uci/preprocess.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/uci/split_dataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mnist/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mnist/train_blackbox_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/train_blackbox_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uci/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/uci/model.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,7 +47,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/gmm.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="23">
+                <state relative-caret-position="288">
                   <caret line="117" selection-start-line="117" selection-end-line="117" />
                 </state>
               </provider>
@@ -116,7 +108,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/mnist/model.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="284">
+                <state relative-caret-position="4879">
                   <caret line="293" column="15" selection-start-line="293" selection-start-column="15" selection-end-line="293" selection-end-column="15" />
                   <folding>
                     <element signature="e#0#9#0" expanded="true" />
@@ -128,8 +120,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/uci/model.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="148">
-                  <caret line="181" column="30" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="30" />
+                <state relative-caret-position="179">
+                  <caret line="312" selection-start-line="312" selection-end-line="320" selection-end-column="39" />
                 </state>
               </provider>
             </entry>
@@ -267,7 +259,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -275,30 +266,11 @@
               <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
               <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
-              <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
-              <item name="cifar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
-              <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
-              <item name="experiment_results" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
-              <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
-              <item name="mnist" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
-              <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
-              <item name="uci" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -338,7 +310,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.model">
+  <component name="RunManager" selected="Python.model (1)">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -503,8 +475,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.model" />
         <item itemvalue="Python.model (1)" />
+        <item itemvalue="Python.model" />
         <item itemvalue="Python.preprocess (1)" />
         <item itemvalue="Python.split_dataset (1)" />
         <item itemvalue="Python.preprocess" />
@@ -598,7 +570,9 @@
       <workItem from="1566633319619" duration="4040000" />
       <workItem from="1567338066413" duration="116268000" />
       <workItem from="1568130004730" duration="1930000" />
-      <workItem from="1568288710589" duration="544000" />
+      <workItem from="1568288710589" duration="18628000" />
+      <workItem from="1568370916377" duration="1326000" />
+      <workItem from="1568967176885" duration="1777000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -866,11 +840,18 @@
       <option name="project" value="LOCAL" />
       <updated>1566552942904</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Add new code (using Pytorch)">
+      <created>1568289313068</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1568289313068</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="671338000" />
+    <option name="totallyTimeSpent" value="692525000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -883,10 +864,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.1689008" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17292225" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32953367" />
@@ -900,7 +880,7 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.49731904" weight="0.33097595" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.4919571" visible="true" weight="0.38613862" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.4919571" visible="true" weight="0.38613862" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="bottom" id="Messages" order="14" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5092593" weight="0.2191689" />
@@ -991,7 +971,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix loss function" />
     <MESSAGE value="Add gradient clipping" />
     <MESSAGE value="Comment out gradient clipping" />
     <MESSAGE value="Add code to visualize results" />
@@ -1016,7 +995,8 @@
     <MESSAGE value="WIP - Add plot code" />
     <MESSAGE value="New blackbox model for MNIST" />
     <MESSAGE value="Add Bayesian federated for fusion" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Bayesian federated for fusion" />
+    <MESSAGE value="Add new code (using Pytorch)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add new code (using Pytorch)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1227,16 +1207,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/1379181664/-2146050958/torch/optim/adam.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1078">
-          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/1379181664/-1465004018/multiprocessing/pool.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
@@ -1255,6 +1225,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-70">
           <caret line="604" column="8" selection-start-line="604" selection-start-column="8" selection-end-line="604" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/1379181664/-2146050958/torch/optim/adam.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1288,7 +1268,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gmm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
+        <state relative-caret-position="288">
           <caret line="117" selection-start-line="117" selection-end-line="117" />
         </state>
       </provider>
@@ -1307,6 +1287,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4879">
+          <caret line="293" column="15" selection-start-line="293" selection-start-column="15" selection-end-line="293" selection-end-column="15" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -1333,20 +1323,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="293" column="15" selection-start-line="293" selection-start-column="15" selection-end-line="293" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uci/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="181" column="30" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="30" />
+        <state relative-caret-position="179">
+          <caret line="312" selection-start-line="312" selection-end-line="320" selection-end-column="39" />
         </state>
       </provider>
     </entry>

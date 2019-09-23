@@ -181,23 +181,58 @@ class ConvNet(object):
         # return w[non_zero_idx], log_Bc[non_zero_idx]
         return w_prime, log_Bc
 
+    def predict_fuse_without_constraints(self, x, m=6):
+        w = torch.rand(n, requires_grad=True)
+        log_Bc = self.predict(x_trains[self._i])
+        log_Bcx = self.predict(x)
+        # opt = torch.optim.Adam([w])
+        # w_gpu = w.cuda()
+        # loss = (((w_gpu.unsqueeze(1) * log_Bc).sum(0) - log_Bcx.squeeze()) ** 2).sum()
+        # for _ in range(30000):
+        #     opt.zero_grad()
+        #     w_gpu = w.cuda()
+        #     loss = (((w_gpu.unsqueeze(1) * log_Bc).sum(0) - log_Bcx.squeeze()) ** 2).sum()
+        #     loss.backward(retain_graph=True)
+        #     opt.step()
+        idx = torch.argsort(w, descending=True)[:m]
+        w = w[idx].detach()
+        log_Bc = log_Bc[idx]
+        opt = torch.optim.Adam([w])
+        w_gpu = w.cuda()
+        loss = (((w_gpu.unsqueeze(1) * log_Bc).sum(0) - log_Bcx.squeeze()) ** 2).sum()
+        for _ in range(30000):
+            opt.zero_grad()
+            w_gpu = w.cuda()
+            loss = (((w_gpu.unsqueeze(1) * log_Bc).sum(0) - log_Bcx.squeeze()) ** 2).sum()
+            loss.backward(retain_graph=True)
+            opt.step()
+        return w.cuda(), log_Bc
 
-def fuse(models, x, m=10):
+global_w = {}
+global_logBc = {}
+
+def fuse(models, x, m=100):
     assert x.shape[0] == 1
     w = []
     logBc = []
-    for model in models:
-        w_, logBc_ = model.predict_fuse(x)
-        w.append(w_)
-        logBc.append(logBc_)
-
+    if x not in global_w:
+        for model in models:
+            w_, logBc_ = model.predict_fuse_without_constraints(x)
+            w.append(w_)
+            logBc.append(logBc_)
+        global_w[x] = w
+        global_logBc[x] = logBc
+    else:
+        w = global_w[x]
+        logBc = global_logBc[x]
+    n = len(w[0])
     G = torch.zeros((m, num_models, n))
     w_l = torch.cat(w, dim=0)[:m]
     logB_l = torch.cat(logBc, dim=0)[:m]
     for i in range(num_models):
         for j in range(len(w[i])):
             G[(i+j) % m, i, j] = 1
-    for _ in range(100):
+    for _ in range(1000):
         # w-step
         for l in range(m):
             term1 = 0
@@ -246,7 +281,7 @@ def fuse(models, x, m=10):
 
 def PoE(models):
     with torch.no_grad():
-        pred = torch.zeros(x_test.shape[0], 10).cuda()
+        pred = torch.zeros(y_test.shape[0], 2).cuda()
         for model in models:
             pred += model.predict(x_test)
         pred = pred.argmax(dim=1)
@@ -259,7 +294,7 @@ def fuse2(models, x, m=2):
     w = []
     logBc = []
     for model in models:
-        w_, logBc_ = model.predict_fuse(x)
+        w_, logBc_ = model.predict_fuse_without_constraints(x)
         w.append(w_)
         logBc.append(logBc_)
     w = torch.cat(w)
@@ -273,9 +308,11 @@ for i in range(num_models):
     models.append(model)
     print(model.evaluate())
 
+m = 50
+print(m)
 correct = 0
 for i in range(x_test.shape[0]):
-    pred = fuse(models, x_test[i:i+1], m=6)
+    pred = fuse2(models, x_test[i:i+1])
     pred = pred.argmax()
     if pred == y_test[i]:
         correct += 1

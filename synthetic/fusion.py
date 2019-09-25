@@ -13,7 +13,7 @@ num_models = 2
 m = 6
 n = 40
 
-f = h5py.File('uci_dataset.hdf5', 'r')
+f = h5py.File('synthetic_dataset.hdf5', 'r')
 x_test = torch.Tensor(np.array(f["test/x"])).cuda()
 y_test = torch.Tensor(np.array(f["test/y"])).long().cuda()
 
@@ -154,11 +154,11 @@ class ConvNet(object):
         assert x.shape[0] == 1
         n = x_trains[self._i].shape[0]
         log_gamma = torch.rand(n, requires_grad=True)
+        log_gamma_gpu = log_gamma.cuda()
         log_Bc = self.predict(x_trains[self._i])
         opt = torch.optim.Adam([log_gamma])
         for epoch in range(10):
             opt.zero_grad()
-            log_gamma_gpu = log_gamma.cuda()
             w_prime = self.sample_p(x, x_trains[self._i])
             E_h = w_prime.unsqueeze(1) * log_Bc * r(log_gamma_gpu).unsqueeze(1)
             E_h2 = ((w_prime.unsqueeze(1) * log_Bc)**2) * r(log_gamma_gpu).unsqueeze(1)

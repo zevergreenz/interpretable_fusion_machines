@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db7fceb2-00ac-4fb1-a6cb-24f9845e1d7a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/synthetic/fusion.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/synthetic/generate_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/synthetic/model_decomposition.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/synthetic/preprocess.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/synthetic/split_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/synthetic/train_blackbox_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mnist/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mnist/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/mnist/fusion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uci/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/uci/fusion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uci/fusion.py" beforeDir="false" afterPath="$PROJECT_DIR$/uci/fusion.py" afterDir="false" />
     </list>
     <ignored path="C:\Users\test\Documents\interpretable_fusion_machines\.idea\shelf/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,86 +37,121 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mnist/preprocess.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2771">
-              <caret line="163" column="10" selection-start-line="163" selection-start-column="10" selection-end-line="163" selection-end-column="10" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/mnist/fusion.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-698">
-              <caret line="233" column="21" lean-forward="true" selection-start-line="233" selection-start-column="21" selection-end-line="233" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mnist/train_blackbox_model.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="80" column="34" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uci/fusion.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="312" column="11" selection-start-line="312" selection-start-column="11" selection-end-line="312" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uci/split_dataset.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="18" column="19" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uci/preprocess.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="106" column="25" selection-start-line="106" selection-start-column="25" selection-end-line="106" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.24121997">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mnist/preprocess.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="782">
+                  <caret line="163" column="10" selection-start-line="163" selection-start-column="10" selection-end-line="163" selection-end-column="10" />
+                  <folding>
+                    <element signature="e#0#11#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/mnist/train_blackbox_model.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="312">
+                  <caret line="31" selection-start-line="31" selection-end-line="31" selection-end-column="58" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/mnist/fusion.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2615">
+                  <caret line="259" column="25" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/synthetic/preprocess.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="337">
+                  <caret line="161" column="9" lean-forward="true" selection-start-line="161" selection-start-column="9" selection-end-line="161" selection-end-column="9" />
+                  <folding>
+                    <element signature="e#0#11#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/synthetic/train_blackbox_model.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="290">
+                  <caret line="60" selection-start-line="60" selection-end-line="65" selection-end-column="55" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/synthetic/generate_dataset.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="85">
+                  <caret line="25" column="36" lean-forward="true" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
+                  <folding>
+                    <element signature="e#0#11#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/synthetic/model_decomposition.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="221">
+                  <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
+                  <folding>
+                    <element signature="e#0#11#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/synthetic/fusion.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="255">
+                  <caret line="15" selection-start-line="15" selection-end-line="17" selection-end-column="58" />
+                  <folding>
+                    <element signature="e#0#9#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/uci/fusion.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1904">
+                  <caret line="160" column="44" selection-start-line="160" selection-start-column="44" selection-end-line="160" selection-end-column="44" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -123,7 +162,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>tf.shape</find>
       <find>dataset.batch</find>
       <find>model</find>
       <find>tfb</find>
@@ -153,6 +191,7 @@
       <find>784</find>
       <find>30</find>
       <find>sample_p</find>
+      <find>ones_like</find>
     </findStrings>
     <replaceStrings>
       <replace>self.batch_size</replace>
@@ -206,13 +245,19 @@
         <option value="$PROJECT_DIR$/mnist/model.py" />
         <option value="$PROJECT_DIR$/uci/model.py" />
         <option value="$PROJECT_DIR$/mnist/__init__.py" />
+        <option value="$PROJECT_DIR$/synthetic/fusion.py" />
+        <option value="$PROJECT_DIR$/synthetic/test.py" />
+        <option value="$PROJECT_DIR$/uci/fusion.py" />
+        <option value="$PROJECT_DIR$/synthetic/generate_dataset.py" />
+        <option value="$PROJECT_DIR$/synthetic/train_blackbox_model.py" />
+        <option value="$PROJECT_DIR$/synthetic/model_decomposition.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
+    <option name="x" value="792" />
     <option name="width" value="815" />
-    <option name="height" value="960" />
+    <option name="height" value="958" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -234,6 +279,11 @@
             <path>
               <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
               <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
+              <item name="synthetic" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="interpretable_fusion_machines" type="b2602c69:ProjectViewProjectNode" />
+              <item name="interpretable_fusion_machines" type="462c0819:PsiDirectoryNode" />
               <item name="uci" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -246,7 +296,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/uci" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/synthetic" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -258,14 +308,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines\synthetic" />
+      <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines\uci" />
+      <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines\mnist" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines\cifar" />
       <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines" />
       <recent name="C:\Users\test\Documents\interpretable_fusion_machines\mnist" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines\uci" />
-      <recent name="C:\Users\research\PycharmProjects\interpretable_fusion_machines\mnist" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -280,7 +331,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.uci_fusion">
+  <component name="RunManager" selected="Python.model_decomposition">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -303,6 +354,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="generate_dataset" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="interpretable_fusion_machines" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/synthetic" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/synthetic/generate_dataset.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="mnist_fusion" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="interpretable_fusion_machines" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -314,6 +384,44 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mnist/fusion.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="model_decomposition" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="interpretable_fusion_machines" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/synthetic" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/synthetic/model_decomposition.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train_blackbox_model" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="interpretable_fusion_machines" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/synthetic" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/synthetic/train_blackbox_model.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -344,9 +452,15 @@
     <list>
       <item itemvalue="Python.uci_fusion" />
       <item itemvalue="Python.mnist_fusion" />
+      <item itemvalue="Python.generate_dataset" />
+      <item itemvalue="Python.model_decomposition" />
+      <item itemvalue="Python.train_blackbox_model" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.model_decomposition" />
+        <item itemvalue="Python.train_blackbox_model" />
+        <item itemvalue="Python.generate_dataset" />
         <item itemvalue="Python.mnist_fusion" />
         <item itemvalue="Python.uci_fusion" />
       </list>
@@ -441,7 +555,7 @@
       <workItem from="1568130004730" duration="1930000" />
       <workItem from="1568288710589" duration="18628000" />
       <workItem from="1568370916377" duration="1326000" />
-      <workItem from="1568967176885" duration="3248000" />
+      <workItem from="1568967176885" duration="39117000" />
     </task>
     <task id="LOCAL-00001" summary="Add plots">
       <created>1555456199654</created>
@@ -730,11 +844,18 @@
       <option name="project" value="LOCAL" />
       <updated>1569252409562</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Rename fusion &amp; update configuration">
+      <created>1569253172802</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1569253172802</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="693996000" />
+    <option name="totallyTimeSpent" value="729865000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -749,7 +870,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17292225" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.107238606" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32953367" />
@@ -763,12 +884,12 @@
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
       <window_info anchor="bottom" id="File Transfer" order="11" sideWeight="0.49731904" weight="0.33097595" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.4919571" visible="true" weight="0.3125884" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.4919571" visible="true" weight="0.46958983" />
       <window_info anchor="bottom" id="TODO" order="13" weight="0.32956153" />
       <window_info anchor="bottom" id="Messages" order="14" />
       <window_info anchor="right" x="522" y="59" width="491" height="706" id="SciView" order="0" sideWeight="0.5092593" weight="0.2191689" />
       <window_info anchor="right" id="Database" order="1" sideWeight="0.49642345" weight="0.32747602" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.49074075" side_tool="true" visible="true" weight="0.211126" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="2" sideWeight="0.49074075" side_tool="true" visible="true" weight="0.16756032" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
@@ -854,7 +975,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add code to visualize results" />
     <MESSAGE value="Allow dynamic shape with placeholder" />
     <MESSAGE value="Remove run_experiment function" />
     <MESSAGE value="Fix import warnings" />
@@ -879,7 +999,8 @@
     <MESSAGE value="Add new code (using Pytorch)" />
     <MESSAGE value="Commit before clean up" />
     <MESSAGE value="Remove unused files (written in tf)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unused files (written in tf)" />
+    <MESSAGE value="Rename fusion &amp; update configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename fusion &amp; update configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -895,19 +1016,12 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$pytorch_test.coverage" NAME="pytorch_test Coverage Results" MODIFIED="1557197500807" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$gmm.coverage" NAME="gmm Coverage Results" MODIFIED="1555452593384" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/interpretable_fusion_machines$generate_dataset.coverage" NAME="generate_dataset Coverage Results" MODIFIED="1569294101023" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/synthetic" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$vae.coverage" NAME="vae Coverage Results" MODIFIED="1555454690311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$main.coverage" NAME="main Coverage Results" MODIFIED="1559293185943" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/mnist" />
     <SUITE FILE_PATH="coverage/interpretable_fusion_machines$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1556045498718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1647038102/numpy/core/_multiarray_umath.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/contrib/learn/python/learn/estimators/estimator.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/python/ops/variables.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/tensorflow/contrib/factorization/python/ops/gmm.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/-1647038102/-2146050958/sklearn/mixture/gaussian_mixture.py" />
-    <entry file="file://$PROJECT_DIR$/experiment_results/mixture_gaussian_1.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/experiment_results/mnist_1.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -1166,16 +1280,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/train_blackbox_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="80" column="34" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1183,9 +1287,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/synthetic/split_dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="13" lean-forward="true" selection-end-line="47" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist/train_blackbox_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="31" selection-start-line="31" selection-end-line="31" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synthetic/preprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="161" column="9" lean-forward="true" selection-start-line="161" selection-start-column="9" selection-end-line="161" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synthetic/generate_dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="25" column="36" lean-forward="true" selection-start-line="25" selection-start-column="36" selection-end-line="25" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synthetic/fusion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" selection-start-line="15" selection-end-line="17" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uci/fusion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1904">
+          <caret line="160" column="44" selection-start-line="160" selection-start-column="44" selection-end-line="160" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synthetic/train_blackbox_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="60" selection-start-line="60" selection-end-line="65" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mnist/preprocess.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2771">
+        <state relative-caret-position="782">
           <caret line="163" column="10" selection-start-line="163" selection-start-column="10" selection-end-line="163" selection-end-column="10" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
@@ -1193,19 +1364,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uci/fusion.py">
+    <entry file="file://$PROJECT_DIR$/mnist/fusion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="312" column="11" selection-start-line="312" selection-start-column="11" selection-end-line="312" selection-end-column="11" />
+        <state relative-caret-position="2615">
+          <caret line="259" column="25" selection-start-line="259" selection-start-column="25" selection-end-line="259" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mnist/fusion.py">
+    <entry file="file://$PROJECT_DIR$/synthetic/model_decomposition.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-698">
-          <caret line="233" column="21" lean-forward="true" selection-start-line="233" selection-start-column="21" selection-end-line="233" selection-end-column="21" />
+        <state relative-caret-position="221">
+          <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
